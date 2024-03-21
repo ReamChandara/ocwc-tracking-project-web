@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       initialBinding: HomeBinding(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: "SourceSansPro-Regular",
         useMaterial3: false,
       ),
       home: const HomeScreen(),

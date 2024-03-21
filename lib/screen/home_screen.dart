@@ -36,6 +36,26 @@ class HomeScreen extends GetView<WorkerController> {
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Obx(() {
+                  return Switch(
+                      trackColor: MaterialStateProperty.all(Colors.grey),
+                      activeColor: Colors.white,
+                      inactiveThumbColor: Colors.white,
+                      activeThumbImage: const AssetImage(
+                        'assets/images/cambodia_flag.png',
+                      ),
+                      inactiveThumbImage:
+                          const AssetImage('assets/images/english_flag.png'),
+                      value: controller.switchValue.value,
+                      onChanged: (value) {
+                        controller.changeSwitch(value);
+                      });
+                }),
+              ],
+            ),
             Image.asset(
               "assets/images/logo_ocwc.jpg",
               width: 100,
@@ -115,7 +135,7 @@ class HomeScreen extends GetView<WorkerController> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    controller.submit();
+                    controller.searchWorker();
 
                     // Navigator.push(
                     //   context,
