@@ -5,18 +5,25 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tracking_web/config/constant/api_constant.dart';
 import 'package:http/http.dart' as http;
-import 'package:tracking_web/screen/detial_worker_screen.dart';
 import '../models/worker_models.dart';
 
 class WorkerController extends GetxController {
-  final globalKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   late Future<DateTime?> selectedDate;
   WorkerModel? workerModel;
+  int falseIndex = 0;
   RxBool switchValue = false.obs;
+  String langCode = "en";
   void changeSwitch(bool value) {
     switchValue.value = value;
+    if (value) {
+      Get.updateLocale(const Locale("km", "KH"));
+      langCode = "kh";
+    } else {
+      Get.updateLocale(const Locale("en", "US"));
+      langCode = "en";
+    }
   }
 
   get nameController {
@@ -35,38 +42,22 @@ class WorkerController extends GetxController {
     _dateController.text = date;
   }
 
-  bool validation() {
-    if (globalKey.currentState!.validate()) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   void searchWorker() async {
     String apiUrl = baseUrl + searchWorkerUrl;
     var body = <String, String>{
       "full_name": nameController.text,
       "dob": dateController.text,
     };
-    var response = await http.post(Uri.parse(apiUrl),
-        headers: headers(), body: jsonEncode(body));
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      headers: headers(langCode),
+      body: jsonEncode(body),
+    );
     if (response.statusCode == 200) {
       workerModel = parseFromJson(response.body);
-      var falseIndex = workerModel!.workerData.tricking
+      falseIndex = workerModel!.workerData.tricking
           .indexWhere((element) => element.check == false);
-
-      Get.to(() => WorkerDetail(
-            workerData: workerModel!.workerData,
-            falseIndex: falseIndex,
-          ));
-    }
-  }
-
-  void submit() {
-    if (validation()) {
-    } else {
-      searchWorker();
+      Get.toNamed('/workerDetail');
     }
   }
 
@@ -87,11 +78,5 @@ class WorkerController extends GetxController {
         value ?? DateTime.now(),
       );
     });
-  }
-
-  @override
-  void onInit() {
-    searchWorker();
-    super.onInit();
   }
 }

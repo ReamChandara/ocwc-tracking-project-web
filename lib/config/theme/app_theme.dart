@@ -27,7 +27,6 @@ class AppTheme {
       foregroundColor: Colors.black,
       backgroundColor: Colors.white,
       titleTextStyle: AppTextStyle.bold24(
-        fontFamily: 'SourceSansPro-Bold',
         color: Colors.black,
       ),
       iconTheme: const IconThemeData(
@@ -54,7 +53,6 @@ class AppTheme {
       centerTitle: false,
       backgroundColor: AppColors.darkColor,
       titleTextStyle: AppTextStyle.bold26(
-        fontFamily: 'SourceSansPro-Bold',
         color: Colors.white,
       ),
       iconTheme: const IconThemeData(
@@ -225,7 +223,6 @@ class AppTextStyle {
 
   static TextStyle bold14({Color? color}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Bold',
       fontSize: 14,
       fontWeight: FontWeight.bold,
       color: color ?? Colors.black,
@@ -234,7 +231,6 @@ class AppTextStyle {
 
   static TextStyle bold10({Color? color}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Bold',
       fontSize: 10,
       color: color ?? AppColors.white,
     );
@@ -242,7 +238,6 @@ class AppTextStyle {
 
   static TextStyle bold5({Color? color}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Bold',
       fontSize: 5,
       color: color ?? AppColors.white,
     );
@@ -250,7 +245,6 @@ class AppTextStyle {
 
   static TextStyle bold12({Color? color}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Bold',
       fontSize: 12,
       fontWeight: FontWeight.bold,
       color: color ?? AppColors.white,
@@ -260,7 +254,6 @@ class AppTextStyle {
   static TextStyle bold16({Color? color, double? height, String? fontFamily}) {
     return TextStyle(
       height: height,
-      fontFamily: fontFamily ?? 'SourceSansPro-Bold',
       fontWeight: FontWeight.bold,
       fontSize: 16,
       color: color ?? Colors.black,
@@ -270,7 +263,6 @@ class AppTextStyle {
   static TextStyle bold17({Color? color, double? height, String? fontFamily}) {
     return TextStyle(
       height: height,
-      fontFamily: fontFamily ?? 'SourceSansPro-Bold',
       fontWeight: FontWeight.bold,
       fontSize: 17,
       color: color ?? AppColors.white,
@@ -279,7 +271,6 @@ class AppTextStyle {
 
   static TextStyle bold13({Color? color}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Bold',
       fontSize: 13,
       color: color ?? AppColors.white,
     );
@@ -287,7 +278,6 @@ class AppTextStyle {
 
   static TextStyle bold18({Color? color, double? height}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Bold',
       height: height,
       fontSize: 18,
       color: color ?? Colors.black,
@@ -296,7 +286,6 @@ class AppTextStyle {
 
   static TextStyle bold19({Color? color, double? height}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Bold',
       height: height,
       fontSize: 19,
       color: color ?? AppColors.white,
@@ -305,7 +294,6 @@ class AppTextStyle {
 
   static TextStyle bold20({Color? color, String? fontFamily}) {
     return TextStyle(
-      fontFamily: fontFamily ?? 'SourceSansPro-Bold',
       fontSize: 20,
       color: color ?? AppColors.white,
     );
@@ -313,7 +301,6 @@ class AppTextStyle {
 
   static TextStyle bold22({Color? color, String? fontFamily}) {
     return TextStyle(
-      fontFamily: fontFamily ?? 'SourceSansPro-Bold',
       fontSize: 22,
       color: color ?? AppColors.white,
     );
@@ -321,7 +308,6 @@ class AppTextStyle {
 
   static TextStyle bold24({Color? color, String? fontFamily}) {
     return TextStyle(
-      fontFamily: fontFamily ?? 'SourceSansPro-Bold',
       fontSize: 24,
       color: color ?? AppColors.white,
     );
@@ -329,7 +315,6 @@ class AppTextStyle {
 
   static TextStyle bold26({Color? color, String? fontFamily}) {
     return TextStyle(
-      fontFamily: fontFamily ?? 'SourceSansPro-Bold',
       fontSize: 26,
       color: color ?? AppColors.white,
     );
@@ -337,7 +322,6 @@ class AppTextStyle {
 
   static TextStyle bold28({Color? color}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Bold',
       fontSize: 28,
       color: color ?? AppColors.white,
     );
@@ -345,7 +329,6 @@ class AppTextStyle {
 
   static TextStyle bold40({Color? color, String? fontFamily}) {
     return TextStyle(
-      fontFamily: fontFamily ?? 'SourceSansPro-Bold',
       fontSize: 40,
       color: color ?? AppColors.white,
     );
@@ -353,7 +336,6 @@ class AppTextStyle {
 
   static TextStyle bold50({Color? color, String? fontFamily}) {
     return TextStyle(
-      fontFamily: fontFamily ?? 'SourceSansPro-Bold',
       fontSize: 50,
       color: color ?? AppColors.white,
     );
