@@ -9,27 +9,34 @@ class TextFieldWidget extends StatelessWidget {
   final Widget? suffixIcon;
   final void Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
-  const TextFieldWidget({
-    super.key,
-    required this.labelText,
-    this.hintText,
-    this.inputFormatters,
-    required this.controller,
-    this.suffixIcon,
-    this.onFieldSubmitted,
-    this.validator,
-  });
+  final TextStyle? errorStyle;
+  final TextStyle? hintStyle;
+  final TextStyle? labelStyle;
+  const TextFieldWidget(
+      {super.key,
+      required this.labelText,
+      this.hintText,
+      this.inputFormatters,
+      required this.controller,
+      this.suffixIcon,
+      this.onFieldSubmitted,
+      this.validator,
+      this.errorStyle,
+      this.hintStyle,
+      this.labelStyle});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: labelText,
-        hintText: hintText,
-        suffixIcon: suffixIcon,
-      ),
+          errorStyle: errorStyle,
+          border: const OutlineInputBorder(),
+          labelText: labelText,
+          hintText: hintText,
+          suffixIcon: suffixIcon,
+          hintStyle: hintStyle,
+          labelStyle: labelStyle),
       validator: validator,
       onFieldSubmitted: onFieldSubmitted,
       inputFormatters: inputFormatters,

@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
       initialBinding: HomeBinding(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: Get.locale == const Locale("en", "US")
-            ? "SourceSansPro-Regular"
-            : "Battambang",
+        fontFamily: "SourceSansPro-Regular",
         useMaterial3: false,
       ),
       initialRoute: "/home",

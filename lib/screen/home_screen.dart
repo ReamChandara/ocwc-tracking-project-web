@@ -87,14 +87,23 @@ class HomeScreen extends GetView<WorkerController> {
               ),
               Text(
                 "title".tr,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w300),
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: controller.langCode == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
                 "subTitle".tr,
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: controller.langCode == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
               ),
               SizedBox(
                 height: 40,
@@ -104,6 +113,21 @@ class HomeScreen extends GetView<WorkerController> {
                   controller.setNameController = val;
                   submit();
                 },
+                errorStyle: TextStyle(
+                    fontSize: 16,
+                    fontFamily: controller.langCode == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                hintStyle: TextStyle(
+                    fontSize: 16,
+                    fontFamily: controller.langCode == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                labelStyle: TextStyle(
+                    fontSize: 16,
+                    fontFamily: controller.langCode == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
                 validator: (val) {
                   if (val == null || val.isEmpty) {
                     return "nameWarning".tr;
@@ -121,6 +145,21 @@ class HomeScreen extends GetView<WorkerController> {
                 controller: controller.dateController,
                 labelText: "date".tr,
                 hintText: "DD/MM/YYYY",
+                errorStyle: TextStyle(
+                    fontSize: 16,
+                    fontFamily: controller.langCode == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                hintStyle: TextStyle(
+                    fontSize: 16,
+                    fontFamily: controller.langCode == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                labelStyle: TextStyle(
+                    fontSize: 16,
+                    fontFamily: controller.langCode == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
                 suffixIcon: IconButton(
                     onPressed: () async {
                       controller.showDialogPicker(context);
@@ -164,10 +203,13 @@ class HomeScreen extends GetView<WorkerController> {
                       height: 42,
                       width: 100,
                       color: Colors.blue,
-                      child: Text(
-                        "track".tr,
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
+                      child: Text("track".tr,
+                          style: TextStyle(
+                            color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: controller.langCode == "en"
+                                  ? "SourceSansPro-Regular"
+                                  : "Battambang")),
                     ),
                   ),
                 ],
