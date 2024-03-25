@@ -5,32 +5,34 @@ import 'package:tracking_web/config/theme/app_theme.dart';
 import 'package:tracking_web/controller/worker_controller.dart';
 import '../config/constant/string_constant.dart';
 
-class WorkerDetail extends GetView<WorkerController> {
+class WorkerDetail extends StatelessWidget {
   const WorkerDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (controller.workerModel == null) {
-      return const Center(
-        child: Text(
-          "Not Found",
-          style: TextStyle(
-            color: Colors.black,
-            decoration: TextDecoration.none,
+    return GetBuilder<WorkerController>(builder: (controller) {
+      if (controller.workerModel == null) {
+        return const Center(
+          child: Text(
+            "Not Found",
+            style: TextStyle(
+              color: Colors.black,
+              decoration: TextDecoration.none,
+            ),
           ),
-        ),
-      );
-    } else {
-      return LayoutBuilder(builder: (context, constrained) {
-        if (constrained.maxWidth > 900) {
-          return WebScreen(controller: controller);
-        } else {
-          return PhoneScreen(
-            controller: controller,
-          );
-        }
-      });
-    }
+        );
+      } else {
+        return LayoutBuilder(builder: (context, constrained) {
+          if (constrained.maxWidth > 900) {
+            return WebScreen(controller: controller);
+          } else {
+            return PhoneScreen(
+              controller: controller,
+            );
+          }
+        });
+      }
+    });
   }
 }
 
