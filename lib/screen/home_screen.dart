@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tracking_web/controller/worker_controller.dart';
@@ -30,10 +31,10 @@ class HomeScreen extends GetView<WorkerController> {
     }
   }
 
-  void submit() {
+  void submit(BuildContext context) {
     if (validation()) {
     } else {
-      controller.searchWorker();
+      controller.searchWorker(context);
     }
   }
 
@@ -45,10 +46,21 @@ class HomeScreen extends GetView<WorkerController> {
         ));
   }
 
+  // This function is used to update the page title
+  void setPageTitle(String title, BuildContext context) {
+    SystemChrome.setApplicationSwitcherDescription(
+        ApplicationSwitcherDescription(
+      label: title,
+      primaryColor:
+          Theme.of(context).primaryColor.value, // This line is required
+    ));
+  }
+
   Widget _buildBody(context) {
     return Form(
       key: formKey,
       child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         width: 500,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade300),
@@ -111,7 +123,7 @@ class HomeScreen extends GetView<WorkerController> {
               TextFieldWidget(
                 onFieldSubmitted: (val) {
                   controller.setNameController = val;
-                  submit();
+                  submit(context);
                 },
                 errorStyle: TextStyle(
                     fontSize: 16,
@@ -178,7 +190,7 @@ class HomeScreen extends GetView<WorkerController> {
                 },
                 onFieldSubmitted: (val) {
                   controller.setDateController = val;
-                  submit();
+                  submit(context);
                 },
                 inputFormatters: [
                   MaskTextInputFormatter(
@@ -191,28 +203,24 @@ class HomeScreen extends GetView<WorkerController> {
               SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      submit();
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 42,
-                      width: 100,
+              InkWell(
+                onTap: () {
+                  submit(context);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 42,
+                  decoration: BoxDecoration(
                       color: Colors.blue,
-                      child: Text("track".tr,
-                          style: TextStyle(
-                            color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: controller.langCode == "en"
-                                  ? "SourceSansPro-Regular"
-                                  : "Battambang")),
-                    ),
-                  ),
-                ],
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Text("track".tr,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontFamily: controller.langCode == "en"
+                              ? "SourceSansPro-Regular"
+                              : "Battambang")),
+                ),
               )
             ],
           ),

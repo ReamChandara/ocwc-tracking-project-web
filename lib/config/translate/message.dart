@@ -22,9 +22,13 @@ class Message extends Translations {
         "SenderAgency": "Sender Agency",
         "trackInfo": "Track Information",
         "workAddress": "Work Address",
+        "appbarTitle": "OCWC Tracking",
+        "loading": "Loding...",
+        "finding": "Finding Data",
+        "try": "Try Again",
       },
       "km_KH": {
-        "title": "ស្វែងរកព៏ត័មាន OCWC",
+        "title": "ស្វែងរកព័ត៌មាន OCWC",
         "subTitle": "សូមបញ្ចូលឈ្មោះនិងថ្ងៃខែឆ្នាំកំណើត",
         "track": "ស្វែករក",
         "latin": "ឈ្មោះឡាតាំង",
@@ -32,15 +36,19 @@ class Message extends Translations {
         "nameWarning": "ឈ្មោះពេញ តម្រូវអោយបញ្ចូល។",
         "dateWarning": "ថ្ងៃ.ខែ.ឆ្នាំ.កំណើត តម្រូវអោយបញ្ចូល",
         "dateMatch": "ថ្ងៃ.ខែ.ឆ្នាំ.កំណើត មិនត្រឹមត្រូវ",
-        "workerDetail": "ព៏ត័មាន",
+        "workerDetail": "ព័ត៌មាន",
         "gender": "ភេទ",
         "ocwcNo": "លេខ OCWC",
         "khmername": "ឈ្មោះ",
         "latinname": "ឈ្មោះឡាតាំង",
         "country": "ប្រទេស",
         "SenderAgency": "ភ្នាក់ងា",
-        "trackInfo": "ព៏ត័មាន",
+        "trackInfo": "ព័ត៌មាន",
         "workAddress": "អស័យដ្ឋានកាងារ",
+        "appbarTitle": "ប្រព័ន្ធតាមដាន OCWC",
+        'loading':"សូមរង់ចាំ",
+        "finding": "កំពុងស្វែងរក",
+        "try": "ព្យាយាមម្តងទៀត"
       }
     };
   }

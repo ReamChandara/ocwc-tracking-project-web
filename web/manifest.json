@@ -1,5 +1,5 @@
 {
-    "name": "tracking_web",
+    "name": "OCWC Tracking",
     "short_name": "tracking_web",
     "start_url": ".",
     "display": "standalone",
