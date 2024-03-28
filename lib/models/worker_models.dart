@@ -4,13 +4,21 @@ WorkerModel parseFromJson(String json) {
   return WorkerModel.fromJson(jsonDecode(json));
 }
 
+List<WorkerModel> parseListWorkerFromJson(String json) {
+  return List.from(jsonDecode(json).map((item) => WorkerModel.fromJson(item)));
+}
+
 class WorkerModel {
-  final WorkerData workerData;
+  final List<WorkerData> workerData;
 
   WorkerModel({required this.workerData});
 
   factory WorkerModel.fromJson(Map<String, dynamic> json) {
-    return WorkerModel(workerData: WorkerData.fromJson(json['data']));
+    return WorkerModel(
+      workerData: List<WorkerData>.from(
+        json["data"].map((e) => WorkerData.fromJson(e)),
+      ),
+    );
   }
 }
 
@@ -110,10 +118,10 @@ class SendingAgency {
 }
 
 class WorkAddress {
-  final String enName;
-  final String khName;
+  final String? enName;
+  final String? khName;
 
-  WorkAddress({required this.enName, required this.khName});
+  WorkAddress({this.enName, this.khName});
 
   factory WorkAddress.fromJson(Map<String, dynamic> json) {
     return WorkAddress(enName: json['en'], khName: json['kh']);
@@ -121,13 +129,13 @@ class WorkAddress {
 }
 
 class Tricking {
-  final bool check;
+  final bool? check;
   final Title title;
   final Date date;
   final Description description;
 
   Tricking(
-      {required this.check,
+      {this.check,
       required this.title,
       required this.date,
       required this.description});

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:tracking_web/widget/build_address_widget.dart';
 
 import '../config/constant/string_constant.dart';
-import '../config/theme/app_theme.dart';
 import '../controller/worker_controller.dart';
 
 class PhoneScreen extends StatelessWidget {
@@ -56,21 +55,26 @@ class PhoneScreen extends StatelessWidget {
                   height: 45,
                   width: Get.width,
                   color: Colors.blueAccent[100],
-                  child: Text(
-                    "Worker Profile",
-                    style: AppTextStyle.bold18(color: Colors.white),
-                  ),
+                  child: Text("workerpro".tr,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: controller.langCode == "en"
+                              ? "SourceSansPro-Regular"
+                              : "Battambang")),
                 ),
                 Container(
                   margin: const EdgeInsets.all(10),
                   width: 130,
                   height: 130,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage( controller.workerModel!.workerData.photo,))
-                  ),
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            controller.workerModel!.workerData[0].photo,
+                          ))),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
@@ -110,7 +114,7 @@ class PhoneScreen extends StatelessWidget {
                             child: Container(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                  controller.workerModel!.workerData.ocwcNo,
+                                  controller.workerModel!.workerData[0].ocwcNo,
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -149,7 +153,7 @@ class PhoneScreen extends StatelessWidget {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 controller
-                                    .workerModel!.workerData.fullName.khName,
+                                    .workerModel!.workerData[0].fullName.khName,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: "Battambang",
@@ -187,7 +191,7 @@ class PhoneScreen extends StatelessWidget {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 controller
-                                    .workerModel!.workerData.fullName.enName,
+                                    .workerModel!.workerData[0].fullName.enName,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: "SourceSansPro-Regular",
@@ -228,9 +232,9 @@ class PhoneScreen extends StatelessWidget {
                               child: Text(
                                 controller.langCode == "en"
                                     ? controller
-                                        .workerModel!.workerData.gender.enName
+                                        .workerModel!.workerData[0].gender.enName
                                     : controller
-                                        .workerModel!.workerData.gender.khName,
+                                        .workerModel!.workerData[0].gender.khName,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: controller.langCode == "en"
@@ -273,9 +277,9 @@ class PhoneScreen extends StatelessWidget {
                               child: Text(
                                 controller.langCode == "en"
                                     ? controller
-                                        .workerModel!.workerData.country.enName
+                                        .workerModel!.workerData[0].country.enName
                                     : controller
-                                        .workerModel!.workerData.country.khName,
+                                        .workerModel!.workerData[0].country.khName,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: controller.langCode == "en"
@@ -317,9 +321,9 @@ class PhoneScreen extends StatelessWidget {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 controller.langCode == "en"
-                                    ? controller.workerModel!.workerData
+                                    ? controller.workerModel!.workerData[0]
                                         .sendingAgency.enName
-                                    : controller.workerModel!.workerData
+                                    : controller.workerModel!.workerData[0]
                                         .sendingAgency.khName,
                                 style: TextStyle(
                                   fontSize: 16,
@@ -345,19 +349,23 @@ class PhoneScreen extends StatelessWidget {
                   height: 45,
                   width: Get.width,
                   color: Colors.blueAccent[100],
-                  child: Text(
-                    "Track Information",
-                    style: AppTextStyle.bold18(color: Colors.white),
-                  ),
+                  child: Text("trackInfo".tr,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: controller.langCode == "en"
+                              ? "SourceSansPro-Regular"
+                              : "Battambang")),
                 ),
                 ListView.builder(
                   shrinkWrap: true,
-                  itemCount: controller.workerModel!.workerData.tricking.length,
+                  itemCount: controller.workerModel!.workerData[0].tricking.length,
                   itemBuilder: (context, index) {
                     var track =
-                        controller.workerModel!.workerData.tricking[index];
+                        controller.workerModel!.workerData[0].tricking[index];
                     var textColor = Colors.green;
-                    if (track.check) {
+                    if (track.check!) {
                       textColor = Colors.green;
                     } else {
                       if (index == controller.falseIndex) {

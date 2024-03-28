@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tracking_web/widget/build_address_widget.dart';
 import '../config/constant/string_constant.dart';
-import '../config/theme/app_theme.dart';
 import '../controller/worker_controller.dart';
 
 class WebNewScreen extends StatelessWidget {
@@ -27,10 +26,14 @@ class WebNewScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       height: 45,
                       color: Colors.blueAccent[100],
-                      child: Text(
-                        "Worker Profile",
-                        style: AppTextStyle.bold18(color: Colors.white),
-                      ),
+                      child: Text("workerpro".tr,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: controller.langCode == "en"
+                                  ? "SourceSansPro-Regular"
+                                  : "Battambang")),
                     ),
                     Container(
                       width: 150,
@@ -43,7 +46,7 @@ class WebNewScreen extends StatelessWidget {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            controller.workerModel!.workerData.photo,
+                            controller.workerModel!.workerData[0].photo,
                           ),
                         ),
                         shape: BoxShape.circle,
@@ -96,7 +99,8 @@ class WebNewScreen extends StatelessWidget {
                                   bottom: 10,
                                 ),
                                 child: Text(
-                                    controller.workerModel!.workerData.ocwcNo,
+                                    controller
+                                        .workerModel!.workerData[0].ocwcNo,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -145,8 +149,8 @@ class WebNewScreen extends StatelessWidget {
                                   bottom: 10,
                                 ),
                                 child: Text(
-                                  controller
-                                      .workerModel!.workerData.fullName.khName,
+                                  controller.workerModel!.workerData[0].fullName
+                                      .khName,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "Battambang",
@@ -197,8 +201,8 @@ class WebNewScreen extends StatelessWidget {
                                   bottom: 10,
                                 ),
                                 child: Text(
-                                  controller
-                                      .workerModel!.workerData.fullName.enName,
+                                  controller.workerModel!.workerData[0].fullName
+                                      .enName,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "SourceSansPro-Regular",
@@ -250,9 +254,9 @@ class WebNewScreen extends StatelessWidget {
                                 ),
                                 child: Text(
                                   controller.langCode == "en"
-                                      ? controller
-                                          .workerModel!.workerData.gender.enName
-                                      : controller.workerModel!.workerData
+                                      ? controller.workerModel!.workerData[0]
+                                          .gender.enName
+                                      : controller.workerModel!.workerData[0]
                                           .gender.khName,
                                   style: TextStyle(
                                     fontSize: 16,
@@ -307,9 +311,9 @@ class WebNewScreen extends StatelessWidget {
                                 ),
                                 child: Text(
                                   controller.langCode == "en"
-                                      ? controller.workerModel!.workerData
+                                      ? controller.workerModel!.workerData[0]
                                           .country.enName
-                                      : controller.workerModel!.workerData
+                                      : controller.workerModel!.workerData[0]
                                           .country.khName,
                                   style: TextStyle(
                                     fontSize: 16,
@@ -364,9 +368,9 @@ class WebNewScreen extends StatelessWidget {
                                 ),
                                 child: Text(
                                   controller.langCode == "en"
-                                      ? controller.workerModel!.workerData
+                                      ? controller.workerModel!.workerData[0]
                                           .sendingAgency.enName
-                                      : controller.workerModel!.workerData
+                                      : controller.workerModel!.workerData[0]
                                           .sendingAgency.khName,
                                   style: TextStyle(
                                     fontSize: 16,
@@ -394,7 +398,7 @@ class WebNewScreen extends StatelessWidget {
                     //   ),
                     //   subtitle: Container(
                     //     alignment: Alignment.centerLeft,
-                    //     child: Text(controller.workerModel!.workerData.ocwcNo,
+                    //     child: Text(controller.workerModel!.workerData[0].ocwcNo,
                     //         style: const TextStyle(
                     //             color: Colors.black,
                     //             fontSize: 16,
@@ -413,7 +417,7 @@ class WebNewScreen extends StatelessWidget {
                     //   subtitle: Container(
                     //     alignment: Alignment.centerLeft,
                     //     child: Text(
-                    //       controller.workerModel!.workerData.fullName.khName,
+                    //       controller.workerModel!.workerData[0].fullName.khName,
                     //       style: const TextStyle(
                     //           color: Colors.black,
                     //           fontSize: 16,
@@ -434,7 +438,7 @@ class WebNewScreen extends StatelessWidget {
                     //   subtitle: Container(
                     //     alignment: Alignment.centerLeft,
                     //     child: Text(
-                    //       controller.workerModel!.workerData.fullName.enName,
+                    //       controller.workerModel!.workerData[0].fullName.enName,
                     //       style: const TextStyle(
                     //         color: Colors.black,
                     //         fontSize: 16,
@@ -457,7 +461,7 @@ class WebNewScreen extends StatelessWidget {
                     //     alignment: Alignment.centerLeft,
                     //     child: Text(
                     //       controller.langCode == "en"
-                    //           ? controller.workerModel!.workerData.gender.enName
+                    //           ? controller.workerModel!.workerData[0].gender.enName
                     //           : controller
                     //               .workerModel!.workerData.gender.khName,
                     //       style: TextStyle(
@@ -548,22 +552,26 @@ class WebNewScreen extends StatelessWidget {
                         height: 45,
                         width: Get.width * 0.60,
                         color: Colors.blueAccent[100],
-                        child: Text(
-                          "Track Information",
-                          style: AppTextStyle.bold18(color: Colors.white),
-                        ),
+                        child: Text("trackInfo".tr,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: controller.langCode == "en"
+                                    ? "SourceSansPro-Regular"
+                                    : "Battambang")),
                       ),
                       SizedBox(
                         height: Get.height * 0.50,
                         child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: controller
-                                .workerModel!.workerData.tricking.length,
+                                .workerModel!.workerData[0].tricking.length,
                             itemBuilder: (context, index) {
                               var track = controller
-                                  .workerModel!.workerData.tricking[index];
+                                  .workerModel!.workerData[0].tricking[index];
                               var textColor = Colors.green;
-                              if (track.check) {
+                              if (track.check!) {
                                 textColor = Colors.green;
                               } else {
                                 if (index == controller.falseIndex) {

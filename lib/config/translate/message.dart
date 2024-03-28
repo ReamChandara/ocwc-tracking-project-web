@@ -20,12 +20,14 @@ class Message extends Translations {
         "latinname": "Latin Name",
         "country": "Country",
         "SenderAgency": "Sender Agency",
-        "trackInfo": "Track Information",
+        "trackInfo": "OCWC Information",
         "workAddress": "Work Address",
         "appbarTitle": "OCWC Tracking",
         "loading": "Loding...",
         "finding": "Finding Data",
         "try": "Try Again",
+        "workerpro": "Worker Profile",
+        "dateofbirth": "your Date of Birth",
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
@@ -43,12 +45,14 @@ class Message extends Translations {
         "latinname": "ឈ្មោះឡាតាំង",
         "country": "ប្រទេស",
         "SenderAgency": "ភ្នាក់ងា",
-        "trackInfo": "ព័ត៌មាន",
+        "trackInfo": "ព័ត៌មាន OCWC",
         "workAddress": "អស័យដ្ឋានកាងារ",
         "appbarTitle": "ប្រព័ន្ធតាមដាន OCWC",
-        'loading':"សូមរង់ចាំ",
+        'loading': "សូមរង់ចាំ",
         "finding": "កំពុងស្វែងរក",
-        "try": "ព្យាយាមម្តងទៀត"
+        "try": "ព្យាយាមម្តងទៀត",
+        "workerpro": "ព័ត៌មានផ្ទាល់ខ្លួន",
+        "dateofbirth": "ថ្ងៃខែឆ្នាំកំណើត",
       }
     };
   }

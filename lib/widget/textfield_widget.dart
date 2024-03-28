@@ -17,7 +17,7 @@ class TextFieldWidget extends StatelessWidget {
       required this.labelText,
       this.hintText,
       this.inputFormatters,
-      required this.controller,
+      this.controller,
       this.suffixIcon,
       this.onFieldSubmitted,
       this.validator,

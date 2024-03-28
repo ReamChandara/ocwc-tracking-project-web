@@ -1,12 +1,17 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tracking_web/binding/home_binding.dart';
+import 'package:tracking_web/controller/worker_controller.dart';
 import 'package:tracking_web/screen/detial_worker_screen.dart';
 import 'package:tracking_web/screen/home_screen.dart';
-
 import 'config/translate/message.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -19,8 +24,14 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: "OCWC Tracking",
       translations: Message(),
-      locale: const Locale("en", "US"),
-      fallbackLocale: const Locale("en", "US"),
+      locale: WorkerController().getLocale(),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale("en", "US"), Locale("km", "KH")],
+      fallbackLocale: const Locale("km", "KH"),
       initialBinding: HomeBinding(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

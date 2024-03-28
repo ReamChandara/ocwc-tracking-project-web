@@ -35,8 +35,8 @@ class BuildAddress extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: Text(
               controller.langCode == "en"
-                  ? controller.workerModel!.workerData.workAddress.enName
-                  : controller.workerModel!.workerData.workAddress.khName,
+                  ? controller.workerModel!.workerData[0].workAddress.enName!
+                  : controller.workerModel!.workerData[0].workAddress.khName!,
               style: TextStyle(
                   fontSize: 16,
                   fontFamily: controller.langCode == "en"
