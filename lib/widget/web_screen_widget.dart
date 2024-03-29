@@ -651,9 +651,9 @@ class WebNewScreen extends StatelessWidget {
               ),
               inactiveThumbImage:
                   const AssetImage('assets/images/english_flag.png'),
-              value: controller.switchValue.value,
+              value: controller.changValue.value,
               onChanged: (value) {
-                controller.changeSwitch(value);
+                controller.changeLang(value);
               });
         }),
       ],

@@ -16,7 +16,7 @@ class WorkerController extends GetxController {
   late Future<DateTime?> selectedDate;
   WorkerModel? workerModel;
   int falseIndex = 0;
-  RxBool switchValue = false.obs;
+  RxBool changValue = false.obs;
   bool loading = true;
   String langCode = "en";
   GetStorage storage = GetStorage();
@@ -25,18 +25,27 @@ class WorkerController extends GetxController {
   saveLocale(String langCode) {
     storage.write(storageKey, langCode);
   }
+  //init for change value on switch widget
+  initValueChange() {
+    if(langCode == "en") {
+      changValue.value = false;
+    }else {
+      changValue.value = true;
+    }
+  }  
 
-  Locale getLocale() {
-    langCode = storage.read(storageKey) ?? "en";
-    if (langCode == "kh") {
-      return const Locale("km", "KH");
+  // init for change language
+  Future<void> initLocale() async {
+    langCode = storage.read(storageKey) ?? 'en';
+    if (langCode == "en") {
+      Get.updateLocale(const Locale("en", "US"));
     } else {
-      return const Locale("en", "US");
+      Get.updateLocale(const Locale("km", "KH"));
     }
   }
 
-  void changeSwitch(bool value) async {
-    switchValue.value = value;
+  void changeLang(bool value) async {
+    changValue.value = value;
     if (value) {
       Get.updateLocale(const Locale("km", "KH"));
       langCode = "kh";
@@ -210,7 +219,7 @@ class WorkerController extends GetxController {
       "full_name": _nameController.text,
       "dob": _dateController.text,
     };
-
+    print(body);
     var response = await http.post(
       Uri.parse(apiUrl),
       headers: headers(langCode),
@@ -306,13 +315,14 @@ class WorkerController extends GetxController {
   }
 
   void initData() async {
+    await initLocale();
+    initValueChange();
     initWorkerData();
   }
 
   @override
   void onInit() {
     initData();
-    print(langCode);
     super.onInit();
   }
 }
