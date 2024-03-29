@@ -25,14 +25,15 @@ class WorkerController extends GetxController {
   saveLocale(String langCode) {
     storage.write(storageKey, langCode);
   }
+
   //init for change value on switch widget
   initValueChange() {
-    if(langCode == "en") {
+    if (langCode == "en") {
       changValue.value = false;
-    }else {
+    } else {
       changValue.value = true;
     }
-  }  
+  }
 
   // init for change language
   Future<void> initLocale() async {
@@ -196,7 +197,7 @@ class WorkerController extends GetxController {
     String apiUrl = baseUrl + searchWorkerUrl;
     var body = <String, String>{
       "full_name": _nameController.text,
-      "dob": _dateController.text,
+      "dob": _dateController.text.replaceAll("/", "-"),
     };
     var response = await http.post(
       Uri.parse(apiUrl),
@@ -213,13 +214,14 @@ class WorkerController extends GetxController {
   }
 
   void searchWorker(BuildContext context) async {
+    String dateReplace = _dateController.text.replaceAll("/", "-");
     laodingDailog(context);
+
     String apiUrl = baseUrl + searchWorkerUrl;
     var body = <String, String>{
       "full_name": _nameController.text,
-      "dob": _dateController.text,
+      "dob": dateReplace,
     };
-    print(body);
     var response = await http.post(
       Uri.parse(apiUrl),
       headers: headers(langCode),
@@ -228,16 +230,18 @@ class WorkerController extends GetxController {
 
     if (response.statusCode == 200) {
       Get.back();
-
-      // await saveWorkerData();
+      await saveWorkerData();
       workerModel = parseFromJson(response.body);
-      for (var temp in workerModel!.workerData) {
-        print(temp.fullName.khName);
+      if (workerModel!.workerData.length > 1) {
+        Get.toNamed('/listworker');
+      } else {
+        falseIndex = workerModel!.workerData[0].tricking
+            .indexWhere((element) => element.check == false);
+        loading = false;
+        Get.toNamed("/workerDetail");
       }
-      // falseIndex = workerModel!.workerData.tricking
-      //     .indexWhere((element) => element.check == false);
-      // loading = false;
-      // Get.toNamed('/workerDetail');
+      loading = false;
+      update();
     } else if (response.statusCode == 404) {
       Get.back();
       if (!context.mounted) {

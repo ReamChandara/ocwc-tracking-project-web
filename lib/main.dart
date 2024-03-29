@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "SourceSansPro-Regular",
         useMaterial3: false,
       ),
-      initialRoute: "/home",
+      initialRoute: "/",
       routes: {
         "/home": (context) => HomeScreen(),
         "/workerDetail": (context) => const WorkerDetail(),

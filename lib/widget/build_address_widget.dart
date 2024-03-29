@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:tracking_web/controller/worker_controller.dart';
 
 class BuildAddress extends StatelessWidget {
+  final double? width;
   final WorkerController controller;
 
-  const BuildAddress({super.key, required this.controller});
+  const BuildAddress({super.key, required this.controller, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class BuildAddress extends StatelessWidget {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 10),
           height: 45,
-          width: Get.width,
+          width: width ?? Get.width,
           color: Colors.blueAccent[100],
           child: Text("workAddress".tr,
               style: TextStyle(
@@ -30,7 +31,7 @@ class BuildAddress extends StatelessWidget {
         Card(
           child: Container(
             padding: const EdgeInsets.only(bottom: 10, left: 10, top: 10),
-            width: Get.width,
+            width: width ?? Get.width,
             color: Colors.white,
             alignment: Alignment.topLeft,
             child: Text(

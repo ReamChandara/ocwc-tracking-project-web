@@ -28,6 +28,10 @@ class Message extends Translations {
         "try": "Try Again",
         "workerpro": "Worker Profile",
         "dateofbirth": "your Date of Birth",
+        'selectname': "Please Select Your Name",
+        "cardDate": "Date",
+        "issuseDate" : "Issuse Date",
+        "expireDate": "Expire Date",
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
@@ -53,6 +57,10 @@ class Message extends Translations {
         "try": "ព្យាយាមម្តងទៀត",
         "workerpro": "ព័ត៌មានផ្ទាល់ខ្លួន",
         "dateofbirth": "ថ្ងៃខែឆ្នាំកំណើត",
+        'selectname': "សូមជ្រើសរើសឈ្មោះរបស់អ្នក",
+        "cardDate": "កាលបរិច្ឆេទ",
+        "issuseDate" : "កាលបរិច្ឆេទចេញប័ណ្ណ",
+        "expireDate": "កាលបរិច្ឆេទអស់សុពលភាព",
       }
     };
   }

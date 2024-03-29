@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tracking_web/widget/build_address_widget.dart';
 import '../config/constant/string_constant.dart';
 import '../controller/worker_controller.dart';
 
@@ -14,526 +13,583 @@ class WebNewScreen extends StatelessWidget {
         appBar: _buildAppbar(),
         body: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           SizedBox(
-            // width: Get.width * 0.30,
+            width: Get.width * 0.30,
             height: Get.height,
             child: SingleChildScrollView(
-              child: Card(
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                child: Column(
-                  children: [
-                    Container(
-                      width: Get.width * 0.30,
-                      alignment: Alignment.center,
-                      height: 45,
-                      color: Colors.blueAccent[100],
-                      child: Text("workerpro".tr,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: controller.langCode == "en"
-                                  ? "SourceSansPro-Regular"
-                                  : "Battambang")),
-                    ),
-                    Container(
-                      width: 150,
-                      height: 150,
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(color: Colors.grey.shade200, width: 3),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            controller.workerModel!.workerData[0].photo,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Card(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: Get.width * 0.30,
+                          alignment: Alignment.center,
+                          height: 45,
+                          color: Colors.blueAccent[100],
+                          child: Text("workerpro".tr,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: controller.langCode == "en"
+                                      ? "SourceSansPro-Regular"
+                                      : "Battambang")),
+                        ),
+                        Container(
+                          width: 150,
+                          height: 150,
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey.shade200, width: 3),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                controller.workerModel!.workerData[0].photo,
+                              ),
+                            ),
+                            shape: BoxShape.circle,
                           ),
                         ),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    Table(
-                      columnWidths: const {
-                        0: FixedColumnWidth(120),
-                        1: FixedColumnWidth(30),
-                        2: FixedColumnWidth(190),
-                      },
-                      children: [
-                        TableRow(
+                        Table(
+                          columnWidths: {
+                            0: FixedColumnWidth(Get.width * 0.30 / 2 - 30),
+                            1: const FixedColumnWidth(30),
+                            2: FixedColumnWidth(Get.width * 0.30 / 2 - 20),
+                          },
                           children: [
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'ocwcNo'.tr,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: controller.langCode == "en"
-                                          ? "SourceSansPro-Regular"
-                                          : "Battambang"),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  ":",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: Text(
-                                    controller
-                                        .workerModel!.workerData[0].ocwcNo,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'khmername'.tr,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: controller.langCode == "en"
-                                          ? "SourceSansPro-Regular"
-                                          : "Battambang"),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  ":",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: Text(
-                                  controller.workerModel!.workerData[0].fullName
-                                      .khName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "Battambang",
-                                    fontWeight: FontWeight.bold,
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'ocwcNo'.tr,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily:
+                                              controller.langCode == "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'latinname'.tr,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: controller.langCode == "en"
-                                          ? "SourceSansPro-Regular"
-                                          : "Battambang"),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  ":",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: Text(
-                                  controller.workerModel!.workerData[0].fullName
-                                      .enName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "SourceSansPro-Regular",
-                                    fontWeight: FontWeight.bold,
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      ":",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'gender'.tr,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: controller.langCode == "en"
-                                          ? "SourceSansPro-Regular"
-                                          : "Battambang"),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  ":",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: Text(
-                                  controller.langCode == "en"
-                                      ? controller.workerModel!.workerData[0]
-                                          .gender.enName
-                                      : controller.workerModel!.workerData[0]
-                                          .gender.khName,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: controller.langCode == "en"
-                                        ? "SourceSansPro-Regular"
-                                        : "Battambang",
-                                    fontWeight: FontWeight.bold,
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                        controller
+                                            .workerModel!.workerData[0].ocwcNo,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        )),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'country'.tr,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: controller.langCode == "en"
-                                          ? "SourceSansPro-Regular"
-                                          : "Battambang"),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  ":",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: Text(
-                                  controller.langCode == "en"
-                                      ? controller.workerModel!.workerData[0]
-                                          .country.enName
-                                      : controller.workerModel!.workerData[0]
-                                          .country.khName,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: controller.langCode == "en"
-                                        ? "SourceSansPro-Regular"
-                                        : "Battambang",
-                                    fontWeight: FontWeight.bold,
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'khmername'.tr,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily:
+                                              controller.langCode == "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'SenderAgency'.tr,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: controller.langCode == "en"
-                                          ? "SourceSansPro-Regular"
-                                          : "Battambang"),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  ":",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: Text(
-                                  controller.langCode == "en"
-                                      ? controller.workerModel!.workerData[0]
-                                          .sendingAgency.enName
-                                      : controller.workerModel!.workerData[0]
-                                          .sendingAgency.khName,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: controller.langCode == "en"
-                                        ? "SourceSansPro-Regular"
-                                        : "Battambang",
-                                    fontWeight: FontWeight.bold,
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      ":",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
                                   ),
                                 ),
-                              ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      controller.workerModel!.workerData[0]
+                                          .fullName.khName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "Battambang",
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'latinname'.tr,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily:
+                                              controller.langCode == "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      ":",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      controller.workerModel!.workerData[0]
+                                          .fullName.enName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "SourceSansPro-Regular",
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'gender'.tr,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily:
+                                              controller.langCode == "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      ":",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      controller.langCode == "en"
+                                          ? controller.workerModel!
+                                              .workerData[0].gender.enName
+                                          : controller.workerModel!
+                                              .workerData[0].gender.khName,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: controller.langCode == "en"
+                                            ? "SourceSansPro-Regular"
+                                            : "Battambang",
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'country'.tr,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily:
+                                              controller.langCode == "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      ":",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      controller.langCode == "en"
+                                          ? controller.workerModel!
+                                              .workerData[0].country.enName
+                                          : controller.workerModel!
+                                              .workerData[0].country.khName,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: controller.langCode == "en"
+                                            ? "SourceSansPro-Regular"
+                                            : "Battambang",
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'SenderAgency'.tr,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily:
+                                              controller.langCode == "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      ":",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      controller.langCode == "en"
+                                          ? controller
+                                              .workerModel!
+                                              .workerData[0]
+                                              .sendingAgency
+                                              .enName
+                                          : controller
+                                              .workerModel!
+                                              .workerData[0]
+                                              .sendingAgency
+                                              .khName,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: controller.langCode == "en"
+                                            ? "SourceSansPro-Regular"
+                                            : "Battambang",
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ],
                     ),
-
-                    // ListTile(
-                    //   title: Text(
-                    //     'ocwcNo'.tr,
-                    //     style: TextStyle(
-                    //         fontSize: 14,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang"),
-                    //   ),
-                    //   subtitle: Container(
-                    //     alignment: Alignment.centerLeft,
-                    //     child: Text(controller.workerModel!.workerData[0].ocwcNo,
-                    //         style: const TextStyle(
-                    //             color: Colors.black,
-                    //             fontSize: 16,
-                    //             fontWeight: FontWeight.w400)),
-                    //   ),
-                    // ),
-                    // ListTile(
-                    //   title: Text(
-                    //     'khmername'.tr,
-                    //     style: TextStyle(
-                    //         fontSize: 14,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang"),
-                    //   ),
-                    //   subtitle: Container(
-                    //     alignment: Alignment.centerLeft,
-                    //     child: Text(
-                    //       controller.workerModel!.workerData[0].fullName.khName,
-                    //       style: const TextStyle(
-                    //           color: Colors.black,
-                    //           fontSize: 16,
-                    //           fontFamily: "Battambang",
-                    //           fontWeight: FontWeight.w400),
-                    //     ),
-                    //   ),
-                    // ),
-                    // ListTile(
-                    //   title: Text(
-                    //     'latinname'.tr,
-                    //     style: TextStyle(
-                    //         fontSize: 14,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang"),
-                    //   ),
-                    //   subtitle: Container(
-                    //     alignment: Alignment.centerLeft,
-                    //     child: Text(
-                    //       controller.workerModel!.workerData[0].fullName.enName,
-                    //       style: const TextStyle(
-                    //         color: Colors.black,
-                    //         fontSize: 16,
-                    //         fontFamily: "SourceSansPro-Regular",
-                    //         fontWeight: FontWeight.w400,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // ListTile(
-                    //   title: Text(
-                    //     'gender'.tr,
-                    //     style: TextStyle(
-                    //         fontSize: 14,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang"),
-                    //   ),
-                    //   subtitle: Container(
-                    //     alignment: Alignment.centerLeft,
-                    //     child: Text(
-                    //       controller.langCode == "en"
-                    //           ? controller.workerModel!.workerData[0].gender.enName
-                    //           : controller
-                    //               .workerModel!.workerData.gender.khName,
-                    //       style: TextStyle(
-                    //         fontSize: 14,
-                    //         color: Colors.black,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang",
-                    //         fontWeight: FontWeight.w400,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // ListTile(
-                    //   title: Text(
-                    //     'country'.tr,
-                    //     style: TextStyle(
-                    //         fontSize: 14,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang"),
-                    //   ),
-                    //   subtitle: Container(
-                    //     alignment: Alignment.centerLeft,
-                    //     child: Text(
-                    //       controller.langCode == "en"
-                    //           ? controller
-                    //               .workerModel!.workerData.country.enName
-                    //           : controller
-                    //               .workerModel!.workerData.country.khName,
-                    //       style: TextStyle(
-                    //         color: Colors.black,
-                    //         fontSize: 14,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang",
-                    //         fontWeight: FontWeight.w400,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // ListTile(
-                    //   title: Text(
-                    //     'SenderAgency'.tr,
-                    //     style: TextStyle(
-                    //         fontSize: 14,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang"),
-                    //   ),
-                    //   subtitle: Container(
-                    //     alignment: Alignment.centerLeft,
-                    //     child: Text(
-                    //       controller.langCode == "en"
-                    //           ? controller
-                    //               .workerModel!.workerData.sendingAgency.enName
-                    //           : controller
-                    //               .workerModel!.workerData.sendingAgency.khName,
-                    //       style: TextStyle(
-                    //         fontSize: 14,
-                    //         color: Colors.black,
-                    //         fontFamily: controller.langCode == "en"
-                    //             ? "SourceSansPro-Regular"
-                    //             : "Battambang",
-                    //         fontWeight: FontWeight.w400,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 20),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: Get.width * 0.30,
+                          alignment: Alignment.center,
+                          height: 45,
+                          color: Colors.blueAccent[100],
+                          child: Text("cardDate".tr,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: controller.langCode == "en"
+                                      ? "SourceSansPro-Regular"
+                                      : "Battambang")),
+                        ),
+                        Table(
+                          columnWidths: {
+                            0: FixedColumnWidth(Get.width * 0.30 / 2),
+                            1: const FixedColumnWidth(30),
+                            2: FixedColumnWidth(Get.width * 0.30 / 2 - 20),
+                          },
+                          children: [
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      "issuseDate".tr,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily:
+                                              controller.langCode == "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      ":",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      controller.workerModel!.workerData[0]
+                                              .issuedDate.enIssuedDate ??
+                                          "No Date",
+                                      style: const TextStyle(
+                                        fontFamily: "SourceSansPro-Regular",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'expireDate'.tr,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily:
+                                              controller.langCode == "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      ":",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      controller.workerModel!.workerData[0]
+                                              .expiredDate.enExpiresDate ??
+                                          "No Data",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "SourceSansPro-Regular",
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Card(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: Get.width * 0.30,
+                          alignment: Alignment.center,
+                          height: 45,
+                          color: Colors.blueAccent[100],
+                          child: Text("workAddress".tr,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: controller.langCode == "en"
+                                      ? "SourceSansPro-Regular"
+                                      : "Battambang")),
+                        ),
+                        Container(
+                          width: Get.width * 0.30,
+                          height: 100,
+                          padding: const EdgeInsets.only(left: 10, bottom: 10),
+                          child: Text(
+                            controller.langCode == "en"
+                                ? controller.workerModel!.workerData[0]
+                                    .workAddress.enName!
+                                : controller.workerModel!.workerData[0]
+                                    .workAddress.khName!,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: controller.langCode == "en"
+                                    ? "SourceSansPro-Regular"
+                                    : "Battambang",
+                                color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
             ),
           ),
@@ -543,6 +599,9 @@ class WebNewScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Card(
                       child: Column(
                     children: [
@@ -562,7 +621,6 @@ class WebNewScreen extends StatelessWidget {
                                     : "Battambang")),
                       ),
                       SizedBox(
-                        height: Get.height * 0.50,
                         child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: controller
@@ -620,7 +678,6 @@ class WebNewScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  BuildAddress(controller: controller)
                 ],
               ),
             ),

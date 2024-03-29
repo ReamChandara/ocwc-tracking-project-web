@@ -29,6 +29,9 @@ class WorkerData {
   final String photo;
   final FullName fullName;
   final Gender gender;
+  final DateOfBirth dob;
+  final IssuedDate issuedDate;
+  final ExpiredDate expiredDate;
   final SendingAgency sendingAgency;
   final Country country;
   final WorkAddress workAddress;
@@ -41,6 +44,9 @@ class WorkerData {
       required this.photo,
       required this.fullName,
       required this.gender,
+      required this.dob,
+      required this.issuedDate,
+      required this.expiredDate,
       required this.sendingAgency,
       required this.country,
       required this.workAddress,
@@ -54,6 +60,9 @@ class WorkerData {
       photo: json['photo'],
       fullName: FullName.fromJson(json["full_name"]),
       gender: Gender.fromJson(json["gender"]),
+      dob: DateOfBirth.fromJson(json["dob"]),
+      issuedDate: IssuedDate.fromJson(json["issued_date"]),
+      expiredDate: ExpiredDate.fromJson(json['expired_date']),
       sendingAgency: SendingAgency.fromJson(json["sending_agency"]),
       country: Country.fromJson(json["country"]),
       workAddress: WorkAddress.fromJson(json["work_address"]),
@@ -114,6 +123,48 @@ class SendingAgency {
 
   factory SendingAgency.fromJson(Map<String, dynamic> json) {
     return SendingAgency(enName: json['en'], khName: json['kh']);
+  }
+}
+
+class DateOfBirth {
+  final String enDate;
+  final String khDate;
+
+  DateOfBirth({required this.enDate, required this.khDate});
+
+  factory DateOfBirth.fromJson(Map<String, dynamic> json) {
+    return DateOfBirth(
+      enDate: json['en'],
+      khDate: json['kh'],
+    );
+  }
+}
+
+class IssuedDate {
+  final String? enIssuedDate;
+  final String? khIssuedDate;
+
+  IssuedDate({required this.enIssuedDate, required this.khIssuedDate});
+
+  factory IssuedDate.fromJson(Map<String, dynamic> json) {
+    return IssuedDate(
+      enIssuedDate: json['en'],
+      khIssuedDate: json['kh'],
+    );
+  }
+}
+
+class ExpiredDate {
+  final String? enExpiresDate;
+  final String? khExpiresDate;
+
+  ExpiredDate({required this.enExpiresDate, required this.khExpiresDate});
+
+  factory ExpiredDate.fromJson(Map<String, dynamic> json) {
+    return ExpiredDate(
+      enExpiresDate: json['en'],
+      khExpiresDate: json['kh'],
+    );
   }
 }
 
