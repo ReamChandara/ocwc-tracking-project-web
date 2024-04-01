@@ -30,7 +30,8 @@ class Message extends Translations {
         "dateofbirth": "your Date of Birth",
         'selectname': "Please Select Your Name",
         "cardDate": "Date",
-        "issuseDate" : "Issuse Date",
+        "noData": "No Data",
+        "issuseDate": "Issuse Date",
         "expireDate": "Expire Date",
       },
       "km_KH": {
@@ -58,8 +59,9 @@ class Message extends Translations {
         "workerpro": "ព័ត៌មានផ្ទាល់ខ្លួន",
         "dateofbirth": "ថ្ងៃខែឆ្នាំកំណើត",
         'selectname': "សូមជ្រើសរើសឈ្មោះរបស់អ្នក",
+        "noData": "គ្នានទិន្នន័យ",
         "cardDate": "កាលបរិច្ឆេទ",
-        "issuseDate" : "កាលបរិច្ឆេទចេញប័ណ្ណ",
+        "issuseDate": "កាលបរិច្ឆេទចេញប័ណ្ណ",
         "expireDate": "កាលបរិច្ឆេទអស់សុពលភាព",
       }
     };

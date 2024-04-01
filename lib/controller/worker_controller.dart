@@ -11,20 +11,42 @@ import '../models/validation_message.dart';
 import '../models/worker_models.dart';
 
 class WorkerController extends GetxController {
+  //textfield controller
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  ////////////////////////////////////////////////////////////////
+
+  // user for select date
   late Future<DateTime?> selectedDate;
+
+  // worker model class
   WorkerModel? workerModel;
+  WorkerData? workerData;
+  int index = 0;
+  ////////////////////////////////////////////////////////////////
+
+  // user to find the tracking that pending
   int falseIndex = 0;
+  ////////////////////////////////////////////////////////////////
+
+  /// change value of swicth to change language
   RxBool changValue = false.obs;
+  ////////////////////////////////////////////////////////////////
+  // loading worker data
   bool loading = true;
+  ////////////////////////////////////////////////////////////////
+
+  /// save local data
   String langCode = "en";
   GetStorage storage = GetStorage();
   String storageKey = "langCode";
+  ////////////////////////////////////////////////////////////////
 
+  // save language data
   saveLocale(String langCode) {
     storage.write(storageKey, langCode);
   }
+  ////////////////////////////////////////////////////////////////
 
   //init for change value on switch widget
   initValueChange() {
@@ -45,6 +67,7 @@ class WorkerController extends GetxController {
     }
   }
 
+  //change language
   void changeLang(bool value) async {
     changValue.value = value;
     if (value) {
@@ -74,6 +97,7 @@ class WorkerController extends GetxController {
     _dateController.text = date;
   }
 
+  // show dialog
   showDialog(BuildContext context, String title) {
     Alert(
         style: AlertStyle(
@@ -177,19 +201,36 @@ class WorkerController extends GetxController {
               })
         ]).show();
   }
+  ////////////////////////////////////////////////////////////////
 
   Future<void> saveWorkerData() async {
     String keyName = "workername";
-    String dateName = "wokerDate";
+    String keyDate = "wokerDate";
     storage.write(keyName, nameController.text);
-    storage.write(dateName, dateController.text);
+    storage.write(keyDate, dateController.text);
   }
 
   Future<void> getWorkerData() async {
     String keyName = "workername";
-    String dateName = "wokerDate";
+    String keyDate = "wokerDate";
+    String indexKey = "index";
     _nameController.text = storage.read(keyName) ?? "";
-    _dateController.text = storage.read(dateName) ?? "";
+    _dateController.text = storage.read(keyDate) ?? "";
+    index = storage.read(indexKey) ?? 0;
+  }
+
+  Future<void> saveIndex(int index) async {
+    storage.write("index", index);
+  }
+
+  void routeToDetail(int index) async {
+    await saveIndex(index);
+    workerData = workerModel!.workerData[index];
+    if (workerData != null) {
+      falseIndex =
+          workerData!.tricking.indexWhere((element) => element.check == false);
+      Get.toNamed("/workerDetail");
+    }
   }
 
   initWorkerData() async {
@@ -206,8 +247,10 @@ class WorkerController extends GetxController {
     );
     if (response.statusCode == 200) {
       workerModel = parseFromJson(response.body);
-      falseIndex = workerModel!.workerData[0].tricking
-          .indexWhere((element) => element.check == false);
+      workerData = workerModel!.workerData[index];
+      falseIndex = workerData!.tricking.indexWhere(
+        (element) => element.check == false,
+      );
       loading = false;
       update();
     }
@@ -235,6 +278,7 @@ class WorkerController extends GetxController {
       if (workerModel!.workerData.length > 1) {
         Get.toNamed('/listworker');
       } else {
+        workerData = workerModel!.workerData[0];
         falseIndex = workerModel!.workerData[0].tricking
             .indexWhere((element) => element.check == false);
         loading = false;
@@ -320,8 +364,8 @@ class WorkerController extends GetxController {
 
   void initData() async {
     await initLocale();
+    await initWorkerData();
     initValueChange();
-    initWorkerData();
   }
 
   @override

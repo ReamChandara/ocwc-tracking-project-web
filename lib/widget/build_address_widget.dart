@@ -33,13 +33,19 @@ class BuildAddress extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 10, left: 10, top: 10),
             width: width ?? Get.width,
             color: Colors.white,
-            alignment: Alignment.topLeft,
+            alignment: Alignment.center,
             child: Text(
               controller.langCode == "en"
-                  ? controller.workerModel!.workerData[0].workAddress.enName!
-                  : controller.workerModel!.workerData[0].workAddress.khName!,
+                  ? controller.workerData!.workAddress.enName == null ||
+                          controller.workerData!.workAddress.enName!.isEmpty
+                      ? "noData".tr
+                      : controller.workerData!.workAddress.enName!
+                  : controller.workerData!.workAddress.khName == null ||
+                          controller.workerData!.workAddress.khName!.isEmpty
+                      ? "noData".tr
+                      : controller.workerData!.workAddress.khName!,
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: controller.langCode == "en" ? 18 : 16,
                   fontFamily: controller.langCode == "en"
                       ? "SourceSansPro-Regular"
                       : "Battambang",

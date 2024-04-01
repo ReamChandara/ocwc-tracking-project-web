@@ -13,7 +13,7 @@ class WebNewScreen extends StatelessWidget {
         appBar: _buildAppbar(),
         body: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           SizedBox(
-            width: Get.width * 0.30,
+            width: Get.width * 0.40,
             height: Get.height,
             child: SingleChildScrollView(
               child: Column(
@@ -27,7 +27,7 @@ class WebNewScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          width: Get.width * 0.30,
+                          width: Get.width * 0.40,
                           alignment: Alignment.center,
                           height: 45,
                           color: Colors.blueAccent[100],
@@ -47,11 +47,13 @@ class WebNewScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             border: Border.all(
-                                color: Colors.grey.shade200, width: 3),
+                              color: Colors.grey.shade200,
+                              width: 3,
+                            ),
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                controller.workerModel!.workerData[0].photo,
+                                controller.workerData!.photo,
                               ),
                             ),
                             shape: BoxShape.circle,
@@ -59,9 +61,9 @@ class WebNewScreen extends StatelessWidget {
                         ),
                         Table(
                           columnWidths: {
-                            0: FixedColumnWidth(Get.width * 0.30 / 2 - 30),
-                            1: const FixedColumnWidth(30),
-                            2: FixedColumnWidth(Get.width * 0.30 / 2 - 20),
+                            0: FixedColumnWidth(Get.width * 0.30 / 2 ),
+                            1: const FixedColumnWidth(20),
+                            2: FixedColumnWidth(Get.width * 0.40 / 2 - 20),
                           },
                           children: [
                             TableRow(
@@ -69,14 +71,15 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
-                                    alignment: Alignment.centerRight,
                                     child: Text(
-                                      'ocwcNo'.tr,
+                                      'latinname'.tr,
+                                      textAlign: TextAlign.end,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: controller.langCode == "en"
+                                              ? 18
+                                              : 16,
                                           fontFamily:
                                               controller.langCode == "en"
                                                   ? "SourceSansPro-Regular"
@@ -87,30 +90,29 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.center,
                                     child: const Text(
                                       ":",
-                                      style: TextStyle(fontSize: 16),
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                   ),
                                 ),
                                 TableCell(
                                   child: Container(
-                                    alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     child: Text(
-                                        controller
-                                            .workerModel!.workerData[0].ocwcNo,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        )),
+                                      textAlign: TextAlign.start,
+                                      controller.workerData!.fullName.enName,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: "SourceSansPro-Regular",
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -120,14 +122,15 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
-                                    alignment: Alignment.centerRight,
                                     child: Text(
                                       'khmername'.tr,
+                                      textAlign: TextAlign.end,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: controller.langCode == "en"
+                                              ? 18
+                                              : 16,
                                           fontFamily:
                                               controller.langCode == "en"
                                                   ? "SourceSansPro-Regular"
@@ -138,26 +141,23 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.center,
                                     child: const Text(
                                       ":",
-                                      style: TextStyle(fontSize: 16),
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                   ),
                                 ),
                                 TableCell(
                                   child: Container(
-                                    alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     child: Text(
-                                      controller.workerModel!.workerData[0]
-                                          .fullName.khName,
+                                      textAlign: TextAlign.start,
+                                      controller.workerData!.fullName.khName,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontFamily: "Battambang",
@@ -173,14 +173,15 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.centerRight,
                                     child: Text(
-                                      'latinname'.tr,
+                                      'ocwcNo'.tr,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: controller.langCode == "en"
+                                              ? 18
+                                              : 16,
                                           fontFamily:
                                               controller.langCode == "en"
                                                   ? "SourceSansPro-Regular"
@@ -191,32 +192,26 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.center,
                                     child: const Text(
                                       ":",
-                                      style: TextStyle(fontSize: 16),
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                   ),
                                 ),
                                 TableCell(
                                   child: Container(
-                                    alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
-                                    child: Text(
-                                      controller.workerModel!.workerData[0]
-                                          .fullName.enName,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: "SourceSansPro-Regular",
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                    child: Text(controller.workerData!.ocwcNo,
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        )),
                                   ),
                                 ),
                               ],
@@ -226,14 +221,15 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.centerRight,
                                     child: Text(
                                       'gender'.tr,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: controller.langCode == "en"
+                                              ? 18
+                                              : 16,
                                           fontFamily:
                                               controller.langCode == "en"
                                                   ? "SourceSansPro-Regular"
@@ -244,8 +240,7 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.center,
                                     child: const Text(
@@ -256,19 +251,19 @@ class WebNewScreen extends StatelessWidget {
                                 ),
                                 TableCell(
                                   child: Container(
-                                    alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     child: Text(
+                                      textAlign: TextAlign.start,
                                       controller.langCode == "en"
-                                          ? controller.workerModel!
-                                              .workerData[0].gender.enName
-                                          : controller.workerModel!
-                                              .workerData[0].gender.khName,
+                                          ? controller.workerData!.gender.enName
+                                          : controller
+                                              .workerData!.gender.khName,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: controller.langCode == "en"
+                                            ? 18
+                                            : 16,
                                         fontFamily: controller.langCode == "en"
                                             ? "SourceSansPro-Regular"
                                             : "Battambang",
@@ -284,14 +279,15 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.centerRight,
                                     child: Text(
                                       'country'.tr,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: controller.langCode == "en"
+                                              ? 18
+                                              : 16,
                                           fontFamily:
                                               controller.langCode == "en"
                                                   ? "SourceSansPro-Regular"
@@ -302,31 +298,31 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.center,
                                     child: const Text(
                                       ":",
-                                      style: TextStyle(fontSize: 16),
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                   ),
                                 ),
                                 TableCell(
                                   child: Container(
-                                    alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     child: Text(
+                                      textAlign: TextAlign.start,
                                       controller.langCode == "en"
-                                          ? controller.workerModel!
-                                              .workerData[0].country.enName
-                                          : controller.workerModel!
-                                              .workerData[0].country.khName,
+                                          ? controller
+                                              .workerData!.country.enName
+                                          : controller
+                                              .workerData!.country.khName,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: controller.langCode == "en"
+                                            ? 18
+                                            : 16,
                                         fontFamily: controller.langCode == "en"
                                             ? "SourceSansPro-Regular"
                                             : "Battambang",
@@ -342,14 +338,15 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
-                                    alignment: Alignment.centerRight,
                                     child: Text(
                                       'SenderAgency'.tr,
+                                      textAlign: TextAlign.end,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: controller.langCode == "en"
+                                              ? 18
+                                              : 16,
                                           fontFamily:
                                               controller.langCode == "en"
                                                   ? "SourceSansPro-Regular"
@@ -360,37 +357,31 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     alignment: Alignment.center,
                                     child: const Text(
                                       ":",
-                                      style: TextStyle(fontSize: 16),
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                   ),
                                 ),
                                 TableCell(
                                   child: Container(
-                                    alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
+                                      top: 6,
                                     ),
                                     child: Text(
+                                      textAlign: TextAlign.start,
                                       controller.langCode == "en"
                                           ? controller
-                                              .workerModel!
-                                              .workerData[0]
-                                              .sendingAgency
-                                              .enName
+                                              .workerData!.sendingAgency.enName
                                           : controller
-                                              .workerModel!
-                                              .workerData[0]
-                                              .sendingAgency
-                                              .khName,
+                                              .workerData!.sendingAgency.khName,
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: controller.langCode == "en"
+                                            ? 18
+                                            : 16,
                                         fontFamily: controller.langCode == "en"
                                             ? "SourceSansPro-Regular"
                                             : "Battambang",
@@ -403,6 +394,7 @@ class WebNewScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
@@ -413,7 +405,7 @@ class WebNewScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          width: Get.width * 0.30,
+                          width: Get.width * 0.40,
                           alignment: Alignment.center,
                           height: 45,
                           color: Colors.blueAccent[100],
@@ -429,8 +421,8 @@ class WebNewScreen extends StatelessWidget {
                         Table(
                           columnWidths: {
                             0: FixedColumnWidth(Get.width * 0.30 / 2),
-                            1: const FixedColumnWidth(30),
-                            2: FixedColumnWidth(Get.width * 0.30 / 2 - 20),
+                            1: const FixedColumnWidth(20),
+                            2: FixedColumnWidth(Get.width * 0.40 / 2 - 20),
                           },
                           children: [
                             TableRow(
@@ -441,11 +433,13 @@ class WebNewScreen extends StatelessWidget {
                                       top: 10,
                                       bottom: 10,
                                     ),
-                                    alignment: Alignment.centerRight,
                                     child: Text(
+                                      textAlign: TextAlign.end,
                                       "issuseDate".tr,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: controller.langCode == "en"
+                                              ? 18
+                                              : 16,
                                           fontFamily:
                                               controller.langCode == "en"
                                                   ? "SourceSansPro-Regular"
@@ -456,10 +450,7 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
-                                    ),
-                                    alignment: Alignment.center,
+                                        top: 12, left: 10),
                                     child: const Text(
                                       ":",
                                       style: TextStyle(fontSize: 16),
@@ -468,18 +459,15 @@ class WebNewScreen extends StatelessWidget {
                                 ),
                                 TableCell(
                                   child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
-                                    ),
+                                    padding: const EdgeInsets.only(top: 12),
                                     child: Text(
-                                      controller.workerModel!.workerData[0]
-                                              .issuedDate.enIssuedDate ??
+                                      textAlign: TextAlign.start,
+                                      controller.workerData!.issuedDate
+                                              .enIssuedDate ??
                                           "No Date",
                                       style: const TextStyle(
                                         fontFamily: "SourceSansPro-Regular",
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -495,11 +483,13 @@ class WebNewScreen extends StatelessWidget {
                                       top: 10,
                                       bottom: 10,
                                     ),
-                                    alignment: Alignment.centerRight,
                                     child: Text(
+                                      textAlign: TextAlign.end,
                                       'expireDate'.tr,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: controller.langCode == "en"
+                                              ? 18
+                                              : 16,
                                           fontFamily:
                                               controller.langCode == "en"
                                                   ? "SourceSansPro-Regular"
@@ -510,10 +500,7 @@ class WebNewScreen extends StatelessWidget {
                                 TableCell(
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
-                                    ),
-                                    alignment: Alignment.center,
+                                        top: 12, left: 10),
                                     child: const Text(
                                       ":",
                                       style: TextStyle(fontSize: 16),
@@ -522,18 +509,18 @@ class WebNewScreen extends StatelessWidget {
                                 ),
                                 TableCell(
                                   child: Container(
-                                    alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.only(
                                       top: 10,
                                       bottom: 10,
                                     ),
                                     child: Text(
-                                      controller.workerModel!.workerData[0]
-                                              .expiredDate.enExpiresDate ??
+                                      textAlign: TextAlign.start,
+                                      controller.workerData!.expiredDate
+                                              .enExpiresDate ??
                                           "No Data",
                                       style: const TextStyle(
-                                        fontSize: 16,
                                         fontFamily: "SourceSansPro-Regular",
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -546,13 +533,16 @@ class WebNewScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Card(
                     margin:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     child: Column(
                       children: [
                         Container(
-                          width: Get.width * 0.30,
+                          width: Get.width * 0.40,
                           alignment: Alignment.center,
                           height: 45,
                           color: Colors.blueAccent[100],
@@ -566,17 +556,26 @@ class WebNewScreen extends StatelessWidget {
                                       : "Battambang")),
                         ),
                         Container(
-                          width: Get.width * 0.30,
-                          height: 100,
-                          padding: const EdgeInsets.only(left: 10, bottom: 10),
+                          width: Get.width * 0.40,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(10),
                           child: Text(
                             controller.langCode == "en"
-                                ? controller.workerModel!.workerData[0]
-                                    .workAddress.enName!
-                                : controller.workerModel!.workerData[0]
-                                    .workAddress.khName!,
+                                ? controller.workerData!.workAddress.enName ==
+                                            null ||
+                                        controller.workerData!.workAddress
+                                            .enName!.isEmpty
+                                    ? "noData".tr
+                                    : controller.workerData!.workAddress.enName!
+                                : controller.workerData!.workAddress.khName ==
+                                            null ||
+                                        controller.workerData!.workAddress
+                                            .khName!.isEmpty
+                                    ? "noData".tr
+                                    : controller
+                                        .workerData!.workAddress.khName!,
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: controller.langCode == "en" ? 18 : 16,
                                 fontFamily: controller.langCode == "en"
                                     ? "SourceSansPro-Regular"
                                     : "Battambang",
@@ -594,7 +593,7 @@ class WebNewScreen extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: Get.width * 0.60,
+            width: Get.width * 0.50,
             height: Get.height,
             child: SingleChildScrollView(
               child: Column(
@@ -621,13 +620,13 @@ class WebNewScreen extends StatelessWidget {
                                     : "Battambang")),
                       ),
                       SizedBox(
+                        height: Get.height * 0.70,
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: controller
-                                .workerModel!.workerData[0].tricking.length,
+                            itemCount: controller.workerData!.tricking.length,
                             itemBuilder: (context, index) {
-                              var track = controller
-                                  .workerModel!.workerData[0].tricking[index];
+                              var track =
+                                  controller.workerData!.tricking[index];
                               var textColor = Colors.green;
                               if (track.check!) {
                                 textColor = Colors.green;

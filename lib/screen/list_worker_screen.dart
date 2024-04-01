@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tracking_web/controller/worker_controller.dart';
 
-class ListWorkerScreen extends StatelessWidget {
+class ListWorkerScreen extends GetView<WorkerController> {
   const ListWorkerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double responseWidth = Get.width * 0.70;
     return GetBuilder<WorkerController>(builder: (controller) {
       if (controller.loading) {
         return const Center(
@@ -51,7 +50,7 @@ class ListWorkerScreen extends StatelessWidget {
           ),
           body: Center(
             child: Container(
-              width: responseWidth,
+              width: Get.width * 0.70,
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade300),
@@ -78,118 +77,121 @@ class ListWorkerScreen extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: controller.workerModel!.workerData.length,
                         itemBuilder: (context, index) {
-                          var worker = controller.workerModel!.workerData[index];
+                          var worker =
+                              controller.workerModel!.workerData[index];
                           return InkWell(
-                            onTap: () {
-                              Get.toNamed("/workerDetail");
+                            onTap: () async {
+                              controller.routeToDetail(index);
                             },
                             child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 30),
+                              margin: const EdgeInsets.all(10),
+                              height: 130,
                               decoration: BoxDecoration(
-                                color: Colors.grey[200],
+                                color: Colors.grey.shade200,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                              width: 100,
-                                              height: 100,
-                                              margin: const EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                image: DecorationImage(
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Container(
+                                            margin: const EdgeInsets.all(8),
+                                            height: 130,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey.shade100,
+                                              image: DecorationImage(
                                                   fit: BoxFit.cover,
-                                                  image:
-                                                      NetworkImage(worker.photo),
-                                                ),
-                                              )),
-                                          const SizedBox(
-                                            width: 20,
+                                                  image: NetworkImage(
+                                                      worker.photo)),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
                                           ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              AutoSizeText(
-                                                controller.langCode == "en"
-                                                    ? worker.fullName.enName
-                                                    : worker.fullName.khName,
-                                                maxFontSize: 16,
-                                                minFontSize: 12,
-                                                maxLines: 2,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: controller
-                                                              .langCode ==
-                                                          "en"
-                                                      ? "SourceSansPro-Regular"
-                                                      : "Battambang",
+                                        ),
+                                        Flexible(
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                AutoSizeText(
+                                                  textAlign: TextAlign.center,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  controller.langCode == "en"
+                                                      ? worker.fullName.enName
+                                                      : worker.fullName.khName,
+                                                  minFontSize: 16,
+                                                  maxLines: 3,
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontFamily: controller
+                                                                  .langCode ==
+                                                              "en"
+                                                          ? "SourceSansPro-Regular"
+                                                          : "Battambang"),
                                                 ),
-                                              ),
-                                              AutoSizeText(
-                                                controller.langCode == "en"
-                                                    ? worker.gender.enName
-                                                    : worker.gender.khName,
-                                                maxFontSize: 16,
-                                                minFontSize: 12,
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontFamily: controller
-                                                                .langCode ==
-                                                            "en"
-                                                        ? "SourceSansPro-Regular"
-                                                        : "Battambang"),
-                                              ),
-                                              AutoSizeText(
-                                                maxFontSize: 16,
-                                                minFontSize: 12,
-                                                maxLines: 2,
-                                                controller.langCode == "en"
-                                                    ? worker.dob.enDate
-                                                    : worker.dob.khDate,
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontFamily: controller
-                                                              .langCode ==
-                                                          "en"
-                                                      ? "SourceSansPro-Regular"
-                                                      : "Battambang",
+                                                AutoSizeText(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  controller.langCode == "en"
+                                                      ? worker.gender.enName
+                                                      : worker.gender.khName,
+                                                  maxFontSize: 16,
+                                                  minFontSize: 12,
+                                                  style: TextStyle(
+                                                      fontFamily: controller
+                                                                  .langCode ==
+                                                              "en"
+                                                          ? "SourceSansPro-Regular"
+                                                          : "Battambang",
+                                                      fontSize: 14),
                                                 ),
-                                              )
-                                            ],
+                                                AutoSizeText(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  controller.langCode == "en"
+                                                      ? worker.dob.enDate
+                                                      : worker.dob.khDate,
+                                                  maxFontSize: 16,
+                                                  minFontSize: 12,
+                                                  style: const TextStyle(
+                                                      fontFamily:
+                                                          "SourceSansPro-Regular",
+                                                      fontSize: 14),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: AutoSizeText(
+                                      textAlign: TextAlign.center,
+                                      maxLines: 3,
+                                      controller.langCode == "en"
+                                          ? worker.sendingAgency.enName
+                                          : worker.sendingAgency.khName,
+                                      maxFontSize: 18,
+                                      minFontSize: 12,
+                                      style: TextStyle(
+                                        fontFamily: controller.langCode == "en"
+                                            ? "SourceSansPro-Regular"
+                                            : "Battambang",
+                                        fontSize: 16,
                                       ),
                                     ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: AutoSizeText(
-                                        controller.langCode == "en"
-                                            ? worker.sendingAgency.enName
-                                            : worker.sendingAgency.khName,
-                                        maxLines: 2,
-                                        maxFontSize: 16,
-                                        minFontSize: 12,
-                                        style: TextStyle(
-                                          fontFamily: controller.langCode == "en"
-                                              ? "SourceSansPro-Regular"
-                                              : "Battambang",
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
                             ),
                           );
@@ -204,3 +206,107 @@ class ListWorkerScreen extends StatelessWidget {
     });
   }
 }
+
+//  Padding(
+//                                 padding: const EdgeInsets.all(10),
+//                                 child: Row(
+//                                   children: [
+//                                     Expanded(
+//                                       flex: 3,
+//                                       child: Row(
+//                                         children: [
+//                                           Container(
+//                                               width: 100,
+//                                               height: 100,
+//                                               margin: const EdgeInsets.all(10),
+//                                               decoration: BoxDecoration(
+//                                                 borderRadius:
+//                                                     BorderRadius.circular(10),
+//                                                 image: DecorationImage(
+//                                                   fit: BoxFit.cover,
+//                                                   image: NetworkImage(
+//                                                       worker.photo),
+//                                                 ),
+//                                               )),
+//                                           const SizedBox(
+//                                             width: 20,
+//                                           ),
+//                                           Column(
+//                                             mainAxisAlignment:
+//                                                 MainAxisAlignment.spaceEvenly,
+//                                             children: [
+//                                               AutoSizeText(
+//                                                 controller.langCode == "en"
+//                                                     ? worker.fullName.enName
+//                                                     : worker.fullName.khName,
+//                                                 maxFontSize: 16,
+//                                                 minFontSize: 12,
+//                                                 maxLines: 2,
+//                                                 style: TextStyle(
+//                                                   color: Colors.black,
+//                                                   fontWeight: FontWeight.bold,
+//                                                   fontFamily: controller
+//                                                               .langCode ==
+//                                                           "en"
+//                                                       ? "SourceSansPro-Regular"
+//                                                       : "Battambang",
+//                                                 ),
+//                                               ),
+//                                               AutoSizeText(
+//                                                 controller.langCode == "en"
+//                                                     ? worker.gender.enName
+//                                                     : worker.gender.khName,
+//                                                 maxFontSize: 16,
+//                                                 minFontSize: 12,
+//                                                 maxLines: 1,
+//                                                 style: TextStyle(
+//                                                     color: Colors.grey,
+//                                                     fontFamily: controller
+//                                                                 .langCode ==
+//                                                             "en"
+//                                                         ? "SourceSansPro-Regular"
+//                                                         : "Battambang"),
+//                                               ),
+//                                               AutoSizeText(
+//                                                 maxFontSize: 16,
+//                                                 minFontSize: 12,
+//                                                 maxLines: 2,
+//                                                 controller.langCode == "en"
+//                                                     ? worker.dob.enDate
+//                                                     : worker.dob.khDate,
+//                                                 style: TextStyle(
+//                                                   color: Colors.grey,
+//                                                   fontFamily: controller
+//                                                               .langCode ==
+//                                                           "en"
+//                                                       ? "SourceSansPro-Regular"
+//                                                       : "Battambang",
+//                                                 ),
+//                                               )
+//                                             ],
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                     Expanded(
+//                                       flex: 2,
+//                                       child: AutoSizeText(
+//                                         controller.langCode == "en"
+//                                             ? worker.sendingAgency.enName
+//                                             : worker.sendingAgency.khName,
+//                                         maxLines: 2,
+//                                         maxFontSize: 16,
+//                                         minFontSize: 12,
+//                                         style: TextStyle(
+//                                           fontFamily:
+//                                               controller.langCode == "en"
+//                                                   ? "SourceSansPro-Regular"
+//                                                   : "Battambang",
+//                                           color: Colors.grey,
+//                                         ),
+//                                       ),
+//                                     )
+
+//                                  ],
+//                                 ),
+//                               ),
