@@ -37,7 +37,7 @@ class WorkerController extends GetxController {
   ////////////////////////////////////////////////////////////////
 
   /// save local data
-  String langCode = "en";
+  String langCode = "";
   GetStorage storage = GetStorage();
   String storageKey = "langCode";
   ////////////////////////////////////////////////////////////////
@@ -59,12 +59,12 @@ class WorkerController extends GetxController {
 
   // init for change language
   Future<void> initLocale() async {
-    langCode = storage.read(storageKey) ?? 'en';
-    if (langCode == "en") {
-      Get.updateLocale(const Locale("en", "US"));
-    } else {
+    String langCode = storage.read(storageKey) ?? 'en';
+    if (langCode == "kh") {
+      this.langCode = langCode;
       Get.updateLocale(const Locale("km", "KH"));
-    }
+      update();
+    } else {}
   }
 
   //change language
@@ -363,8 +363,8 @@ class WorkerController extends GetxController {
   }
 
   void initData() async {
-    await initLocale();
-    await initWorkerData();
+    initLocale();
+    initWorkerData();
     initValueChange();
   }
 

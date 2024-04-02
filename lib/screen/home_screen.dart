@@ -81,8 +81,9 @@ class HomeScreen extends GetView<WorkerController> {
                         activeThumbImage: const AssetImage(
                           'assets/images/cambodia_flag.png',
                         ),
-                        inactiveThumbImage:
-                            const AssetImage('assets/images/english_flag.png'),
+                        inactiveThumbImage: const AssetImage(
+                          'assets/images/english_flag.png',
+                        ),
                         value: controller.changValue.value,
                         onChanged: (value) {
                           controller.changeLang(value);

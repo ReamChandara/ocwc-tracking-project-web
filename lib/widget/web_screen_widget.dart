@@ -61,7 +61,7 @@ class WebNewScreen extends StatelessWidget {
                         ),
                         Table(
                           columnWidths: {
-                            0: FixedColumnWidth(Get.width * 0.30 / 2 ),
+                            0: FixedColumnWidth(Get.width * 0.30 / 2),
                             1: const FixedColumnWidth(20),
                             2: FixedColumnWidth(Get.width * 0.40 / 2 - 20),
                           },
@@ -464,10 +464,14 @@ class WebNewScreen extends StatelessWidget {
                                       textAlign: TextAlign.start,
                                       controller.workerData!.issuedDate
                                               .enIssuedDate ??
-                                          "No Date",
-                                      style: const TextStyle(
-                                        fontFamily: "SourceSansPro-Regular",
-                                        fontSize: 18,
+                                          "noData".tr,
+                                      style: TextStyle(
+                                        fontFamily: controller.langCode == "en"
+                                            ? "SourceSansPro-Regular"
+                                            : "Battambang",
+                                        fontSize: controller.langCode == "en"
+                                            ? 18
+                                            : 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -517,10 +521,14 @@ class WebNewScreen extends StatelessWidget {
                                       textAlign: TextAlign.start,
                                       controller.workerData!.expiredDate
                                               .enExpiresDate ??
-                                          "No Data",
-                                      style: const TextStyle(
-                                        fontFamily: "SourceSansPro-Regular",
-                                        fontSize: 18,
+                                          "noData".tr,
+                                      style: TextStyle(
+                                        fontFamily: controller.langCode == "en"
+                                            ? "SourceSansPro-Regular"
+                                            : "Battambang",
+                                        fontSize: controller.langCode == "en"
+                                            ? 18
+                                            : 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -639,8 +647,11 @@ class WebNewScreen extends StatelessWidget {
                               }
                               return Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 20),
+                                    left: 10, right: 10, top: 10),
                                 child: ListTile(
+                                    tileColor: index % 2 == 0
+                                        ? Colors.grey.shade50
+                                        : Colors.white,
                                     title: Text(
                                       controller.langCode == "en"
                                           ? track.title.enTitle
@@ -656,6 +667,9 @@ class WebNewScreen extends StatelessWidget {
                                       color: Colors.blueAccent.shade100,
                                       width: 20,
                                     ),
+                                    trailing: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.more_vert)),
                                     subtitle: () {
                                       return Text(
                                         controller.langCode == "en"
@@ -686,7 +700,7 @@ class WebNewScreen extends StatelessWidget {
 
   AppBar _buildAppbar() {
     return AppBar(
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: true,
       centerTitle: true,
       title: Text(
         "appbarTitle".tr,

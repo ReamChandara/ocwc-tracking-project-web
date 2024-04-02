@@ -11,7 +11,7 @@ class PhoneScreen extends StatelessWidget {
 
   AppBar _buildAppbar() {
     return AppBar(
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: true,
       centerTitle: true,
       title: Text(
         "appbarTitle".tr,
@@ -486,8 +486,11 @@ class PhoneScreen extends StatelessWidget {
                     }
                     return Padding(
                       padding:
-                          const EdgeInsets.only(left: 10, right: 10, top: 20),
+                          const EdgeInsets.only(left: 10, right: 10, top: 10),
                       child: ListTile(
+                          tileColor: index % 2 == 0
+                              ? Colors.grey.shade50
+                              : Colors.white,
                           title: Text(
                             controller.langCode == "en"
                                 ? track.title.enTitle
@@ -502,6 +505,7 @@ class PhoneScreen extends StatelessWidget {
                             color: Colors.blueAccent.shade100,
                             width: 20,
                           ),
+                          trailing: const Icon(Icons.more_vert),
                           subtitle: () {
                             return Text(
                               controller.langCode == "en"
