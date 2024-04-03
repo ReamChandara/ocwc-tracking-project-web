@@ -50,22 +50,24 @@ class WorkerController extends GetxController {
 
   //init for change value on switch widget
   initValueChange() {
+    langCode = storage.read(storageKey) ?? 'en';
     if (langCode == "en") {
       changValue.value = false;
+      Get.updateLocale(const Locale("en", "US"));
     } else {
       changValue.value = true;
+      Get.updateLocale(const Locale("km", "KH"));
     }
   }
 
-  // init for change language
-  Future<void> initLocale() async {
-    String langCode = storage.read(storageKey) ?? 'en';
-    if (langCode == "kh") {
-      this.langCode = langCode;
-      Get.updateLocale(const Locale("km", "KH"));
-      update();
-    } else {}
-  }
+  // // init for change language
+  // Future<void> initLocale() async {
+  //   String langCode = storage.read(storageKey) ?? 'en';
+  //   if (langCode == "kh") {
+  //     this.langCode = langCode;
+  //     Get.updateLocale(const Locale("km", "KH"));
+  //   } else {}
+  // }
 
   //change language
   void changeLang(bool value) async {
@@ -363,7 +365,7 @@ class WorkerController extends GetxController {
   }
 
   void initData() async {
-    initLocale();
+    //initLocale();
     initWorkerData();
     initValueChange();
   }

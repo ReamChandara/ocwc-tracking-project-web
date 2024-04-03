@@ -182,12 +182,14 @@ class WorkAddress {
 class Tricking {
   final bool? check;
   final Title title;
+  final String? attachment;
   final Date date;
   final Description description;
 
   Tricking(
       {this.check,
       required this.title,
+      this.attachment,
       required this.date,
       required this.description});
 
@@ -195,6 +197,7 @@ class Tricking {
     return Tricking(
         check: json['check'],
         title: Title.fromJson(json['title']),
+        attachment: json['attachment'],
         date: Date.fromJson(json['date']),
         description: Description.fromJson(json['description']));
   }

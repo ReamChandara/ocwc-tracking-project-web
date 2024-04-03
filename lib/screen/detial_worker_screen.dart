@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tracking_web/controller/worker_controller.dart';
-import '../widget/phone_screen_widget.dart';
 import '../widget/web_screen_widget.dart';
 
 class WorkerDetail extends StatelessWidget {
@@ -25,16 +24,17 @@ class WorkerDetail extends StatelessWidget {
           ),
         );
       } else {
-        return LayoutBuilder(builder: (context, constrained) {
-          if (constrained.maxWidth >= 900 || constrained.maxHeight >= 1024) {
-            return WebNewScreen(controller: controller);
-          } else {
-            return PhoneScreen(
-              controller: controller,
-            );
-          }
-        });
+        return WebNewScreen(controller: controller);
       }
     });
   }
 }
+// LayoutBuilder(builder: (context, constrained) {
+//           if (constrained.maxWidth >= 900 || constrained.maxHeight >= 1024) {
+//             return WebNewScreen(controller: controller);
+//           } else {
+//             return PhoneScreen(
+//               controller: controller,
+//             );
+//           }
+//         });
