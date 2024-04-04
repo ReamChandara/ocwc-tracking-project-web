@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tracking_web/controller/worker_controller.dart';
 
@@ -66,16 +67,32 @@ class _ListWorkerScreenState extends State<ListWorkerScreen> {
               width: constraints.maxWidth,
               height: constraints.maxHeight * 0.80,
               margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
+                boxShadow: const [
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(
+                        0.50,
+                        0.50,
+                      ),
+                      blurRadius: 1,
+                      blurStyle: BlurStyle.outer)
+                ],
               ),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Padding(
+                    Container(
+                      alignment: Alignment.center,
+                      width: constraints.maxWidth,
                       padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20))),
                       child: Text(
                         "workers".tr,
                         style: TextStyle(
@@ -87,6 +104,12 @@ class _ListWorkerScreenState extends State<ListWorkerScreen> {
                             color: Colors.black),
                       ),
                     ),
+                    Container(
+                      width: constraints.maxWidth,
+                      height: 1,
+                      color: Colors.grey.shade200,
+                    ),
+                    const SizedBox(height: 10),
                     ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -99,13 +122,15 @@ class _ListWorkerScreenState extends State<ListWorkerScreen> {
                               controller.routeToDetail(index);
                             },
                             child: Container(
-                              margin: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                               decoration: BoxDecoration(
-                                color: index % 2 == 0
-                                    ? Colors.grey.shade200
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                                  color: index % 2 == 0
+                                      ? Colors.grey.shade50
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border:
+                                      Border.all(color: Colors.grey.shade100)),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment:
@@ -116,7 +141,7 @@ class _ListWorkerScreenState extends State<ListWorkerScreen> {
                                     child: Container(
                                       margin: const EdgeInsets.only(
                                           left: 20, bottom: 8, top: 8),
-                                      height: 110,
+                                      height: 130,
                                       width: 120,
                                       decoration: BoxDecoration(
                                         color: Colors.grey.shade100,
