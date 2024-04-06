@@ -33,6 +33,8 @@ class Message extends Translations {
         "noData": "No Data",
         "issuseDate": "Issuse Date",
         "expireDate": "Expire Date",
+        "image": "Image",
+        "okay": "Okay"
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
@@ -63,6 +65,8 @@ class Message extends Translations {
         "cardDate": "កាលបរិច្ឆេទ",
         "issuseDate": "កាលបរិច្ឆេទចេញប័ណ្ណ",
         "expireDate": "កាលបរិច្ឆេទអស់សុពលភាព",
+        "image": "រូបភាព",
+        "okay": "យល់ព្រម"
       }
     };
   }

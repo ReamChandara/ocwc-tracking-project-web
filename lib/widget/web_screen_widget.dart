@@ -28,13 +28,16 @@ class WebNewScreen extends StatelessWidget {
             animationType: AnimationType.grow,
             overlayColor: Colors.transparent,
           ),
-          title: "Image",
-          image: Image.network(path),
+          title: "image".tr,
+          image: Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.network(path),
+          ),
           context: context,
           buttons: [
             DialogButton(
                 child: Text(
-                  "OKay",
+                  "okay".tr,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
@@ -102,46 +105,39 @@ class WebNewScreen extends StatelessWidget {
                           height: 1,
                           color: Colors.grey.shade200,
                         ),
-                        SizedBox(
+                        Container(
+                          padding: const EdgeInsets.only(left: 10),
                           width: contanstraintWidth,
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    flex: 2,
-                                    child: Table(
-                                      columnWidths: const {
-                                        0: FixedColumnWidth(100),
-                                        1: FixedColumnWidth(20),
-                                        2: FixedColumnWidth(100)
-                                      },
-                                      defaultColumnWidth:
-                                          const FixedColumnWidth(100),
-                                      defaultVerticalAlignment:
-                                          TableCellVerticalAlignment.middle,
+                                    flex: 4,
+                                    child: Column(
                                       children: [
-                                        TableRow(
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            TableCell(
+                                            Flexible(
+                                              flex: 1,
                                               child: Container(
-                                                alignment:
-                                                    Alignment.centerRight,
+                                                alignment: Alignment.centerLeft,
                                                 padding:
                                                     const EdgeInsets.all(8),
                                                 child: AutoSizeText(
                                                   'latinname'.tr,
                                                   minFontSize: 12,
                                                   maxLines: 1,
-                                                  maxFontSize: 18,
+                                                  maxFontSize: 16,
                                                   style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize:
                                                           controller.langCode ==
                                                                   "en"
-                                                              ? 18
+                                                              ? 16
                                                               : 16,
                                                       fontFamily: controller
                                                                   .langCode ==
@@ -151,56 +147,59 @@ class WebNewScreen extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            TableCell(
+                                            Container(
+                                              width: 20,
+                                              alignment: Alignment.centerRight,
+                                              padding: const EdgeInsets.all(8),
+                                              child: const Text(":"),
+                                            ),
+                                            Flexible(
+                                              flex: 1,
                                               child: Container(
+                                                alignment: Alignment.centerLeft,
                                                 padding:
                                                     const EdgeInsets.all(8),
-                                                alignment: Alignment.centerLeft,
-                                                child: const Text(
-                                                  ":",
-                                                  style:
-                                                      TextStyle(fontSize: 18),
-                                                ),
-                                              ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                alignment: Alignment.centerLeft,
-                                                padding:
-                                                    const EdgeInsets.all(10),
                                                 child: AutoSizeText(
                                                   controller.workerData!
                                                       .fullName.enName,
                                                   minFontSize: 12,
                                                   maxLines: 1,
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily:
-                                                        "SourceSansPro-Regular",
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                                  maxFontSize: 16,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize:
+                                                          controller.langCode ==
+                                                                  "en"
+                                                              ? 16
+                                                              : 16,
+                                                      fontFamily:
+                                                          "SourceSansPro-Regular"),
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
-                                        TableRow(
+                                        Row(
                                           children: [
-                                            TableCell(
+                                            Flexible(
+                                              flex: 1,
                                               child: Container(
-                                                alignment:
-                                                    Alignment.centerRight,
+                                                alignment: Alignment.centerLeft,
                                                 padding:
                                                     const EdgeInsets.all(8),
                                                 child: AutoSizeText(
                                                   'khmername'.tr,
-                                                  textAlign: TextAlign.end,
+                                                  minFontSize: 12,
                                                   maxLines: 1,
+                                                  maxFontSize: 16,
                                                   style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize:
                                                           controller.langCode ==
                                                                   "en"
-                                                              ? 18
+                                                              ? 16
                                                               : 16,
                                                       fontFamily: controller
                                                                   .langCode ==
@@ -210,303 +209,38 @@ class WebNewScreen extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            TableCell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                alignment: Alignment.centerLeft,
-                                                child: const Text(
-                                                  ":",
-                                                  style:
-                                                      TextStyle(fontSize: 18),
-                                                ),
-                                              ),
+                                            Container(
+                                              width: 20,
+                                              alignment: Alignment.centerRight,
+                                              padding: const EdgeInsets.all(8),
+                                              child: const Text(":"),
                                             ),
-                                            TableCell(
+                                            Flexible(
+                                              flex: 1,
                                               child: Container(
                                                 alignment: Alignment.centerLeft,
                                                 padding:
                                                     const EdgeInsets.all(8),
                                                 child: AutoSizeText(
-                                                  textAlign: TextAlign.start,
                                                   controller.workerData!
                                                       .fullName.khName,
                                                   minFontSize: 12,
                                                   maxLines: 1,
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontFamily: "Battambang",
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        TableRow(
-                                          children: [
-                                            TableCell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: AutoSizeText(
-                                                  'ocwcNo'.tr,
-                                                  maxLines: 1,
-                                                  minFontSize: 12,
+                                                  maxFontSize: 16,
                                                   style: TextStyle(
-                                                      fontSize:
-                                                          controller.langCode ==
-                                                                  "en"
-                                                              ? 18
-                                                              : 16,
-                                                      fontFamily: controller
-                                                                  .langCode ==
-                                                              "en"
-                                                          ? "SourceSansPro-Regular"
-                                                          : "Battambang"),
-                                                ),
-                                              ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                alignment: Alignment.centerLeft,
-                                                child: const Text(
-                                                  ":",
-                                                  style:
-                                                      TextStyle(fontSize: 18),
-                                                ),
-                                              ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                alignment: Alignment.centerLeft,
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                child: AutoSizeText(
-                                                    controller
-                                                        .workerData!.ocwcNo,
-                                                    textAlign: TextAlign.start,
-                                                    maxLines: 1,
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                    )),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        TableRow(
-                                          children: [
-                                            TableCell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: AutoSizeText(
-                                                  'gender'.tr,
-                                                  minFontSize: 12,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
                                                       fontSize:
                                                           controller.langCode ==
                                                                   "en"
-                                                              ? 18
+                                                              ? 16
                                                               : 16,
-                                                      fontFamily: controller
-                                                                  .langCode ==
-                                                              "en"
-                                                          ? "SourceSansPro-Regular"
-                                                          : "Battambang"),
+                                                      fontFamily: "Battambang"),
                                                 ),
                                               ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                alignment: Alignment.centerLeft,
-                                                child: const Text(
-                                                  ":",
-                                                  style:
-                                                      TextStyle(fontSize: 16),
-                                                ),
-                                              ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                alignment: Alignment.centerLeft,
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                child: AutoSizeText(
-                                                  textAlign: TextAlign.start,
-                                                  controller.langCode == "en"
-                                                      ? controller.workerData!
-                                                          .gender.enName
-                                                      : controller.workerData!
-                                                          .gender.khName,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        controller.langCode ==
-                                                                "en"
-                                                            ? 18
-                                                            : 16,
-                                                    fontFamily: controller
-                                                                .langCode ==
-                                                            "en"
-                                                        ? "SourceSansPro-Regular"
-                                                        : "Battambang",
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            )
                                           ],
-                                        ),
-                                        TableRow(
-                                          children: [
-                                            TableCell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: AutoSizeText(
-                                                  'country'.tr,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          controller.langCode ==
-                                                                  "en"
-                                                              ? 18
-                                                              : 16,
-                                                      fontFamily: controller
-                                                                  .langCode ==
-                                                              "en"
-                                                          ? "SourceSansPro-Regular"
-                                                          : "Battambang"),
-                                                ),
-                                              ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                alignment: Alignment.centerLeft,
-                                                child: const Text(
-                                                  ":",
-                                                  style:
-                                                      TextStyle(fontSize: 18),
-                                                ),
-                                              ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                alignment: Alignment.centerLeft,
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                child: AutoSizeText(
-                                                  textAlign: TextAlign.start,
-                                                  maxLines: 1,
-                                                  controller.langCode == "en"
-                                                      ? controller.workerData!
-                                                          .country.enName
-                                                      : controller.workerData!
-                                                          .country.khName,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        controller.langCode ==
-                                                                "en"
-                                                            ? 18
-                                                            : 16,
-                                                    fontFamily: controller
-                                                                .langCode ==
-                                                            "en"
-                                                        ? "SourceSansPro-Regular"
-                                                        : "Battambang",
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        TableRow(
-                                          children: [
-                                            TableCell(
-                                              child: Container(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                child: AutoSizeText(
-                                                  'SenderAgency'.tr,
-                                                  textAlign: TextAlign.start,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          controller.langCode ==
-                                                                  "en"
-                                                              ? 18
-                                                              : 16,
-                                                      fontFamily: controller
-                                                                  .langCode ==
-                                                              "en"
-                                                          ? "SourceSansPro-Regular"
-                                                          : "Battambang"),
-                                                ),
-                                              ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                alignment: Alignment.centerLeft,
-                                                child: const Text(
-                                                  ":",
-                                                  style:
-                                                      TextStyle(fontSize: 18),
-                                                ),
-                                              ),
-                                            ),
-                                            TableCell(
-                                              child: Container(
-                                                alignment: Alignment.centerLeft,
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                child: AutoSizeText(
-                                                  maxLines: 2,
-                                                  minFontSize: 12,
-                                                  textAlign: TextAlign.start,
-                                                  controller.langCode == "en"
-                                                      ? controller.workerData!
-                                                          .sendingAgency.enName
-                                                      : controller.workerData!
-                                                          .sendingAgency.khName,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        controller.langCode ==
-                                                                "en"
-                                                            ? 18
-                                                            : 16,
-                                                    fontFamily: controller
-                                                                .langCode ==
-                                                            "en"
-                                                        ? "SourceSansPro-Regular"
-                                                        : "Battambang",
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -519,7 +253,9 @@ class WebNewScreen extends StatelessWidget {
                                       },
                                       child: Container(
                                         width: 100,
-                                        height: 100,
+                                        height: 80,
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                             color: Colors.grey.shade200,
@@ -537,6 +273,193 @@ class WebNewScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.all(8),
+                                      child: AutoSizeText(
+                                        'gender'.tr,
+                                        minFontSize: 12,
+                                        maxLines: 1,
+                                        maxFontSize: 16,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                controller.langCode == "en"
+                                                    ? 16
+                                                    : 16,
+                                            fontFamily:
+                                                controller.langCode == "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 20,
+                                    alignment: Alignment.centerRight,
+                                    padding: const EdgeInsets.all(8),
+                                    child: const Text(":"),
+                                  ),
+                                  Flexible(
+                                    flex: 3,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.all(8),
+                                      child: AutoSizeText(
+                                        controller.langCode == "en"
+                                            ? controller
+                                                .workerData!.gender.enName
+                                            : controller
+                                                .workerData!.gender.khName,
+                                        minFontSize: 12,
+                                        maxLines: 1,
+                                        maxFontSize: 16,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                controller.langCode == "en"
+                                                    ? 16
+                                                    : 16,
+                                            fontFamily:
+                                                controller.langCode == "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.all(8),
+                                      child: AutoSizeText(
+                                        'country'.tr,
+                                        minFontSize: 12,
+                                        maxLines: 1,
+                                        maxFontSize: 16,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                controller.langCode == "en"
+                                                    ? 16
+                                                    : 16,
+                                            fontFamily:
+                                                controller.langCode == "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 20,
+                                    alignment: Alignment.centerRight,
+                                    padding: const EdgeInsets.all(8),
+                                    child: const Text(":"),
+                                  ),
+                                  Flexible(
+                                    flex: 3,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.all(8),
+                                      child: AutoSizeText(
+                                        controller.langCode == "en"
+                                            ? controller
+                                                .workerData!.country.enName
+                                            : controller
+                                                .workerData!.country.khName,
+                                        minFontSize: 12,
+                                        maxLines: 1,
+                                        maxFontSize: 16,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                controller.langCode == "en"
+                                                    ? 16
+                                                    : 16,
+                                            fontFamily:
+                                                controller.langCode == "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.all(8),
+                                      child: AutoSizeText(
+                                        'SenderAgency'.tr,
+                                        minFontSize: 12,
+                                        maxLines: 2,
+                                        maxFontSize: 16,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                controller.langCode == "en"
+                                                    ? 16
+                                                    : 16,
+                                            fontFamily:
+                                                controller.langCode == "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 20,
+                                    alignment: Alignment.centerRight,
+                                    padding: const EdgeInsets.all(8),
+                                    child: const Text(":"),
+                                  ),
+                                  Flexible(
+                                    flex: 3,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.all(8),
+                                      child: AutoSizeText(
+                                        controller.langCode == "en"
+                                            ? controller.workerData!
+                                                .sendingAgency.enName
+                                            : controller.workerData!
+                                                .sendingAgency.khName,
+                                        minFontSize: 12,
+                                        maxLines: 2,
+                                        maxFontSize: 16,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize:
+                                                controller.langCode == "en"
+                                                    ? 16
+                                                    : 16,
+                                            fontFamily:
+                                                controller.langCode == "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              )
                             ],
                           ),
                         ),
@@ -1320,6 +1243,410 @@ class WebNewScreen extends StatelessWidget {
     );
   }
 }
+
+// Table(
+//                                       columnWidths: const {
+//                                         0: FixedColumnWidth(100),
+//                                         1: FixedColumnWidth(20),
+//                                         2: FixedColumnWidth(100)
+//                                       },
+//                                       defaultColumnWidth:
+//                                           const FixedColumnWidth(100),
+//                                       defaultVerticalAlignment:
+//                                           TableCellVerticalAlignment.middle,
+//                                       children: [
+//                                         TableRow(
+//                                           children: [
+//                                             TableCell(
+//                                               child: Container(
+//                                                 alignment:
+//                                                     Alignment.centerRight,
+//                                                 padding:
+//                                                     const EdgeInsets.all(8),
+//                                                 child: AutoSizeText(
+//                                                   'latinname'.tr,
+//                                                   minFontSize: 12,
+//                                                   maxLines: 1,
+//                                                   maxFontSize: 18,
+//                                                   style: TextStyle(
+//                                                       fontSize:
+//                                                           controller.langCode ==
+//                                                                   "en"
+//                                                               ? 18
+//                                                               : 16,
+//                                                       fontFamily: controller
+//                                                                   .langCode ==
+//                                                               "en"
+//                                                           ? "SourceSansPro-Regular"
+//                                                           : "Battambang"),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             TableCell(
+//                                               child: Container(
+//                                                 padding:
+//                                                     const EdgeInsets.all(8),
+//                                                 alignment: Alignment.centerLeft,
+//                                                 child: const Text(
+//                                                   ":",
+//                                                   style:
+//                                                       TextStyle(fontSize: 18),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             TableCell(
+//                                               child: Container(
+//                                                 alignment: Alignment.centerLeft,
+//                                                 padding:
+//                                                     const EdgeInsets.all(10),
+//                                                 child: AutoSizeText(
+//                                                   controller.workerData!
+//                                                       .fullName.enName,
+//                                                   minFontSize: 12,
+//                                                   maxLines: 1,
+//                                                   style: const TextStyle(
+//                                                     fontSize: 18,
+//                                                     fontFamily:
+//                                                         "SourceSansPro-Regular",
+//                                                     fontWeight: FontWeight.bold,
+//                                                   ),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                           ],
+//                                         ),
+//                                         TableRow(
+//                                           children: [
+//                                             TableCell(
+//                                               child: Container(
+//                                                 alignment:
+//                                                     Alignment.centerRight,
+//                                                 padding:
+//                                                     const EdgeInsets.all(8),
+//                                                 child: AutoSizeText(
+//                                                   'khmername'.tr,
+//                                                   textAlign: TextAlign.end,
+//                                                   maxLines: 1,
+//                                                   minFontSize: 12,
+//                                                   style: TextStyle(
+//                                                       fontSize:
+//                                                           controller.langCode ==
+//                                                                   "en"
+//                                                               ? 18
+//                                                               : 16,
+//                                                       fontFamily: controller
+//                                                                   .langCode ==
+//                                                               "en"
+//                                                           ? "SourceSansPro-Regular"
+//                                                           : "Battambang"),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             TableCell(
+//                                               child: Container(
+//                                                 padding:
+//                                                     const EdgeInsets.all(8),
+//                                                 alignment: Alignment.centerLeft,
+//                                                 child: const Text(
+//                                                   ":",
+//                                                   style:
+//                                                       TextStyle(fontSize: 18),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             TableCell(
+//                                               child: Container(
+//                                                 alignment: Alignment.centerLeft,
+//                                                 padding:
+//                                                     const EdgeInsets.all(8),
+//                                                 child: AutoSizeText(
+//                                                   textAlign: TextAlign.start,
+//                                                   controller.workerData!
+//                                                       .fullName.khName,
+//                                                   minFontSize: 10,
+//                                                   maxLines: 1,
+//                                                   style: const TextStyle(
+//                                                     fontSize: 16,
+//                                                     fontFamily: "Battambang",
+//                                                     fontWeight: FontWeight.bold,
+//                                                   ),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                           ],
+//                                         ),
+//                                       ],
+//                                     ),
+
+
+
+  // TableRow(
+  //                                         children: [
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               alignment:
+  //                                                   Alignment.centerRight,
+  //                                               child: AutoSizeText(
+  //                                                 'ocwcNo'.tr,
+  //                                                 maxLines: 1,
+  //                                                 minFontSize: 12,
+  //                                                 style: TextStyle(
+  //                                                     fontSize:
+  //                                                         controller.langCode ==
+  //                                                                 "en"
+  //                                                             ? 18
+  //                                                             : 16,
+  //                                                     fontFamily: controller
+  //                                                                 .langCode ==
+  //                                                             "en"
+  //                                                         ? "SourceSansPro-Regular"
+  //                                                         : "Battambang"),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               alignment: Alignment.centerLeft,
+  //                                               child: const Text(
+  //                                                 ":",
+  //                                                 style:
+  //                                                     TextStyle(fontSize: 18),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               alignment: Alignment.centerLeft,
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               child: AutoSizeText(
+  //                                                   controller
+  //                                                       .workerData!.ocwcNo,
+  //                                                   textAlign: TextAlign.start,
+  //                                                   maxLines: 1,
+  //                                                   style: const TextStyle(
+  //                                                     fontSize: 18,
+  //                                                     fontWeight:
+  //                                                         FontWeight.bold,
+  //                                                   )),
+  //                                             ),
+  //                                           ),
+  //                                         ],
+  //                                       ),
+  //                                       TableRow(
+  //                                         children: [
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               alignment:
+  //                                                   Alignment.centerRight,
+  //                                               child: AutoSizeText(
+  //                                                 'gender'.tr,
+  //                                                 minFontSize: 12,
+  //                                                 maxLines: 1,
+  //                                                 style: TextStyle(
+  //                                                     fontSize:
+  //                                                         controller.langCode ==
+  //                                                                 "en"
+  //                                                             ? 18
+  //                                                             : 16,
+  //                                                     fontFamily: controller
+  //                                                                 .langCode ==
+  //                                                             "en"
+  //                                                         ? "SourceSansPro-Regular"
+  //                                                         : "Battambang"),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               alignment: Alignment.centerLeft,
+  //                                               child: const Text(
+  //                                                 ":",
+  //                                                 style:
+  //                                                     TextStyle(fontSize: 16),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               alignment: Alignment.centerLeft,
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               child: AutoSizeText(
+  //                                                 textAlign: TextAlign.start,
+  //                                                 controller.langCode == "en"
+  //                                                     ? controller.workerData!
+  //                                                         .gender.enName
+  //                                                     : controller.workerData!
+  //                                                         .gender.khName,
+  //                                                 maxLines: 1,
+  //                                                 style: TextStyle(
+  //                                                   fontSize:
+  //                                                       controller.langCode ==
+  //                                                               "en"
+  //                                                           ? 18
+  //                                                           : 16,
+  //                                                   fontFamily: controller
+  //                                                               .langCode ==
+  //                                                           "en"
+  //                                                       ? "SourceSansPro-Regular"
+  //                                                       : "Battambang",
+  //                                                   fontWeight: FontWeight.bold,
+  //                                                 ),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                         ],
+  //                                       ),
+  //                                       TableRow(
+  //                                         children: [
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               alignment:
+  //                                                   Alignment.centerRight,
+  //                                               child: AutoSizeText(
+  //                                                 'country'.tr,
+  //                                                 maxLines: 1,
+  //                                                 style: TextStyle(
+  //                                                     fontSize:
+  //                                                         controller.langCode ==
+  //                                                                 "en"
+  //                                                             ? 18
+  //                                                             : 16,
+  //                                                     fontFamily: controller
+  //                                                                 .langCode ==
+  //                                                             "en"
+  //                                                         ? "SourceSansPro-Regular"
+  //                                                         : "Battambang"),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               alignment: Alignment.centerLeft,
+  //                                               child: const Text(
+  //                                                 ":",
+  //                                                 style:
+  //                                                     TextStyle(fontSize: 18),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               alignment: Alignment.centerLeft,
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               child: AutoSizeText(
+  //                                                 textAlign: TextAlign.start,
+  //                                                 maxLines: 1,
+  //                                                 controller.langCode == "en"
+  //                                                     ? controller.workerData!
+  //                                                         .country.enName
+  //                                                     : controller.workerData!
+  //                                                         .country.khName,
+  //                                                 style: TextStyle(
+  //                                                   fontSize:
+  //                                                       controller.langCode ==
+  //                                                               "en"
+  //                                                           ? 18
+  //                                                           : 16,
+  //                                                   fontFamily: controller
+  //                                                               .langCode ==
+  //                                                           "en"
+  //                                                       ? "SourceSansPro-Regular"
+  //                                                       : "Battambang",
+  //                                                   fontWeight: FontWeight.bold,
+  //                                                 ),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                         ],
+  //                                       ),
+  //                                       TableRow(
+  //                                         children: [
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               alignment:
+  //                                                   Alignment.centerRight,
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               child: AutoSizeText(
+  //                                                 'SenderAgency'.tr,
+  //                                                 textAlign: TextAlign.start,
+  //                                                 maxLines: 1,
+  //                                                 style: TextStyle(
+  //                                                     fontSize:
+  //                                                         controller.langCode ==
+  //                                                                 "en"
+  //                                                             ? 18
+  //                                                             : 16,
+  //                                                     fontFamily: controller
+  //                                                                 .langCode ==
+  //                                                             "en"
+  //                                                         ? "SourceSansPro-Regular"
+  //                                                         : "Battambang"),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               alignment: Alignment.centerLeft,
+  //                                               child: const Text(
+  //                                                 ":",
+  //                                                 style:
+  //                                                     TextStyle(fontSize: 18),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                           TableCell(
+  //                                             child: Container(
+  //                                               alignment: Alignment.centerLeft,
+  //                                               padding:
+  //                                                   const EdgeInsets.all(8),
+  //                                               child: AutoSizeText(
+  //                                                 maxLines: 2,
+  //                                                 minFontSize: 12,
+  //                                                 textAlign: TextAlign.start,
+  //                                                 controller.langCode == "en"
+  //                                                     ? controller.workerData!
+  //                                                         .sendingAgency.enName
+  //                                                     : controller.workerData!
+  //                                                         .sendingAgency.khName,
+  //                                                 style: TextStyle(
+  //                                                   fontSize:
+  //                                                       controller.langCode ==
+  //                                                               "en"
+  //                                                           ? 18
+  //                                                           : 16,
+  //                                                   fontFamily: controller
+  //                                                               .langCode ==
+  //                                                           "en"
+  //                                                       ? "SourceSansPro-Regular"
+  //                                                       : "Battambang",
+  //                                                   fontWeight: FontWeight.bold,
+  //                                                 ),
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                         ],
+  //                                       ),
+                    
+
+
  
                       // Table(
                         //   columnWidths: {

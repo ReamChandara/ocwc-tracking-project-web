@@ -56,6 +56,8 @@ class HomeScreen extends GetView<WorkerController> {
     ));
   }
 
+   
+
   Widget _buildBody(context) {
     return Form(
       key: formKey,
@@ -89,6 +91,7 @@ class HomeScreen extends GetView<WorkerController> {
                           controller.changeLang(value);
                         });
                   }),
+                 
                 ],
               ),
               Image.asset(
@@ -100,6 +103,7 @@ class HomeScreen extends GetView<WorkerController> {
               ),
               Text(
                 "title".tr,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w300,
@@ -112,6 +116,7 @@ class HomeScreen extends GetView<WorkerController> {
               ),
               Text(
                 "subTitle".tr,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 16,
                     fontFamily: controller.langCode == "en"
@@ -121,84 +126,88 @@ class HomeScreen extends GetView<WorkerController> {
               SizedBox(
                 height: 40,
               ),
-              TextFieldWidget(
-                onFieldSubmitted: (val) {
-                  controller.setNameController = val;
-                  submit(context);
-                },
-                errorStyle: TextStyle(
-                    fontSize: 16,
-                    fontFamily: controller.langCode == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-                hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontFamily: controller.langCode == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-                labelStyle: TextStyle(
-                    fontSize: 16,
-                    fontFamily: controller.langCode == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-                validator: (val) {
-                  if (val == null || val.isEmpty) {
-                    return "nameWarning".tr;
-                  } else {
-                    return null;
-                  }
-                },
-                controller: controller.nameController,
-                labelText: "latin".tr,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFieldWidget(
-                controller: controller.dateController,
-                labelText: "date".tr,
-                hintText: "DD/MM/YYYY",
-                errorStyle: TextStyle(
-                    fontSize: 16,
-                    fontFamily: controller.langCode == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-                hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontFamily: controller.langCode == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-                labelStyle: TextStyle(
-                    fontSize: 16,
-                    fontFamily: controller.langCode == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-                suffixIcon: IconButton(
-                    onPressed: () async {
-                      controller.showDialogPicker(context);
+              Column(
+                children: [
+                  TextFieldWidget(
+                    onFieldSubmitted: (val) {
+                      controller.setNameController = val;
+                      submit(context);
                     },
-                    icon: const Icon(
-                      Icons.date_range,
-                    )),
-                validator: (val) {
-                  if (val == null || val.isEmpty) {
-                    return "dateWarning".tr;
-                  } else if (!validateDate(val)) {
-                    return "dateMatch".tr;
-                  } else {
-                    return null;
-                  }
-                },
-                onFieldSubmitted: (val) {
-                  controller.setDateController = val;
-                  submit(context);
-                },
-                inputFormatters: [
-                  MaskTextInputFormatter(
-                    mask: '##/##/####',
-                    filter: {"#": RegExp(r'[0-9]')},
-                    type: MaskAutoCompletionType.lazy,
-                  )
+                    errorStyle: TextStyle(
+                        fontSize: 16,
+                        fontFamily: controller.langCode == "en"
+                            ? "SourceSansPro-Regular"
+                            : "Battambang"),
+                    hintStyle: TextStyle(
+                        fontSize: 16,
+                        fontFamily: controller.langCode == "en"
+                            ? "SourceSansPro-Regular"
+                            : "Battambang"),
+                    labelStyle: TextStyle(
+                        fontSize: 16,
+                        fontFamily: controller.langCode == "en"
+                            ? "SourceSansPro-Regular"
+                            : "Battambang"),
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return "nameWarning".tr;
+                      } else {
+                        return null;
+                      }
+                    },
+                    controller: controller.nameController,
+                    labelText: "latin".tr,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFieldWidget(
+                    controller: controller.dateController,
+                    labelText: "date".tr,
+                    hintText: "DD/MM/YYYY",
+                    errorStyle: TextStyle(
+                        fontSize: 16,
+                        fontFamily: controller.langCode == "en"
+                            ? "SourceSansPro-Regular"
+                            : "Battambang"),
+                    hintStyle: TextStyle(
+                        fontSize: 16,
+                        fontFamily: controller.langCode == "en"
+                            ? "SourceSansPro-Regular"
+                            : "Battambang"),
+                    labelStyle: TextStyle(
+                        fontSize: 16,
+                        fontFamily: controller.langCode == "en"
+                            ? "SourceSansPro-Regular"
+                            : "Battambang"),
+                    suffixIcon: IconButton(
+                        onPressed: () async {
+                          controller.showDialogPicker(context);
+                        },
+                        icon: const Icon(
+                          Icons.date_range,
+                        )),
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return "dateWarning".tr;
+                      } else if (!validateDate(val)) {
+                        return "dateMatch".tr;
+                      } else {
+                        return null;
+                      }
+                    },
+                    onFieldSubmitted: (val) {
+                      controller.setDateController = val;
+                      submit(context);
+                    },
+                    inputFormatters: [
+                      MaskTextInputFormatter(
+                        mask: '##/##/####',
+                        filter: {"#": RegExp(r'[0-9]')},
+                        type: MaskAutoCompletionType.lazy,
+                      )
+                    ],
+                  ),
                 ],
               ),
               SizedBox(
