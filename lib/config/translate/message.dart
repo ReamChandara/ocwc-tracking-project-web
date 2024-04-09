@@ -29,17 +29,19 @@ class Message extends Translations {
         "workerpro": "Worker Profile",
         "dateofbirth": "your Date of Birth",
         'workers': "All Workers",
-        "cardDate": "Date",
+        "cardDate": "Expiration Card",
         "noData": "No Data",
         "issuseDate": "Issuse Date",
         "expireDate": "Expire Date",
         "image": "Image",
-        "okay": "Okay"
+        "okay": "Okay",
+        "close": "Close",
+        "viewcard": "View Card"
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
         "subTitle": "សូមបញ្ចូលឈ្មោះនិងថ្ងៃខែឆ្នាំកំណើត",
-        "track": "ស្វែករក",
+        "track": "ត្រួតពិនិត្យ",
         "latin": "ឈ្មោះឡាតាំង",
         "date": "ថ្ងៃខែឆ្នាំកំណើត",
         "nameWarning": "ឈ្មោះពេញ តម្រូវអោយបញ្ចូល។",
@@ -62,11 +64,13 @@ class Message extends Translations {
         "dateofbirth": "ថ្ងៃខែឆ្នាំកំណើត",
         'workers': "ពលករទាំងអស់",
         "noData": "គ្នានទិន្នន័យ",
-        "cardDate": "កាលបរិច្ឆេទ",
+        "cardDate": "សុពលភាពប័ណ្ណ",
         "issuseDate": "កាលបរិច្ឆេទចេញប័ណ្ណ",
         "expireDate": "កាលបរិច្ឆេទអស់សុពលភាព",
         "image": "រូបភាព",
-        "okay": "យល់ព្រម"
+        "okay": "យល់ព្រម",
+        "close": "បិទ",
+        "viewcard": "មើលកាត"
       }
     };
   }

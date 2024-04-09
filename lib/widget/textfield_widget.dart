@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TextFieldWidget extends StatelessWidget {
-  final String labelText;
+  final String? labelText;
   final String? hintText;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final void Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
   final TextStyle? errorStyle;
@@ -14,11 +15,12 @@ class TextFieldWidget extends StatelessWidget {
   final TextStyle? labelStyle;
   const TextFieldWidget(
       {super.key,
-      required this.labelText,
+      this.labelText,
       this.hintText,
       this.inputFormatters,
       this.controller,
       this.suffixIcon,
+      this.prefixIcon,
       this.onFieldSubmitted,
       this.validator,
       this.errorStyle,
@@ -29,14 +31,19 @@ class TextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      style: const TextStyle(fontSize: 14),
       decoration: InputDecoration(
+          contentPadding: const EdgeInsets.only(top: 8, left: 6),
           errorStyle: errorStyle,
-          border: const OutlineInputBorder(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           labelText: labelText,
           hintText: hintText,
           suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon,
           hintStyle: hintStyle,
-          labelStyle: labelStyle),
+          labelStyle: labelStyle,
+          fillColor: Colors.grey.shade200,
+          filled: true),
       validator: validator,
       onFieldSubmitted: onFieldSubmitted,
       inputFormatters: inputFormatters,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -41,6 +42,18 @@ class WorkerController extends GetxController {
   GetStorage storage = GetStorage();
   String storageKey = "langCode";
   ////////////////////////////////////////////////////////////////
+
+  // check options
+  RxBool isScanCard = false.obs;
+  RxBool isSearchName = false.obs;
+
+  void selectOption(String option) {
+    if (option == "scan") {
+      isScanCard.value = true;
+    } else {
+      isSearchName.value = true;
+    }
+  }
 
   // save language data
   saveLocale(String langCode) {
@@ -258,6 +271,76 @@ class WorkerController extends GetxController {
     }
   }
 
+  dialogShowImage({required BuildContext context, required dynamic path}) {
+    Alert(
+        style: AlertStyle(
+          titleStyle: TextStyle(
+            fontFamily:
+                langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
+          ),
+          descStyle: TextStyle(
+            fontFamily:
+                langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
+          ),
+          descPadding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+          animationType: AnimationType.grow,
+          overlayColor: Colors.transparent,
+        ),
+        image: Padding(
+          padding: const EdgeInsets.all(10),
+          child: FlipCard(
+              fill: Fill
+                  .fillBack, // Fill the back side of the card to make in the same size as the front.
+              direction: FlipDirection.HORIZONTAL, // default
+              side: CardSide.BACK, // The side to initially display.
+              front: SizedBox(
+                width: 450,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset("assets/images/ocwc_card.png"),
+                ),
+              ),
+              back: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey.shade200)),
+                width: 450,
+                child: ClipRRect(
+                  child: Image.network(path),
+                ),
+              )),
+        ),
+        context: context,
+        buttons: [
+          DialogButton(
+              child: Text(
+                "close".tr,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontFamily:
+                      langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
+                ),
+              ),
+              onPressed: () {
+                Get.back();
+              })
+        ]).show();
+  }
+
+  void showImageCard(BuildContext context) async {
+    String apiUrl = "$baseUrl$cardImage${workerData!.hashcode}";
+    var response = await http.get(
+      Uri.parse(apiUrl),
+      headers: headers(langCode),
+    );
+    if (response.statusCode == 200) {
+      if (context.mounted) {
+        dialogShowImage(context: context, path: response.body);
+      }
+    }
+  }
+
   void searchWorker(BuildContext context) async {
     String dateReplace = _dateController.text.replaceAll("/", "-");
     laodingDailog(context);
@@ -280,6 +363,7 @@ class WorkerController extends GetxController {
       if (workerModel!.workerData.length > 1) {
         Get.toNamed('/listworker');
       } else {
+        await saveIndex(0);
         workerData = workerModel!.workerData[0];
         falseIndex = workerModel!.workerData[0].tricking
             .indexWhere((element) => element.check == false);

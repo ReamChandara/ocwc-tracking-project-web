@@ -28,7 +28,6 @@ class WebNewScreen extends StatelessWidget {
             animationType: AnimationType.grow,
             overlayColor: Colors.transparent,
           ),
-          title: "image".tr,
           image: Container(
             padding: const EdgeInsets.all(8.0),
             child: Image.network(path),
@@ -37,7 +36,7 @@ class WebNewScreen extends StatelessWidget {
           buttons: [
             DialogButton(
                 child: Text(
-                  "okay".tr,
+                  "close".tr,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
@@ -106,7 +105,7 @@ class WebNewScreen extends StatelessWidget {
                           color: Colors.grey.shade200,
                         ),
                         Container(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 10, top: 10),
                           width: contanstraintWidth,
                           child: Column(
                             children: [
@@ -246,29 +245,33 @@ class WebNewScreen extends StatelessWidget {
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: InkWell(
-                                      onTap: () {
-                                        dialogShowImage(
-                                            controller.workerData!.photo);
-                                      },
-                                      child: Container(
-                                        width: 100,
-                                        height: 80,
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey.shade200,
-                                            width: 3,
-                                          ),
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                              controller.workerData!.photo,
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            dialogShowImage(
+                                                controller.workerData!.photo);
+                                          },
+                                          child: Container(
+                                            width: 100,
+                                            height: 80,
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.grey.shade200,
+                                                width: 3,
+                                              ),
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                  controller.workerData!.photo,
+                                                ),
+                                              ),
+                                              shape: BoxShape.circle,
                                             ),
                                           ),
-                                          shape: BoxShape.circle,
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -459,6 +462,23 @@ class WebNewScreen extends StatelessWidget {
                               ),
                               const SizedBox(
                                 height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 10, bottom: 10),
+                                child: TextButton(
+                                  onPressed: () {
+                                    controller.showImageCard(context);
+                                  },
+                                  child: Text(
+                                    "viewcard".tr,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: controller.langCode == "en"
+                                            ? "SourceSansPro-Regular"
+                                            : "Battambang"),
+                                  ),
+                                ),
                               )
                             ],
                           ),
@@ -879,114 +899,7 @@ class WebNewScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          width: contanstraintWidth,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20))),
-                          child: Text("trackInfo".tr,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: controller.langCode == "en"
-                                      ? "SourceSansPro-Regular"
-                                      : "Battambang")),
-                        ),
-                        Container(
-                          width: contanstraintWidth,
-                          height: 1,
-                          color: Colors.grey.shade200,
-                        ),
-                        SizedBox(
-                          width: contanstraintWidth,
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: controller.workerData!.tricking.length,
-                              itemBuilder: (context, index) {
-                                var track =
-                                    controller.workerData!.tricking[index];
-                                Color? textColor = Colors.green;
-                                if (track.check!) {
-                                  textColor = Colors.green;
-                                } else {
-                                  if (index == controller.falseIndex) {
-                                    textColor = Colors.orange;
-                                  } else {
-                                    textColor = Colors.red[300];
-                                  }
-                                }
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10, top: 10),
-                                  child: ListTile(
-                                      title: Text(
-                                        controller.langCode == "en"
-                                            ? track.title.enTitle
-                                            : track.title.khTilte,
-                                        style: TextStyle(
-                                            fontFamily:
-                                                controller.langCode == "en"
-                                                    ? "SourceSansPro-Regular"
-                                                    : "Battambang"),
-                                      ),
-                                      leading: Image.asset(
-                                        iconImage[index],
-                                        color: Colors.blueAccent.shade100,
-                                        width: 20,
-                                      ),
-                                      trailing: track.attachment == null ||
-                                              track.attachment!.isEmpty
-                                          ? null
-                                          : IconButton(
-                                              onPressed: () {},
-                                              icon: Icon(
-                                                Icons.folder_open,
-                                                color: Colors.blueAccent[100],
-                                              )),
-                                      subtitle: () {
-                                        return Text(
-                                          controller.langCode == "en"
-                                              ? track.date.enDate
-                                              : track.date.khTilte,
-                                          style: TextStyle(
-                                              color: textColor,
-                                              fontFamily:
-                                                  controller.langCode == "en"
-                                                      ? "SourceSansPro-Regular"
-                                                      : "Battambang"),
-                                        );
-                                      }()),
-                                );
-                              }),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.50, 0.50),
-                            blurRadius: 1,
-                            blurStyle: BlurStyle.outer)
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
                           width: contanstraintWidth,
                           alignment: Alignment.center,
                           height: 50,
@@ -1149,6 +1062,113 @@ class WebNewScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
+                          alignment: Alignment.center,
+                          height: 50,
+                          width: contanstraintWidth,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20))),
+                          child: Text("trackInfo".tr,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: controller.langCode == "en"
+                                      ? "SourceSansPro-Regular"
+                                      : "Battambang")),
+                        ),
+                        Container(
+                          width: contanstraintWidth,
+                          height: 1,
+                          color: Colors.grey.shade200,
+                        ),
+                        SizedBox(
+                          width: contanstraintWidth,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: controller.workerData!.tricking.length,
+                              itemBuilder: (context, index) {
+                                var track =
+                                    controller.workerData!.tricking[index];
+                                Color? textColor = Colors.green;
+                                if (track.check!) {
+                                  textColor = Colors.green;
+                                } else {
+                                  if (index == controller.falseIndex) {
+                                    textColor = Colors.orange;
+                                  } else {
+                                    textColor = Colors.red[300];
+                                  }
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 10),
+                                  child: ListTile(
+                                      title: Text(
+                                        controller.langCode == "en"
+                                            ? track.title.enTitle
+                                            : track.title.khTilte,
+                                        style: TextStyle(
+                                            fontFamily:
+                                                controller.langCode == "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                      ),
+                                      leading: Image.asset(
+                                        iconImage[index],
+                                        color: Colors.blueAccent.shade100,
+                                        width: 20,
+                                      ),
+                                      trailing: track.attachment == null ||
+                                              track.attachment!.isEmpty
+                                          ? null
+                                          : IconButton(
+                                              onPressed: () {},
+                                              icon: Icon(
+                                                Icons.folder_open,
+                                                color: Colors.blueAccent[100],
+                                              )),
+                                      subtitle: () {
+                                        return Text(
+                                          controller.langCode == "en"
+                                              ? track.date.enDate
+                                              : track.date.khTilte,
+                                          style: TextStyle(
+                                              color: textColor,
+                                              fontFamily:
+                                                  controller.langCode == "en"
+                                                      ? "SourceSansPro-Regular"
+                                                      : "Battambang"),
+                                        );
+                                      }()),
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.50, 0.50),
+                            blurRadius: 1,
+                            blurStyle: BlurStyle.outer)
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
                           padding: const EdgeInsets.only(top: 10),
                           width: contanstraintWidth,
                           alignment: Alignment.center,
@@ -1213,6 +1233,7 @@ class WebNewScreen extends StatelessWidget {
 
   AppBar _buildAppbar() {
     return AppBar(
+      backgroundColor: const Color.fromARGB(255, 71, 122, 211),
       automaticallyImplyLeading: true,
       centerTitle: true,
       title: Text(
@@ -1377,9 +1398,6 @@ class WebNewScreen extends StatelessWidget {
 //                                         ),
 //                                       ],
 //                                     ),
-
-
-
   // TableRow(
   //                                         children: [
   //                                           TableCell(
@@ -1644,10 +1662,6 @@ class WebNewScreen extends StatelessWidget {
   //                                           ),
   //                                         ],
   //                                       ),
-                    
-
-
- 
                       // Table(
                         //   columnWidths: {
                         //     0: FixedColumnWidth(contanstraintWidth / 2 - 60),
@@ -1770,7 +1784,6 @@ class WebNewScreen extends StatelessWidget {
 
                         //   ],
                         // ),
-     
   // Container(
   //                               color: Colors.red,
   //                               child: Column(
