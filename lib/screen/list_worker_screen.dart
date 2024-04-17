@@ -37,21 +37,74 @@ class _ListWorkerScreenState extends State<ListWorkerScreen> {
                   : "SourceSansPro-Regular"),
         ),
         actions: [
-          Obx(() {
-            return Switch(
-                trackColor: MaterialStateProperty.all(Colors.grey),
-                activeColor: Colors.white,
-                inactiveThumbColor: Colors.white,
-                activeThumbImage: const AssetImage(
-                  'assets/images/cambodia_flag.png',
-                ),
-                inactiveThumbImage:
-                    const AssetImage('assets/images/english_flag.png'),
-                value: controller.changValue.value,
-                onChanged: (value) {
-                  controller.changeLang(value);
-                });
-          }),
+          Obx(() => PopupMenuButton(
+                padding: const EdgeInsets.only(bottom: 6),
+                position: PopupMenuPosition.under,
+                child: controller.initValue.value == "kh"
+                    ? ClipRRect(
+                        child: Image.asset(
+                        "assets/images/cambodia_flag.png",
+                        width: 30,
+                      ))
+                    : ClipRRect(
+                        child: Image.asset(
+                        "assets/images/english_flag.png",
+                        width: 30,
+                      )),
+                onSelected: (value) {
+                  if (value == "kh") {
+                    controller.changeLanguage("kh");
+                  } else if (value == "en") {
+                    controller.changeLanguage("en");
+                  }
+                },
+                itemBuilder: (BuildContext context) => [
+                  controller.initValue.value == "kh"
+                      ? PopupMenuItem(
+                          padding: const EdgeInsets.all(6),
+                          value: "en",
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/english_flag.png",
+                                width: 30,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Text(
+                                "English",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      : PopupMenuItem(
+                          padding: const EdgeInsets.all(6),
+                          value: "kh",
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/cambodia_flag.png",
+                                width: 30,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Text(
+                                "ភាសាខ្មែរ",
+                                style: TextStyle(
+                                  fontFamily: "Battambang",
+                                  fontSize: 14,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                ],
+              ))
         ],
       ),
       body: GetBuilder<WorkerController>(builder: (controller) {
@@ -84,11 +137,11 @@ class _ListWorkerScreenState extends State<ListWorkerScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://img.freepik.com/free-vector/white-abstract-background_23-2148810353.jpg?w=2000&t=st=1712645894~exp=1712646494~hmac=a436a0c82e0a0fc0d78284a8b4589dda6b4231514807fbe31728a480f2c2d8d9"),
-                    ),
+                    // image: const DecorationImage(
+                    //   fit: BoxFit.cover,
+                    //   image: NetworkImage(
+                    //       "https://media.istockphoto.com/id/1370858067/vector/neutral-abstract-background-minimal-poster-template-with-diagonal-shapes-calm-design-with.jpg?s=612x612&w=0&k=20&c=18U2vCQ0oVYOi0uBiGUEGWaUWf4dgHKCURaJvRssIGI="),
+                    // ),
                     boxShadow: const [
                       BoxShadow(
                           color: Colors.grey,

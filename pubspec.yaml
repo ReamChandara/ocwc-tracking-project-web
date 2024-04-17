@@ -1,5 +1,5 @@
 name: tracking_web
-description: "A new Flutter project."
+description: "OCWC Tracking is the mobile application developed by the Ministry of Labour and Vocational Training of the Kingdom of Cambodia for Cambodian migrant workers to track and monitor his/her document and application process status for working overseas. Only users who registered with OCWC Tracking are eligible to track and monitor the application status through scanning QR Code on his/her OCWC card or by entering his/her personal detail such as name and date of birth."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -33,6 +33,12 @@ dependencies:
   flutter_localization: ^0.2.0
   get_storage: ^2.1.1
   flip_card: ^0.7.0
+  qr_code_scanner: ^1.0.1
+  camera: ^0.10.5+9
+  image_picker_for_web: ^3.0.3
+  mobile_scanner: ^4.0.1
+  file_picker: ^8.0.0+1
+  scanning_effect: ^1.0.4
   cupertino_icons: ^1.0.6
 
 dev_dependencies:

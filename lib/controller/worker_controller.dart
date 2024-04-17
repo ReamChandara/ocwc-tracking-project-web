@@ -63,13 +63,11 @@ class WorkerController extends GetxController {
 
   //init for change value on switch widget
   initValueChange() {
-    langCode = storage.read(storageKey) ?? 'en';
-    if (langCode == "en") {
+    langCode = storage.read(storageKey) ?? 'kh';
+    if (langCode == "kh") {
       changValue.value = false;
-      Get.updateLocale(const Locale("en", "US"));
     } else {
       changValue.value = true;
-      Get.updateLocale(const Locale("km", "KH"));
     }
   }
 
@@ -81,20 +79,43 @@ class WorkerController extends GetxController {
   //     Get.updateLocale(const Locale("km", "KH"));
   //   } else {}
   // }
-
-  //change language
-  void changeLang(bool value) async {
-    changValue.value = value;
-    if (value) {
+  RxString initValue = "kh".obs;
+  void changeLanguage(String value) {
+    if (value == "kh") {
       Get.updateLocale(const Locale("km", "KH"));
+      initValue.value = "kh";
       langCode = "kh";
       saveLocale("kh");
     } else {
       Get.updateLocale(const Locale("en", "US"));
       langCode = "en";
+      initValue.value = "en";
       saveLocale("en");
     }
   }
+
+  void initChange() {
+    langCode = storage.read(storageKey) ?? 'kh';
+    if (langCode == "kh") {
+      initValue.value = "kh";
+    } else {
+      initValue.value = "en";
+    }
+  }
+
+  // //change language
+  // void changeLang(bool value) async {
+  //   changValue.value = value;
+  //   if (value) {
+  //     Get.updateLocale(const Locale("en", "US"));
+  //     langCode = "en";
+  //     saveLocale("en");
+  //   } else {
+  //     Get.updateLocale(const Locale("km", "KH"));
+  //     langCode = "kh";
+  //     saveLocale("kh");
+  //   }
+  // }
 
   get nameController {
     return _nameController;
@@ -451,7 +472,7 @@ class WorkerController extends GetxController {
   void initData() async {
     //initLocale();
     initWorkerData();
-    initValueChange();
+    initChange();
   }
 
   @override

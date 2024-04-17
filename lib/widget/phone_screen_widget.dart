@@ -21,22 +21,22 @@ class PhoneScreen extends StatelessWidget {
                 ? "Battambang"
                 : "SourceSansPro-Regular"),
       ),
-      actions: [
-        Obx(() {
-          return Switch(
-              trackColor: MaterialStateProperty.all(Colors.grey),
-              activeColor: Colors.white,
-              inactiveThumbColor: Colors.white,
-              activeThumbImage: const AssetImage(
-                'assets/images/cambodia_flag.png',
-              ),
-              inactiveThumbImage:
-                  const AssetImage('assets/images/english_flag.png'),
-              value: controller.changValue.value,
-              onChanged: (value) {
-                controller.changeLang(value);
-              });
-        }),
+      actions: const [
+        // Obx(() {
+        //   return Switch(
+        //       trackColor: MaterialStateProperty.all(Colors.grey),
+        //       activeColor: Colors.white,
+        //       inactiveThumbColor: Colors.white,
+        //       activeThumbImage: const AssetImage(
+        //         'assets/images/cambodia_flag.png',
+        //       ),
+        //       inactiveThumbImage:
+        //           const AssetImage('assets/images/english_flag.png'),
+        //       value: controller.changValue.value,
+        //       onChanged: (value) {
+        //         controller.changeLang(value);
+        //       });
+        // }),
       ],
     );
   }

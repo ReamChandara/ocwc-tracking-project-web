@@ -2,7 +2,7 @@
 //const String baseUrl = "http://www.uat.tracking.ocwc.co";
 
 //production url
-const String baseUrl = "http://www.go.tracking.ocwc.co/api/v1";
+const String baseUrl = "https://go.tracking.ocwc.co/api/v1";
 
 //search list worker
 const String searchWorkerUrl = "/workers/search";

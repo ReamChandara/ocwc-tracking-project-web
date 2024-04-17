@@ -1245,21 +1245,77 @@ class WebNewScreen extends StatelessWidget {
                 : "SourceSansPro-Regular"),
       ),
       actions: [
-        Obx(() {
-          return Switch(
-              trackColor: MaterialStateProperty.all(Colors.grey),
-              activeColor: Colors.white,
-              inactiveThumbColor: Colors.white,
-              activeThumbImage: const AssetImage(
-                'assets/images/cambodia_flag.png',
+        Obx(() => Padding(
+              padding: const EdgeInsets.all(10),
+              child: PopupMenuButton(
+                padding: const EdgeInsets.all(10),
+                position: PopupMenuPosition.under,
+                child: controller.initValue.value == "kh"
+                    ? ClipRRect(
+                        child: Image.asset(
+                        "assets/images/cambodia_flag.png",
+                        width: 30,
+                      ))
+                    : ClipRRect(
+                        child: Image.asset(
+                        "assets/images/english_flag.png",
+                        width: 30,
+                      )),
+                onSelected: (value) {
+                  if (value == "kh") {
+                    controller.changeLanguage("kh");
+                  } else if (value == "en") {
+                    controller.changeLanguage("en");
+                  }
+                },
+                itemBuilder: (BuildContext context) => [
+                  controller.initValue.value == "kh"
+                      ? PopupMenuItem(
+                          padding: const EdgeInsets.all(10),
+                          value: "en",
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/english_flag.png",
+                                width: 30,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Text(
+                                "English",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      : PopupMenuItem(
+                          padding: const EdgeInsets.all(10),
+                          value: "kh",
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/cambodia_flag.png",
+                                width: 30,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Text(
+                                "ភាសាខ្មែរ",
+                                style: TextStyle(
+                                  fontFamily: "Battambang",
+                                  fontSize: 14,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                ],
               ),
-              inactiveThumbImage:
-                  const AssetImage('assets/images/english_flag.png'),
-              value: controller.changValue.value,
-              onChanged: (value) {
-                controller.changeLang(value);
-              });
-        }),
+            ))
       ],
     );
   }
