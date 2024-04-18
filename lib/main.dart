@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
       ),
       initialRoute: "/home",
+      home: HomeScreen(),
       routes: {
         "/home": (context) => HomeScreen(),
         "/workerDetail": (context) => const WorkerDetail(),
