@@ -334,6 +334,7 @@ class WorkerController extends GetxController {
         context: context,
         buttons: [
           DialogButton(
+              color: const Color.fromARGB(255, 71, 122, 211),
               child: Text(
                 "close".tr,
                 style: TextStyle(
@@ -426,38 +427,6 @@ class WorkerController extends GetxController {
                 fontFamily:
                     langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
                 useMaterial3: false),
-            // data: Theme.of(context).copyWith(
-            //   dialogBackgroundColor: Colors.yellow, // days/years gridview
-            //   textTheme: TextTheme(
-            //     headlineSmall: GoogleFonts.greatVibes(), // Selected Date landscape
-            //     titleLarge: GoogleFonts.greatVibes(), // Selected Date portrait
-            //     labelSmall: GoogleFonts.greatVibes(), // Title - SELECT DATE
-            //     bodyLarge: GoogleFonts.greatVibes(), // year gridbview picker
-            //     titleMedium: GoogleFonts.greatVibes(color: Colors.black), // input
-            //     titleSmall: GoogleFonts.greatVibes(), // month/year picker
-            //     bodySmall: GoogleFonts.greatVibes(), // days
-            //   ),
-            //   colorScheme: Theme.of(context).colorScheme.copyWith(
-            //         // Title, selected date and day selection background (dark and light mode)
-            //         surface: Colors.amber,
-            //         primary: Colors.amber,
-            //         // Title, selected date and month/year picker color (dark and light mode)
-            //         onSurface: Colors.black,
-            //         onPrimary: Colors.black,
-            //       ),
-            //   // Buttons
-            //   textButtonTheme: TextButtonThemeData(
-            //     style: TextButton.styleFrom(
-            //       foregroundColor: Colors.yellow,
-            //       backgroundColor: Colors.pink,
-            //       textStyle: GoogleFonts.greatVibes(),
-            //     ),
-            //   ),
-            //   // Input
-            //   inputDecorationTheme: InputDecorationTheme(
-            //     labelStyle: GoogleFonts.greatVibes(), // Input label
-            //   ),
-            // ),
             child: child!,
           );
         },

@@ -56,7 +56,7 @@ class HomeScreen extends GetView<WorkerController> {
   Widget build(BuildContext context) {
     return Scaffold(body: LayoutBuilder(
       builder: (context, boxConstraints) {
-        if (boxConstraints.maxWidth > 900) {
+        if (boxConstraints.maxWidth > 1000) {
           return Container(
             width: boxConstraints.maxWidth,
             height: boxConstraints.maxHeight,
@@ -71,7 +71,7 @@ class HomeScreen extends GetView<WorkerController> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Image.asset(
-                  "assets/images/splash_logo_new1.png",
+                  "assets/images/splash_logo_new.png",
                   width: 400,
                 ),
                 Container(
@@ -162,31 +162,6 @@ class HomeScreen extends GetView<WorkerController> {
                                             )
                                     ],
                                   ))
-                              // IconButton(
-                              //     onPressed: () {
-                              //       controller.isSearchName.value = false;
-                              //     },
-                              //     icon: Icon(
-                              //       Icons.arrow_back,
-                              //       color: Colors.white,
-                              //     )),
-                              // Obx(() {
-                              //   return Switch(
-                              //       trackColor:
-                              //           MaterialStateProperty.all(Colors.grey),
-                              //       activeColor: Colors.white,
-                              //       inactiveThumbColor: Colors.white,
-                              //       activeThumbImage: const AssetImage(
-                              //         'assets/images/english_flag.png',
-                              //       ),
-                              //       inactiveThumbImage: const AssetImage(
-                              //         'assets/images/cambodia_flag.png',
-                              //       ),
-                              //       value: controller.changValue.value,
-                              //       onChanged: (value) {
-                              //         controller.changeLang(value);
-                              //       });
-                              // }),
                             ],
                           ),
                           Text(
@@ -473,7 +448,7 @@ class HomeScreen extends GetView<WorkerController> {
                 children: [
                   SizedBox(height: 20),
                   Image.asset(
-                    "assets/images/splash_logo_new1.png",
+                    "assets/images/splash_logo_new.png",
                     width: 250,
                   ),
                   SizedBox(height: 20),
