@@ -12,9 +12,10 @@ class CustomText extends StatelessWidget {
     this.dataStyle,
     required this.data,
     required this.controller,
-    this.maxFontSize = 16,
+    this.maxFontSize = 18,
     this.minFontSize = 12,
     this.maxLine = 1,
+    this.dataFlex = 1,
   });
   final Alignment? alignmentTile;
   final String title;
@@ -24,6 +25,7 @@ class CustomText extends StatelessWidget {
   final double maxFontSize;
   final double minFontSize;
   final int maxLine;
+  final int dataFlex;
   final WorkerController controller;
 
   @override
@@ -38,13 +40,13 @@ class CustomText extends StatelessWidget {
             alignment: alignmentTile ?? Alignment.centerLeft,
             child: AutoSizeText(
               title,
-              minFontSize: 12,
+              minFontSize: minFontSize,
               maxLines: 1,
               maxFontSize: maxFontSize,
               style: titleStyle ??
                   TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: controller.langCode == "en" ? 16 : 16,
+                      fontSize: controller.langCode == "en" ? 18 : 16,
                       fontFamily: controller.langCode == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
@@ -58,7 +60,7 @@ class CustomText extends StatelessWidget {
           child: const Text(":"),
         ),
         Flexible(
-          flex: 1,
+          flex: dataFlex,
           child: Container(
             padding: const EdgeInsets.only(left: 8),
             alignment: Alignment.centerLeft,

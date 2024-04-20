@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:tracking_web/controller/worker_controller.dart';
 import '../widget/web_screen_widget.dart';
 
-class WorkerDetail extends StatelessWidget {
+class WorkerDetail extends GetView<WorkerController> {
   const WorkerDetail({super.key});
 
   @override
