@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tracking_web/config/helper/function.dart';
@@ -30,25 +29,8 @@ class HomeScreen extends GetView<WorkerController> {
     if (validation()) {
     } else {
       controller.searchWorker(context);
+      //  Get.rootDelegate.toNamed(Routes.detail);
     }
-  }
-
-  get buildNewBody {
-    return Form(
-        key: formKey,
-        child: Container(
-          color: Colors.yellow,
-        ));
-  }
-
-  // This function is used to update the page title
-  void setPageTitle(String title, BuildContext context) {
-    SystemChrome.setApplicationSwitcherDescription(
-        ApplicationSwitcherDescription(
-      label: title,
-      primaryColor:
-          Theme.of(context).primaryColor.value, // This line is required
-    ));
   }
 
   @override
@@ -293,140 +275,6 @@ class HomeScreen extends GetView<WorkerController> {
                     ),
                   ),
                 )
-                // Obx(() => controller.isScanCard.value ||
-                //         controller.isSearchName.value
-                //     ? SizedBox()
-                //     : Container(
-                //         width: 400,
-                //         margin:
-                //             EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                //         decoration: BoxDecoration(
-                //           color: Color.fromRGBO(35, 54, 93, 0.5),
-                //           borderRadius: BorderRadius.circular(20),
-                //         ),
-                //         child: SingleChildScrollView(
-                //           child: Column(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //               SizedBox(height: 20),
-                //               Text(
-                //                 "Wellome !",
-                //                 style: TextStyle(
-                //                     fontSize: 26, color: Colors.white),
-                //               ),
-                //               SizedBox(
-                //                 height: 20,
-                //               ),
-                //               Padding(
-                //                 padding:
-                //                     const EdgeInsets.symmetric(horizontal: 8),
-                //                 child: Text(
-                //                   textAlign: TextAlign.center,
-                //                   "You can find Your OCWC in information by scan card and by your full name\n",
-                //                   style: TextStyle(
-                //                       fontSize: 18, color: Colors.white),
-                //                 ),
-                //               ),
-                //               InkWell(
-                //                 onTap: () {
-                //                   Get.toNamed("/scanqr");
-                //                 },
-                //                 child: Container(
-                //                   width: 350,
-                //                   height: 60,
-                //                   padding: EdgeInsets.only(
-                //                       left: 6, top: 6, bottom: 6),
-                //                   decoration: BoxDecoration(
-                //                     borderRadius: BorderRadius.circular(20),
-                //                     color: Colors.white,
-                //                   ),
-                //                   child: Row(
-                //                     children: [
-                //                       Container(
-                //                         width: 50,
-                //                         height: 50,
-                //                         padding: EdgeInsets.all(8),
-                //                         decoration: BoxDecoration(
-                //                           color:
-                //                               Color.fromARGB(255, 71, 122, 211),
-                //                           shape: BoxShape.circle,
-                //                         ),
-                //                         child: Image.asset(
-                //                           "assets/icons/credit-card.png",
-                //                           width: 30,
-                //                           color: Colors.white,
-                //                         ),
-                //                       ),
-                //                       SizedBox(
-                //                         width: 20,
-                //                       ),
-                //                       Text(
-                //                         "Scan Card",
-                //                         style: TextStyle(
-                //                           fontWeight: FontWeight.bold,
-                //                           color:
-                //                               Color.fromARGB(255, 71, 122, 211),
-                //                           fontSize: 18,
-                //                         ),
-                //                       )
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //               InkWell(
-                //                 onTap: () {
-                //                   controller.selectOption("search");
-                //                 },
-                //                 child: Container(
-                //                   margin: EdgeInsets.all(10),
-                //                   width: 350,
-                //                   height: 60,
-                //                   padding: EdgeInsets.only(
-                //                       left: 6, top: 6, bottom: 6),
-                //                   decoration: BoxDecoration(
-                //                     borderRadius: BorderRadius.circular(20),
-                //                     color: Colors.white,
-                //                   ),
-                //                   child: Row(
-                //                     children: [
-                //                       Container(
-                //                         width: 50,
-                //                         height: 50,
-                //                         padding: EdgeInsets.all(8),
-                //                         decoration: BoxDecoration(
-                //                           color:
-                //                               Color.fromARGB(255, 71, 122, 211),
-                //                           shape: BoxShape.circle,
-                //                         ),
-                //                         child: Image.asset(
-                //                           "assets/icons/edit.png",
-                //                           width: 40,
-                //                           color: Colors.white,
-                //                         ),
-                //                       ),
-                //                       SizedBox(
-                //                         width: 20,
-                //                       ),
-                //                       Text(
-                //                         "Search Name",
-                //                         style: TextStyle(
-                //                           fontWeight: FontWeight.bold,
-                //                           color:
-                //                               Color.fromARGB(255, 71, 122, 211),
-                //                           fontSize: 18,
-                //                         ),
-                //                       )
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //               SizedBox(
-                //                 height: 20,
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       )),
               ],
             ),
           );
@@ -680,43 +528,5 @@ class HomeScreen extends GetView<WorkerController> {
         }
       },
     ));
-  }
-
-//  body: Center(child: SingleChildScrollView(child: _buildBody(context))),
-}
-
-class ListItems extends StatelessWidget {
-  const ListItems({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          InkWell(
-            onTap: () {},
-            child: Container(
-              height: 50,
-              color: Colors.amber[100],
-              child: const Center(child: Text('Entry A')),
-            ),
-          ),
-          const Divider(),
-          Container(
-            height: 50,
-            color: Colors.amber[200],
-            child: const Center(child: Text('Entry B')),
-          ),
-          const Divider(),
-          Container(
-            height: 50,
-            color: Colors.amber[300],
-            child: const Center(child: Text('Entry C')),
-          ),
-        ],
-      ),
-    );
   }
 }

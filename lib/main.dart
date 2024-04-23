@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tracking_web/binding/home_binding.dart';
-import 'package:tracking_web/screen/detial_worker_screen.dart';
-import 'package:tracking_web/screen/home_screen.dart';
-import 'package:tracking_web/screen/scan_qr_screen.dart';
+import 'package:tracking_web/config/routes/app_route.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'config/translate/message.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'screen/list_worker_screen.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setPathUrlStrategy();
   await GetStorage.init();
   runApp(MyApp(locale: locale()));
 }
@@ -29,6 +27,8 @@ Locale locale() {
   }
 }
 
+void saveRoute() {}
+
 class MyApp extends StatelessWidget {
   final Locale locale;
   const MyApp({super.key, required this.locale});
@@ -36,10 +36,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return GetMaterialApp.router(
       title: "OCWC Tracking",
       translations: Message(),
       locale: locale,
+      initialBinding: HomeBinding(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -50,20 +51,13 @@ class MyApp extends StatelessWidget {
         Locale("km", "KH"),
       ],
       fallbackLocale: const Locale("km", "KH"),
-      initialBinding: HomeBinding(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "SourceSansPro-Regular",
         useMaterial3: false,
       ),
-      initialRoute: "/home",
-      home: HomeScreen(),
-      routes: {
-        "/home": (context) => HomeScreen(),
-        "/workerDetail": (context) => const WorkerDetail(),
-        "/listworker": (context) => const ListWorkerScreen(),
-        "/scanqr": (context) => const ScanQRScreen(),
-      },
+      getPages: AppPages.pages,
+      routerDelegate: AppRouterDelegate(),
     );
   }
 }

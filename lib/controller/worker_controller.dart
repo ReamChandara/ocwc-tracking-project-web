@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/config/constant/api_constant.dart';
 import 'package:http/http.dart' as http;
+import 'package:tracking_web/config/routes/app_route.dart';
 import '../models/validation_message.dart';
 import '../models/worker_models.dart';
 
@@ -265,7 +266,8 @@ class WorkerController extends GetxController {
     if (workerData != null) {
       falseIndex =
           workerData!.tricking.indexWhere((element) => element.check == false);
-      Get.toNamed("/workerDetail");
+
+      Get.rootDelegate.toNamed(Routes.detail);
     }
   }
 
@@ -379,29 +381,26 @@ class WorkerController extends GetxController {
     );
 
     if (response.statusCode == 200) {
-      Get.back();
       await saveWorkerData();
       workerModel = parseFromJson(response.body);
       if (workerModel!.workerData.length > 1) {
-        Get.toNamed('/listworker');
+        Get.rootDelegate.toNamed(Routes.listWorker);
       } else {
         await saveIndex(0);
         workerData = workerModel!.workerData[0];
         falseIndex = workerModel!.workerData[0].tricking
             .indexWhere((element) => element.check == false);
         loading = false;
-        Get.toNamed("/workerDetail");
+        Get.rootDelegate.toNamed(Routes.detail);
       }
       loading = false;
       update();
     } else if (response.statusCode == 404) {
-      Get.back();
       if (!context.mounted) {
       } else {
         showDialog(context, jsonDecode(response.body)["message"]);
       }
     } else if (response.statusCode == 422) {
-      Get.back();
       ValidationMessage valiDateMess =
           ValidationMessage.fromJson(jsonDecode(response.body));
       if (context.mounted) {

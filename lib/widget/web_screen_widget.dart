@@ -709,7 +709,6 @@ class WebNewScreen extends StatelessWidget {
   AppBar _buildAppbar() {
     return AppBar(
       backgroundColor: const Color.fromARGB(255, 71, 122, 211),
-      automaticallyImplyLeading: true,
       centerTitle: true,
       title: Text(
         "appbarTitle".tr,
