@@ -4,6 +4,6 @@ import 'package:tracking_web/controller/worker_controller.dart';
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => WorkerController());
+    Get.put(WorkerController());
   }
 }

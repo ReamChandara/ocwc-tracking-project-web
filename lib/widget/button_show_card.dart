@@ -18,7 +18,7 @@ class ButtonShowCard extends StatelessWidget {
         controller.showImageCard(context);
       },
       child: Container(
-        margin: const EdgeInsets.all(12),
+        //  margin: const EdgeInsets.all(12),
         alignment: Alignment.center,
         height: 42,
         decoration: BoxDecoration(

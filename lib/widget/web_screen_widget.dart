@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/config/helper/function.dart';
@@ -81,6 +82,7 @@ class WebNewScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(
                               left: 10,
                               top: 10,
+                              right: 10,
                             ),
                             width: 400,
                             height: height,
@@ -95,7 +97,9 @@ class WebNewScreen extends StatelessWidget {
                                 child: Container(
                                   width: 120,
                                   height: 100,
-                                  margin: const EdgeInsets.only(right: 10),
+                                  margin: const EdgeInsets.only(
+                                    right: 10,
+                                  ),
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors.grey.shade200,
@@ -167,6 +171,9 @@ class WebNewScreen extends StatelessWidget {
                                       : controller
                                           .workerData!.sendingAgency.khName,
                                   controller: controller),
+                              const SizedBox(
+                                height: 10,
+                              ),
                               ButtonShowCard(controller: controller),
                             ].withSpaceBetween(height: 10)),
                           )
@@ -354,13 +361,12 @@ class WebNewScreen extends StatelessWidget {
                             controller: controller,
                             title: "cardDate".tr,
                           ),
-                          SizedBox(
+                          Container(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
                             width: 400,
+                            height: 90,
                             child: Column(
                                 children: [
-                              const SizedBox(
-                                height: 10,
-                              ),
                               CustomText(
                                   title: "issuseDate".tr,
                                   data: controller.workerData!.issuedDate
@@ -373,7 +379,6 @@ class WebNewScreen extends StatelessWidget {
                                           .enExpiresDate ??
                                       "noData".tr,
                                   controller: controller),
-                              const SizedBox(height: 10),
                             ].withSpaceBetween(height: 10)),
                           ),
                         ],
@@ -389,12 +394,8 @@ class WebNewScreen extends StatelessWidget {
                               title: "workAddress".tr),
                           Container(
                             width: boxConstraints.maxWidth - 520,
-                            height: 1,
-                            color: Colors.grey.shade200,
-                          ),
-                          Container(
-                            width: boxConstraints.maxWidth - 520,
-                            alignment: Alignment.center,
+                            height: 90,
+                            alignment: Alignment.topCenter,
                             padding: const EdgeInsets.all(10),
                             child: Text(
                               controller.langCode == "en"
@@ -450,6 +451,7 @@ class WebNewScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(
                               left: 10,
                               top: 10,
+                              right: 10,
                             ),
                             width: contanstraintWidth,
                             child: Column(
@@ -527,7 +529,9 @@ class WebNewScreen extends StatelessWidget {
                                       : controller
                                           .workerData!.sendingAgency.khName,
                                   controller: controller),
-                              ButtonShowCard(controller: controller)
+                              const SizedBox(height: 10),
+                              ButtonShowCard(controller: controller),
+                              const SizedBox(height: 10),
                             ].withSpaceBetween(height: 10)),
                           )
                         ]),

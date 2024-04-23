@@ -381,17 +381,18 @@ class WorkerController extends GetxController {
     );
 
     if (response.statusCode == 200) {
+      Get.back();
       await saveWorkerData();
       workerModel = parseFromJson(response.body);
       if (workerModel!.workerData.length > 1) {
-        Get.rootDelegate.toNamed(Routes.listWorker);
+        Get.toNamed(Routes.detail);
       } else {
         await saveIndex(0);
         workerData = workerModel!.workerData[0];
         falseIndex = workerModel!.workerData[0].tricking
             .indexWhere((element) => element.check == false);
         loading = false;
-        Get.rootDelegate.toNamed(Routes.detail);
+        Get.toNamed(Routes.detail);
       }
       loading = false;
       update();

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tracking_web/binding/home_binding.dart';
 import 'package:tracking_web/config/routes/app_route.dart';
+import 'package:tracking_web/screen/home_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'config/translate/message.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp.router(
+    return GetMaterialApp(
       title: "OCWC Tracking",
       translations: Message(),
       locale: locale,
@@ -56,8 +57,9 @@ class MyApp extends StatelessWidget {
         fontFamily: "SourceSansPro-Regular",
         useMaterial3: false,
       ),
+      home: HomeScreen(),
       getPages: AppPages.pages,
-      routerDelegate: AppRouterDelegate(),
+      // routerDelegate: AppRouterDelegate(),
     );
   }
 }
