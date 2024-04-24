@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/config/helper/function.dart';
@@ -41,6 +40,7 @@ class WebNewScreen extends StatelessWidget {
           context: context,
           buttons: [
             DialogButton(
+                color: const Color.fromARGB(255, 71, 122, 211),
                 child: Text(
                   "close".tr,
                   style: TextStyle(
@@ -62,7 +62,7 @@ class WebNewScreen extends StatelessWidget {
       body: LayoutBuilder(
         builder: (context, boxConstraints) {
           var contanstraintWidth = 600.0;
-          double height = 450;
+          double height = 500;
           if (boxConstraints.maxWidth >= 1000) {
             return SingleChildScrollView(
               child: Column(children: [
@@ -581,6 +581,8 @@ class WebNewScreen extends StatelessWidget {
                               SizedBox(
                                 width: contanstraintWidth,
                                 child: ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount:
                                         controller.workerData!.tricking.length,

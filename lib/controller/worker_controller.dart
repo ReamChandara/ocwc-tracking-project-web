@@ -353,63 +353,80 @@ class WorkerController extends GetxController {
   }
 
   void showImageCard(BuildContext context) async {
+    laodingDailog(context);
     String apiUrl = "$baseUrl$cardImage${workerData!.hashcode}";
-    var response = await http.get(
-      Uri.parse(apiUrl),
-      headers: headers(langCode),
-    );
-    if (response.statusCode == 200) {
-      if (context.mounted) {
-        dialogShowImage(context: context, path: response.body);
+    try {
+      var response = await http.get(
+        Uri.parse(apiUrl),
+        headers: headers(langCode),
+      );
+      if (response.statusCode == 200) {
+        Get.back();
+        if (context.mounted) {
+          dialogShowImage(context: context, path: response.body);
+        }
+      } else {
+        if (context.mounted) {
+          showWarningDialog(context: context, des: "something went wrong");
+        }
       }
+    } catch (e) {
+      Get.back();
     }
   }
 
   void searchWorker(BuildContext context) async {
     String dateReplace = _dateController.text.replaceAll("/", "-");
     laodingDailog(context);
+    try {
+      String apiUrl = baseUrl + searchWorkerUrl;
+      var body = <String, String>{
+        "full_name": _nameController.text,
+        "dob": dateReplace,
+      };
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers(langCode),
+        body: jsonEncode(body),
+      );
 
-    String apiUrl = baseUrl + searchWorkerUrl;
-    var body = <String, String>{
-      "full_name": _nameController.text,
-      "dob": dateReplace,
-    };
-    var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: headers(langCode),
-      body: jsonEncode(body),
-    );
-
-    if (response.statusCode == 200) {
-      Get.back();
-      await saveWorkerData();
-      workerModel = parseFromJson(response.body);
-      if (workerModel!.workerData.length > 1) {
-        Get.toNamed(Routes.detail);
-      } else {
-        await saveIndex(0);
-        workerData = workerModel!.workerData[0];
-        falseIndex = workerModel!.workerData[0].tricking
-            .indexWhere((element) => element.check == false);
+      if (response.statusCode == 200) {
+        Get.back();
+        await saveWorkerData();
+        workerModel = parseFromJson(response.body);
+        if (workerModel!.workerData.length > 1) {
+          Get.toNamed(Routes.detail);
+        } else {
+          await saveIndex(0);
+          workerData = workerModel!.workerData[0];
+          falseIndex = workerModel!.workerData[0].tricking
+              .indexWhere((element) => element.check == false);
+          loading = false;
+          Get.toNamed(Routes.detail);
+        }
         loading = false;
-        Get.toNamed(Routes.detail);
-      }
-      loading = false;
-      update();
-    } else if (response.statusCode == 404) {
-      if (!context.mounted) {
+        update();
+      } else if (response.statusCode == 404) {
+        Get.back();
+        if (!context.mounted) {
+        } else {
+          showDialog(context, jsonDecode(response.body)["message"]);
+        }
+      } else if (response.statusCode == 422) {
+        Get.back();
+        ValidationMessage valiDateMess =
+            ValidationMessage.fromJson(jsonDecode(response.body));
+        if (context.mounted) {
+          showWarningDialog(
+              context: context,
+              title: valiDateMess.message,
+              des: valiDateMess.data.dob?.first ?? "");
+        }
       } else {
-        showDialog(context, jsonDecode(response.body)["message"]);
+        Get.back();
       }
-    } else if (response.statusCode == 422) {
-      ValidationMessage valiDateMess =
-          ValidationMessage.fromJson(jsonDecode(response.body));
-      if (context.mounted) {
-        showWarningDialog(
-            context: context,
-            title: valiDateMess.message,
-            des: valiDateMess.data.dob?.first ?? "");
-      }
+    } catch (e) {
+      Get.back();
     }
   }
 

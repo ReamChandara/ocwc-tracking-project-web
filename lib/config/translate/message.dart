@@ -7,7 +7,7 @@ class Message extends Translations {
       "en_US": {
         "title": "Find Your OCWC information",
         "subTitle": "Enter latin name and date of birth",
-        "track": "Track",
+        "track": "Search",
         "latin": "Latin Name",
         "date": "Date Of Birth",
         "nameWarning": "Latin name is required.",
@@ -41,7 +41,7 @@ class Message extends Translations {
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
         "subTitle": "សូមបញ្ចូលឈ្មោះឡាតាំងនិងថ្ងៃខែឆ្នាំកំណើត",
-        "track": "ត្រួតពិនិត្យ",
+        "track": "ស្វែងរក",
         "latin": "ឈ្មោះឡាតាំង",
         "date": "ថ្ងៃខែឆ្នាំកំណើត",
         "nameWarning": "ឈ្មោះឡាតាំង តម្រូវអោយបញ្ចូល។",
@@ -55,7 +55,7 @@ class Message extends Translations {
         "country": "ប្រទេស",
         "SenderAgency": "ភ្នាក់ងារ",
         "trackInfo": "ព័ត៌មាន OCWC",
-        "workAddress": "អសយដ្ឋានការងារ",
+        "workAddress": "អាសយដ្ឋានការងារ",
         "appbarTitle": "ប្រព័ន្ធតាមដាន OCWC",
         'loading': "សូមរង់ចាំ",
         "finding": "កំពុងស្វែងរក",
