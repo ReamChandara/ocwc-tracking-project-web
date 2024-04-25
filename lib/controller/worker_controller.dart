@@ -262,7 +262,7 @@ class WorkerController extends GetxController {
 
   void routeToDetail(int index) async {
     await saveIndex(index);
-    workerData = workerModel!.workerData[index];
+    workerData = workerModel!.workerDatas[index];
     if (workerData != null) {
       falseIndex =
           workerData!.tricking.indexWhere((element) => element.check == false);
@@ -285,7 +285,7 @@ class WorkerController extends GetxController {
     );
     if (response.statusCode == 200) {
       workerModel = parseFromJson(response.body);
-      workerData = workerModel!.workerData[index];
+      workerData = workerModel!.workerDatas[index];
       falseIndex = workerData!.tricking.indexWhere(
         (element) => element.check == false,
       );
@@ -375,6 +375,23 @@ class WorkerController extends GetxController {
     }
   }
 
+  void searchWorkByQr(String data) async {
+    List<String> hashCodes = data.split("=");
+    String apiUrl = baseUrl + searchWorkerQr;
+    Map<String, String> body = {"qr_code": hashCodes[1]};
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      headers: headers(langCode),
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      workerData = WorkerData.fromJson(
+        jsonDecode(response.body)["data"],
+      );
+      loading = false;
+    }
+  }
+
   void searchWorker(BuildContext context) async {
     String dateReplace = _dateController.text.replaceAll("/", "-");
     laodingDailog(context);
@@ -394,12 +411,12 @@ class WorkerController extends GetxController {
         Get.back();
         await saveWorkerData();
         workerModel = parseFromJson(response.body);
-        if (workerModel!.workerData.length > 1) {
-          Get.toNamed(Routes.detail);
+        if (workerModel!.workerDatas.length > 1) {
+          Get.toNamed(Routes.listWorker);
         } else {
           await saveIndex(0);
-          workerData = workerModel!.workerData[0];
-          falseIndex = workerModel!.workerData[0].tricking
+          workerData = workerModel!.workerDatas[0];
+          falseIndex = workerModel!.workerDatas[0].tricking
               .indexWhere((element) => element.check == false);
           loading = false;
           Get.toNamed(Routes.detail);

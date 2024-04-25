@@ -6,7 +6,7 @@ const String baseUrl = "https://go.tracking.ocwc.co/api/v1";
 
 //search list worker
 const String searchWorkerUrl = "/workers/search";
-
+const String searchWorkerQr = "/workers/search-by-qr";
 const String cardImage = "/workers/preview-card?id=";
 
 //search one worker

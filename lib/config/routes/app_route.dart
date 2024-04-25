@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tracking_web/binding/home_binding.dart';
 import 'package:tracking_web/screen/list_worker_screen.dart';
+import 'package:tracking_web/screen/scan_card_worker_screen.dart';
 import 'package:tracking_web/screen/test_screen.dart';
 import '../../screen/detial_worker_screen.dart';
 import '../../screen/home_screen.dart';
@@ -11,6 +12,7 @@ abstract class Routes {
   static const detail = '/details';
   static const listWorker = '/listWorker';
   static const test = "/test";
+  static const scanWorker = "/scanWorker";
 }
 
 abstract class AppPages {
@@ -28,6 +30,10 @@ abstract class AppPages {
       name: Routes.detail,
       binding: HomeBinding(),
       page: () => const WorkerDetail(),
+    ),
+    GetPage(
+      name: Routes.scanWorker,
+      page: () => const ScanWorkerCard(),
     ),
     GetPage(
       name: Routes.test,

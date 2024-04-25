@@ -9,13 +9,11 @@ List<WorkerModel> parseListWorkerFromJson(String json) {
 }
 
 class WorkerModel {
-  final List<WorkerData> workerData;
-
-  WorkerModel({required this.workerData});
-
+  final List<WorkerData> workerDatas;
+  WorkerModel({required this.workerDatas});
   factory WorkerModel.fromJson(Map<String, dynamic> json) {
     return WorkerModel(
-      workerData: List<WorkerData>.from(
+      workerDatas: List<WorkerData>.from(
         json["data"].map((e) => WorkerData.fromJson(e)),
       ),
     );

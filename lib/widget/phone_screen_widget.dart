@@ -184,7 +184,7 @@ class PhoneScreen extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             controller
-                                .workerModel!.workerData[0].fullName.enName,
+                                .workerModel!.workerDatas[0].fullName.enName,
                             style: const TextStyle(
                               fontSize: 16,
                               fontFamily: "SourceSansPro-Regular",

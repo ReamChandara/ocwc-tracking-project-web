@@ -186,10 +186,10 @@ class _ListWorkerScreenState extends State<ListWorkerScreen> {
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount:
-                                controller.workerModel!.workerData.length,
+                                controller.workerModel!.workerDatas.length,
                             itemBuilder: (context, index) {
                               var worker =
-                                  controller.workerModel!.workerData[index];
+                                  controller.workerModel!.workerDatas[index];
                               return InkWell(
                                 onTap: () async {
                                   controller.routeToDetail(index);
