@@ -36,7 +36,8 @@ class Message extends Translations {
         "image": "Image",
         "okay": "Okay",
         "close": "Close",
-        "viewcard": "View Card"
+        "viewcard": "View Card",
+        "qrvalidate": "Qr Not valid",
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
@@ -70,7 +71,8 @@ class Message extends Translations {
         "image": "រូបភាព",
         "okay": "យល់ព្រម",
         "close": "បិទ",
-        "viewcard": "មើលកាត"
+        "viewcard": "មើលកាត",
+        "qrvalidate": "កាត ocwc មិនត្រឺមត្រូវ",
       }
     };
   }

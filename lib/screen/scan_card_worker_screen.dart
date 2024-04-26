@@ -111,19 +111,11 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: ScanningEffect(
-                                scanningColor: const Color.fromARGB(
-                                  255,
-                                  71,
-                                  122,
-                                  211,
-                                ),
+                                scanningColor:
+                                    const Color.fromARGB(255, 71, 122, 211),
                                 scanningLinePadding: const EdgeInsets.all(10),
-                                borderLineColor: const Color.fromARGB(
-                                  255,
-                                  71,
-                                  122,
-                                  211,
-                                ),
+                                borderLineColor:
+                                    const Color.fromARGB(255, 71, 122, 211),
                                 delay: const Duration(seconds: 2),
                                 duration: const Duration(seconds: 2),
                                 child: MobileScanner(
@@ -133,15 +125,15 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
                                   },
                                   overlayBuilder: (context, constraints) {
                                     return Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: ScannedBarcodeLabel(
-                                          controller: controller,
-                                          barcodes: scannerController.barcodes,
-                                        ),
-                                      ),
-                                    );
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: ScannedBarcodeLabel(
+                                            controller: controller,
+                                            barcodes:
+                                                scannerController.barcodes,
+                                          ),
+                                        ));
                                   },
                                 ),
                               ),
@@ -229,7 +221,7 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
   @override
   Future<void> dispose() async {
     super.dispose();
-    await scannerController.dispose();
+    scannerController.dispose();
   }
 
   AppBar _buildAppbar() {
@@ -385,12 +377,16 @@ class ScannedBarcodeLabel extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           );
         } else {
-          controller.searchWorkByQr(scannedBarcodes.first.displayValue!);
-          return Text(
-            scannedBarcodes.first.displayValue ?? 'No display value.',
-            overflow: TextOverflow.fade,
-            style: const TextStyle(color: Colors.white),
+          controller.searchWorkByQr(
+            context: context,
+            data: scannedBarcodes.first.displayValue!,
           );
+          return const SizedBox();
+          // return Text(
+          //   scannedBarcodes.first.displayValue ?? 'No display value.',
+          //   overflow: TextOverflow.fade,
+          //   style: const TextStyle(color: Colors.white),
+          // );
         }
       },
     );

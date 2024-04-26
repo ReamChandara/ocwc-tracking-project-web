@@ -264,10 +264,10 @@ class WorkerController extends GetxController {
     await saveIndex(index);
     workerData = workerModel!.workerDatas[index];
     if (workerData != null) {
-      falseIndex =
-          workerData!.tricking.indexWhere((element) => element.check == false);
-
-      Get.rootDelegate.toNamed(Routes.detail);
+      falseIndex = workerData!.tricking.indexWhere(
+        (element) => element.check == false,
+      );
+      Get.toNamed(Routes.detail);
     }
   }
 
@@ -298,13 +298,11 @@ class WorkerController extends GetxController {
     Alert(
         style: AlertStyle(
           titleStyle: TextStyle(
-            fontFamily:
-                langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
-          ),
+              fontFamily:
+                  langCode == "en" ? "SourceSansPro-Regular" : "Battambang"),
           descStyle: TextStyle(
-            fontFamily:
-                langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
-          ),
+              fontFamily:
+                  langCode == "en" ? "SourceSansPro-Regular" : "Battambang"),
           descPadding: const EdgeInsets.only(top: 10, right: 10, left: 10),
           animationType: AnimationType.grow,
           overlayColor: Colors.transparent,
@@ -375,20 +373,35 @@ class WorkerController extends GetxController {
     }
   }
 
-  void searchWorkByQr(String data) async {
-    List<String> hashCodes = data.split("=");
-    String apiUrl = baseUrl + searchWorkerQr;
-    Map<String, String> body = {"qr_code": hashCodes[1]};
-    var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: headers(langCode),
-      body: jsonEncode(body),
-    );
-    if (response.statusCode == 200) {
-      workerData = WorkerData.fromJson(
-        jsonDecode(response.body)["data"],
-      );
-      loading = false;
+  void searchWorkByQr({
+    required BuildContext context,
+    required String data,
+  }) async {
+    String checkUrl = "/profile?id";
+    if (data.contains(checkUrl)) {
+      List<String> hashCodes = data.split("=");
+      String apiUrl = baseUrl + searchWorkerQr;
+      if (hashCodes.isEmpty) {
+      } else {
+        laodingDailog(context);
+        Map<String, String> body = {"qr_code": hashCodes[1]};
+        var response = await http.post(
+          Uri.parse(apiUrl),
+          headers: headers(langCode),
+          body: jsonEncode(body),
+        );
+        if (response.statusCode == 200) {
+          workerData = WorkerData.fromJson(
+            jsonDecode(response.body)["data"],
+          );
+          loading = false;
+          Get.toNamed(Routes.detail);
+        }
+      }
+    } else {
+      if (context.mounted) {
+        showWarningDialog(context: context, des: "qrvalidate".tr);
+      }
     }
   }
 

@@ -13,7 +13,7 @@ class WorkerDetail extends GetView<WorkerController> {
         return const Center(
           child: CircularProgressIndicator(),
         );
-      } else if (controller.workerModel == null) {
+      } else if (controller.workerData == null) {
         return const Center(
           child: Text(
             "Not Found",
