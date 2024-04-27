@@ -38,6 +38,9 @@ class Message extends Translations {
         "close": "Close",
         "viewcard": "View Card",
         "qrvalidate": "Qr Not valid",
+        "findby": "Find Your Information",
+        "scancard": "Scan OCWC Card",
+        "enterdate": "Enter Name and Date of birth"
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
@@ -73,6 +76,9 @@ class Message extends Translations {
         "close": "បិទ",
         "viewcard": "មើលកាត",
         "qrvalidate": "កាត ocwc មិនត្រឺមត្រូវ",
+        "findby": "ស្វែងរកព័ត៏មានតាមរយៈ",
+        "scancard": "ស្កែន OCWC កាត",
+        "enterdate": "បញ្ចូលឈ្មោះនិងថ្ងែខែឆ្នាំកំណើត"
       }
     };
   }

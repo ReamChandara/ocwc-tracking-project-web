@@ -5,10 +5,10 @@ import 'package:tracking_web/screen/list_worker_screen.dart';
 import 'package:tracking_web/screen/scan_card_worker_screen.dart';
 import 'package:tracking_web/screen/test_screen.dart';
 import '../../screen/detial_worker_screen.dart';
-import '../../screen/home_screen.dart';
+import '../../screen/search_worker_screen.dart';
 
 abstract class Routes {
-  static const home = '/home';
+  static const searchwoker = '/searchworker';
   static const detail = '/details';
   static const listWorker = '/listWorker';
   static const test = "/test";
@@ -18,9 +18,9 @@ abstract class Routes {
 abstract class AppPages {
   static final pages = [
     GetPage(
-      name: Routes.home,
+      name: Routes.searchwoker,
       binding: HomeBinding(),
-      page: () => HomeScreen(),
+      page: () => SearchWorkerScreen(),
     ),
     GetPage(
       name: Routes.listWorker,
@@ -49,7 +49,7 @@ class AppRouterDelegate extends GetDelegate {
       onPopPage: (route, result) => route.didPop(result),
       pages: currentConfiguration != null
           ? [currentConfiguration!.currentPage!]
-          : [GetNavConfig.fromRoute(Routes.home)!.currentPage!],
+          : [GetNavConfig.fromRoute(Routes.searchwoker)!.currentPage!],
     );
   }
 }
