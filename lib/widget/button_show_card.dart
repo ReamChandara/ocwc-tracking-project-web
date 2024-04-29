@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../controller/worker_controller.dart';
+import 'package:tracking_web/controller/home_controller.dart';
 
 class ButtonShowCard extends StatelessWidget {
   const ButtonShowCard({
     super.key,
     required this.controller,
+    this.onTap,
   });
-
-  final WorkerController controller;
+  final void Function()? onTap;
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        controller.showImageCard(context);
-      },
+      onTap: onTap,
       child: Container(
         //  margin: const EdgeInsets.all(12),
         alignment: Alignment.center,
@@ -28,7 +26,7 @@ class ButtonShowCard extends StatelessWidget {
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
-                fontFamily: controller.langCode == "en"
+                fontFamily: controller.langCode.value == "en"
                     ? "SourceSansPro-Regular"
                     : "Battambang")),
       ),

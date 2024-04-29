@@ -71,15 +71,7 @@ class WorkerController extends GetxController {
       changValue.value = true;
     }
   }
-
-  // // init for change language
-  // Future<void> initLocale() async {
-  //   String langCode = storage.read(storageKey) ?? 'en';
-  //   if (langCode == "kh") {
-  //     this.langCode = langCode;
-  //     Get.updateLocale(const Locale("km", "KH"));
-  //   } else {}
-  // }
+  
   RxString initValue = "kh".obs;
   void changeLanguage(String value) {
     if (value == "kh") {
@@ -103,20 +95,6 @@ class WorkerController extends GetxController {
       initValue.value = "en";
     }
   }
-
-  // //change language
-  // void changeLang(bool value) async {
-  //   changValue.value = value;
-  //   if (value) {
-  //     Get.updateLocale(const Locale("en", "US"));
-  //     langCode = "en";
-  //     saveLocale("en");
-  //   } else {
-  //     Get.updateLocale(const Locale("km", "KH"));
-  //     langCode = "kh";
-  //     saveLocale("kh");
-  //   }
-  // }
 
   get nameController {
     return _nameController;
@@ -432,7 +410,7 @@ class WorkerController extends GetxController {
           falseIndex = workerModel!.workerDatas[0].tricking
               .indexWhere((element) => element.check == false);
           loading = false;
-          Get.toNamed(Routes.detail);
+          Get.toNamed(Routes.detail, parameters: {"id" : workerData!.hashcode});
         }
         loading = false;
         update();

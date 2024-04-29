@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../controller/worker_controller.dart';
-
 class CustomCard extends StatelessWidget {
   final Widget child;
   const CustomCard({
     super.key,
     required this.child,
-    required this.controller,
   });
-
-  final WorkerController controller;
 
   @override
   Widget build(BuildContext context) {

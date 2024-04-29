@@ -1,15 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tracking_web/config/helper/function.dart';
-
-import '../controller/worker_controller.dart';
+import 'package:tracking_web/controller/home_controller.dart';
+import 'package:tracking_web/controller/new_worker_controller.dart';
+import 'package:tracking_web/widget/dialog_widget.dart';
 import '../widget/textfield_widget.dart';
 
-class SearchWorkerScreen extends GetView<WorkerController> {
-  SearchWorkerScreen({super.key});
+class SearchWorkerScreen extends StatefulWidget {
+  const SearchWorkerScreen({super.key});
 
+  @override
+  State<SearchWorkerScreen> createState() => _SearchWorkerScreenState();
+}
+
+class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late HomeController homeController;
+  late NewWorkerController workerController = Get.put(NewWorkerController());
+  TextEditingController nameController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  late Future<DateTime?> selectedDate;
+
+  void submit(BuildContext context) {
+    String name = nameController.text.trim();
+    String date = dateController.text.replaceAll("/", "-");
+    if (validation()) {
+    } else {
+      DialogWidget.laodingDailog(context, homeController.langCode.value);
+      workerController.searchWoker(
+        context,
+        name,
+        date,
+        langCode: homeController.langCode.value,
+      );
+    }
+  }
+
+  setDate() async {
+    DialogWidget.showDialogPicker(
+      context,
+      homeController.langCode.value == "en"
+          ? "SourceSansPro-Regular"
+          : "Battambang",
+    ).then((value) {
+      dateController.text = DateFormat("dd/MM/yyyy").format(value);
+    });
+  }
+
+  bool validateDate(String text) {
+    final RegExp dateRegex =
+        RegExp(r'^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/(19|20)\d\d$');
+    return (dateRegex.hasMatch(text));
+  }
+
+  bool validation() {
+    if (formKey.currentState!.validate()) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  void initState() {
+    homeController = Get.put(HomeController());
+    // workerController = Get.put(NewWorkerController());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +86,121 @@ class SearchWorkerScreen extends GetView<WorkerController> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Obx(
+                          () => PopupMenuButton(
+                            position: PopupMenuPosition.under,
+                            child: homeController.langCode.value == "kh"
+                                ? Container(
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                          "assets/images/cambodia_flag.png",
+                                        ),
+                                      ),
+                                    ),
+                                    height: 30,
+                                    width: 30,
+                                  )
+                                : Container(
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                          "assets/images/english_flag.png",
+                                        ),
+                                      ),
+                                    ),
+                                    height: 30,
+                                    width: 30,
+                                  ),
+                            onSelected: (value) {
+                              if (value == "kh") {
+                                homeController.changeLang("kh");
+                              } else if (value == "en") {
+                                homeController.changeLang("en");
+                              }
+                            },
+                            itemBuilder: (BuildContext context) => [
+                              homeController.langCode.value == "kh"
+                                  ? PopupMenuItem(
+                                      height: 30,
+                                      value: "en",
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: AssetImage(
+                                                  "assets/images/english_flag.png",
+                                                ),
+                                              ),
+                                            ),
+                                            height: 30,
+                                            width: 30,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          const Text(
+                                            "English",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  : PopupMenuItem(
+                                      height: 30,
+                                      value: "kh",
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: AssetImage(
+                                                  "assets/images/cambodia_flag.png",
+                                                ),
+                                              ),
+                                            ),
+                                            height: 30,
+                                            width: 30,
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          const Text(
+                                            "ភាសាខ្មែរ",
+                                            style: TextStyle(
+                                              fontFamily: "Battambang",
+                                              fontSize: 14,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   () {
                     if (boxConstraints.maxWidth > 1000) {
                       return buildWebUI(context);
@@ -71,28 +246,6 @@ class SearchWorkerScreen extends GetView<WorkerController> {
     );
   }
 
-  void submit(BuildContext context) {
-    if (validation()) {
-    } else {
-      controller.searchWorker(context);
-      //  Get.rootDelegate.toNamed(Routes.detail);
-    }
-  }
-
-  bool validateDate(String text) {
-    final RegExp dateRegex =
-        RegExp(r'^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/(19|20)\d\d$');
-    return (dateRegex.hasMatch(text));
-  }
-
-  bool validation() {
-    if (formKey.currentState!.validate()) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   Widget buidCardSearch(BuildContext context) {
     return Container(
       height: 450,
@@ -116,7 +269,7 @@ class SearchWorkerScreen extends GetView<WorkerController> {
                       fontSize: 22,
                       color: Colors.white,
                       fontWeight: FontWeight.w300,
-                      fontFamily: controller.langCode == "en"
+                      fontFamily: homeController.langCode.value == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
                 ),
@@ -126,7 +279,7 @@ class SearchWorkerScreen extends GetView<WorkerController> {
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
-                      fontFamily: controller.langCode == "en"
+                      fontFamily: homeController.langCode.value == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
                 ),
@@ -134,8 +287,8 @@ class SearchWorkerScreen extends GetView<WorkerController> {
                   height: 10,
                 ),
                 TextFieldWidget(
+                  controller: nameController,
                   onFieldSubmitted: (val) {
-                    controller.setNameController = val;
                     submit(context);
                   },
                   prefixIcon: Padding(
@@ -148,12 +301,12 @@ class SearchWorkerScreen extends GetView<WorkerController> {
                   ),
                   errorStyle: TextStyle(
                       fontSize: 14,
-                      fontFamily: controller.langCode == "en"
+                      fontFamily: homeController.langCode.value == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
                   hintStyle: TextStyle(
                       fontSize: 14,
-                      fontFamily: controller.langCode == "en"
+                      fontFamily: homeController.langCode.value == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
                   validator: (val) {
@@ -163,20 +316,19 @@ class SearchWorkerScreen extends GetView<WorkerController> {
                       return null;
                     }
                   },
-                  controller: controller.nameController,
                   hintText: "latin".tr,
                 ),
                 TextFieldWidget(
-                  controller: controller.dateController,
+                  controller: dateController,
                   hintText: "date".tr,
                   errorStyle: TextStyle(
                       fontSize: 14,
-                      fontFamily: controller.langCode == "en"
+                      fontFamily: homeController.langCode.value == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
                   hintStyle: TextStyle(
                       fontSize: 14,
-                      fontFamily: controller.langCode == "en"
+                      fontFamily: homeController.langCode.value == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
                   prefixIcon: Padding(
@@ -189,7 +341,7 @@ class SearchWorkerScreen extends GetView<WorkerController> {
                   ),
                   suffixIcon: IconButton(
                       onPressed: () async {
-                        controller.showDialogPicker(context);
+                        setDate();
                       },
                       icon: const Icon(
                         Icons.date_range,
@@ -205,7 +357,6 @@ class SearchWorkerScreen extends GetView<WorkerController> {
                     }
                   },
                   onFieldSubmitted: (val) {
-                    controller.setDateController = val;
                     submit(context);
                   },
                   inputFormatters: [
@@ -233,7 +384,7 @@ class SearchWorkerScreen extends GetView<WorkerController> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
-                            fontFamily: controller.langCode == "en"
+                            fontFamily: homeController.langCode.value == "en"
                                 ? "SourceSansPro-Regular"
                                 : "Battambang")),
                   ),

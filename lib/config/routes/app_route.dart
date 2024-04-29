@@ -7,7 +7,7 @@ import 'package:tracking_web/screen/test_screen.dart';
 import '../../screen/detial_worker_screen.dart';
 import '../../screen/search_worker_screen.dart';
 
-abstract class Routes {
+class Routes {
   static const searchwoker = '/searchworker';
   static const detail = '/details';
   static const listWorker = '/listWorker';
@@ -20,7 +20,7 @@ abstract class AppPages {
     GetPage(
       name: Routes.searchwoker,
       binding: HomeBinding(),
-      page: () => SearchWorkerScreen(),
+      page: () => const SearchWorkerScreen(),
     ),
     GetPage(
       name: Routes.listWorker,

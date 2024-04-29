@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../controller/worker_controller.dart';
+import 'package:tracking_web/controller/home_controller.dart';
 
 class CustomHeader extends StatelessWidget {
   final String title;
@@ -9,10 +8,10 @@ class CustomHeader extends StatelessWidget {
     super.key,
     this.headerWidth,
     required this.title,
-    required this.controller,
+    required this.homeController,
   });
 
-  final WorkerController controller;
+  final HomeController homeController;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class CustomHeader extends StatelessWidget {
             color: Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            fontFamily: controller.langCode == "en"
+            fontFamily: homeController.langCode.value == "en"
                 ? "SourceSansPro-Regular"
                 : "Battambang"),
       ),

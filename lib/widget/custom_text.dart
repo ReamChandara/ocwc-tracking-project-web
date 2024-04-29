@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-
-import '../controller/worker_controller.dart';
+import 'package:tracking_web/controller/home_controller.dart';
 
 class CustomText extends StatelessWidget {
   const CustomText({
@@ -11,7 +10,7 @@ class CustomText extends StatelessWidget {
     this.titleStyle,
     this.dataStyle,
     required this.data,
-    required this.controller,
+    required this.homeController,
     this.maxFontSize = 18,
     this.minFontSize = 12,
     this.maxLine = 1,
@@ -26,7 +25,7 @@ class CustomText extends StatelessWidget {
   final double minFontSize;
   final int maxLine;
   final int dataFlex;
-  final WorkerController controller;
+  final HomeController homeController;
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +45,8 @@ class CustomText extends StatelessWidget {
               style: titleStyle ??
                   TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: controller.langCode == "en" ? 18 : 16,
-                      fontFamily: controller.langCode == "en"
+                      fontSize: homeController.langCode.value == "en" ? 18 : 16,
+                      fontFamily: homeController.langCode.value == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
             ),
@@ -72,8 +71,8 @@ class CustomText extends StatelessWidget {
               style: dataStyle ??
                   TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: controller.langCode == "en" ? 18 : 16,
-                      fontFamily: controller.langCode == "en"
+                      fontSize: homeController.langCode.value == "en" ? 18 : 16,
+                      fontFamily: homeController.langCode.value == "en"
                           ? "SourceSansPro-Regular"
                           : "Battambang"),
             ),

@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:scanning_effect/scanning_effect.dart';
 import 'package:tracking_web/config/helper/function.dart';
-import 'package:tracking_web/controller/worker_controller.dart';
+import 'package:tracking_web/controller/home_controller.dart';
+import 'package:tracking_web/controller/new_worker_controller.dart';
 
 class ScanWorkerCard extends StatefulWidget {
   const ScanWorkerCard({super.key});
@@ -15,13 +16,14 @@ class ScanWorkerCard extends StatefulWidget {
 }
 
 class _ScanWorkerCardState extends State<ScanWorkerCard> {
-  late WorkerController controller;
+  late NewWorkerController controller = Get.put(NewWorkerController());
+  late HomeController homeController;
   final MobileScannerController scannerController = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
   );
   @override
   void initState() {
-    controller = Get.put(WorkerController());
+    homeController = Get.put(HomeController());
     scannerController.start();
     super.initState();
   }
@@ -233,7 +235,7 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
-            fontFamily: controller.langCode == "kh"
+            fontFamily: homeController.langCode.value == "kh"
                 ? "Battambang"
                 : "SourceSansPro-Regular"),
       ),
@@ -244,7 +246,7 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
             child: PopupMenuButton(
               padding: const EdgeInsets.all(10),
               position: PopupMenuPosition.under,
-              child: controller.initValue.value == "kh"
+              child: homeController.langCode.value == "kh"
                   ? Container(
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
@@ -273,13 +275,13 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
                     ),
               onSelected: (value) {
                 if (value == "kh") {
-                  controller.changeLanguage("kh");
+                  homeController.changeLang("kh");
                 } else if (value == "en") {
-                  controller.changeLanguage("en");
+                  homeController.changeLang("en");
                 }
               },
               itemBuilder: (BuildContext context) => [
-                controller.initValue.value == "kh"
+                homeController.langCode.value == "kh"
                     ? PopupMenuItem(
                         padding: const EdgeInsets.all(10),
                         value: "en",
@@ -361,7 +363,7 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
 class ScannedBarcodeLabel extends StatelessWidget {
   const ScannedBarcodeLabel(
       {super.key, required this.barcodes, required this.controller});
-  final WorkerController controller;
+  final NewWorkerController controller;
   final Stream<BarcodeCapture> barcodes;
 
   @override
@@ -377,11 +379,22 @@ class ScannedBarcodeLabel extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           );
         } else {
-          controller.searchWorkByQr(
-            context: context,
-            data: scannedBarcodes.first.displayValue!,
-          );
-          return const SizedBox();
+          String checkUrl = "/profile?id";
+          String data = scannedBarcodes.first.displayValue!;
+          if (!data.contains(checkUrl)) {
+            return const Text(
+              "QR Code Not valid",
+              overflow: TextOverflow.fade,
+              style: TextStyle(color: Colors.red),
+            );
+          } else {
+            controller.searchWorkByQr(
+              context: context,
+              data: scannedBarcodes.first.displayValue!,
+            );
+            return const SizedBox();
+          }
+
           // return Text(
           //   scannedBarcodes.first.displayValue ?? 'No display value.',
           //   overflow: TextOverflow.fade,

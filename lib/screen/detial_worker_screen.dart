@@ -1,30 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tracking_web/controller/worker_controller.dart';
+import 'package:tracking_web/controller/home_controller.dart';
+import 'package:tracking_web/controller/new_worker_controller.dart';
+
 import '../widget/web_screen_widget.dart';
 
-class WorkerDetail extends GetView<WorkerController> {
+class WorkerDetail extends StatefulWidget {
   const WorkerDetail({super.key});
 
   @override
+  State<WorkerDetail> createState() => _WorkerDetailState();
+}
+
+class _WorkerDetailState extends State<WorkerDetail> {
+  late NewWorkerController workerController;
+  late HomeController homeController;
+
+  @override
+  void initState() {
+    workerController = Get.put(NewWorkerController());
+    homeController = Get.put(HomeController());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GetBuilder<WorkerController>(builder: (controller) {
+    return GetBuilder<NewWorkerController>(builder: (controller) {
       if (controller.loading) {
         return const Center(
           child: CircularProgressIndicator(),
         );
-      } else if (controller.workerData == null) {
-        return const Center(
-          child: Text(
-            "Not Found",
-            style: TextStyle(
-              color: Colors.black,
-              decoration: TextDecoration.none,
-            ),
-          ),
-        );
       } else {
-        return WebNewScreen(controller: controller);
+        return WebNewScreen(
+          controller: controller,
+          homeController: homeController,
+        );
       }
     });
   }

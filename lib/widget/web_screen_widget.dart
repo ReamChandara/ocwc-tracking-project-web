@@ -3,16 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/config/helper/function.dart';
+import 'package:tracking_web/controller/home_controller.dart';
+import 'package:tracking_web/controller/new_worker_controller.dart';
 import 'package:tracking_web/widget/custom_card.dart';
 import 'package:tracking_web/widget/custom_text.dart';
+import 'package:tracking_web/widget/dialog_widget.dart';
 import '../config/constant/string_constant.dart';
-import '../controller/worker_controller.dart';
 import 'button_show_card.dart';
 import 'custom_header.dart';
 
 class WebNewScreen extends StatelessWidget {
-  final WorkerController controller;
-  const WebNewScreen({super.key, required this.controller});
+  final HomeController homeController;
+  final NewWorkerController controller;
+  const WebNewScreen({
+    super.key,
+    required this.controller,
+    required this.homeController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +27,12 @@ class WebNewScreen extends StatelessWidget {
       Alert(
           style: AlertStyle(
             titleStyle: TextStyle(
-              fontFamily: controller.langCode == "en"
+              fontFamily: homeController.langCode.value == "en"
                   ? "SourceSansPro-Regular"
                   : "Battambang",
             ),
             descStyle: TextStyle(
-              fontFamily: controller.langCode == "en"
+              fontFamily: homeController.langCode.value == "en"
                   ? "SourceSansPro-Regular"
                   : "Battambang",
             ),
@@ -46,7 +53,7 @@ class WebNewScreen extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
-                    fontFamily: controller.langCode == "en"
+                    fontFamily: homeController.langCode.value == "en"
                         ? "SourceSansPro-Regular"
                         : "Battambang",
                   ),
@@ -71,11 +78,10 @@ class WebNewScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomCard(
-                      controller: controller,
                       child: Column(
                         children: [
                           CustomHeader(
-                            controller: controller,
+                            homeController: homeController,
                             title: "workerpro".tr,
                           ),
                           Container(
@@ -142,52 +148,60 @@ class WebNewScreen extends StatelessWidget {
                                   maxFontSize: 18,
                                   title: 'ocwcNo'.tr,
                                   data: controller.workerData!.ocwcNo,
-                                  controller: controller),
+                                  homeController: homeController),
                               CustomText(
                                   dataFlex: 2,
                                   maxFontSize: 18,
                                   title: 'gender'.tr,
-                                  data: controller.langCode == "en"
+                                  data: homeController.langCode.value == "en"
                                       ? controller.workerData!.gender.enName
                                       : controller.workerData!.gender.khName,
-                                  controller: controller),
+                                  homeController: homeController),
                               CustomText(
                                   dataFlex: 2,
                                   maxFontSize: 18,
                                   title: 'country'.tr,
-                                  data: controller.langCode == "en"
+                                  data: homeController.langCode.value == "en"
                                       ? controller.workerData!.country.enName
                                       : controller.workerData!.country.khName,
-                                  controller: controller),
+                                  homeController: homeController),
                               CustomText(
                                   dataFlex: 2,
                                   title: 'SenderAgency'.tr,
                                   maxFontSize: 18,
                                   minFontSize: 12,
                                   maxLine: 2,
-                                  data: controller.langCode == "en"
+                                  data: homeController.langCode.value == "en"
                                       ? controller
                                           .workerData!.sendingAgency.enName
                                       : controller
                                           .workerData!.sendingAgency.khName,
-                                  controller: controller),
+                                  homeController: homeController),
                               const SizedBox(
                                 height: 10,
                               ),
-                              ButtonShowCard(controller: controller),
+                              ButtonShowCard(
+                                  onTap: () {
+                                    DialogWidget.laodingDailog(
+                                        context, homeController.langCode.value);
+                                    controller.showImageCard(
+                                      context,
+                                      homeController.langCode.value,
+                                    );
+                                  },
+                                  controller: homeController),
                             ].withSpaceBetween(height: 10)),
                           )
                         ],
                       ),
                     ),
                     CustomCard(
-                      controller: controller,
                       child: Column(
                         children: [
                           CustomHeader(
                             headerWidth: boxConstraints.maxWidth - 520,
                             title: "trackInfo".tr,
-                            controller: controller,
+                            homeController: homeController,
                           ),
                           Container(
                             width: boxConstraints.maxWidth - 520,
@@ -239,12 +253,13 @@ class WebNewScreen extends StatelessWidget {
                                             left: 10, right: 10, top: 10),
                                         child: ListTile(
                                             title: Text(
-                                              controller.langCode == "en"
+                                              homeController.langCode.value ==
+                                                      "en"
                                                   ? track.title.enTitle
                                                   : track.title.khTilte,
                                               style: TextStyle(
-                                                  fontFamily: controller
-                                                              .langCode ==
+                                                  fontFamily: homeController
+                                                              .langCode.value ==
                                                           "en"
                                                       ? "SourceSansPro-Regular"
                                                       : "Battambang"),
@@ -267,13 +282,15 @@ class WebNewScreen extends StatelessWidget {
                                                     )),
                                             subtitle: () {
                                               return Text(
-                                                controller.langCode == "en"
+                                                homeController.langCode.value ==
+                                                        "en"
                                                     ? track.date.enDate
                                                     : track.date.khTilte,
                                                 style: TextStyle(
                                                     color: textColor,
-                                                    fontFamily: controller
-                                                                .langCode ==
+                                                    fontFamily: homeController
+                                                                .langCode
+                                                                .value ==
                                                             "en"
                                                         ? "SourceSansPro-Regular"
                                                         : "Battambang"),
@@ -293,12 +310,14 @@ class WebNewScreen extends StatelessWidget {
                                                   .workerData!.tricking.length
                                           ? ListTile(
                                               title: Text(
-                                                controller.langCode == "en"
+                                                homeController.langCode.value ==
+                                                        "en"
                                                     ? track2.title.enTitle
                                                     : track2.title.khTilte,
                                                 style: TextStyle(
-                                                    fontFamily: controller
-                                                                .langCode ==
+                                                    fontFamily: homeController
+                                                                .langCode
+                                                                .value ==
                                                             "en"
                                                         ? "SourceSansPro-Regular"
                                                         : "Battambang"),
@@ -325,13 +344,16 @@ class WebNewScreen extends StatelessWidget {
                                                       )),
                                               subtitle: () {
                                                 return Text(
-                                                  controller.langCode == "en"
+                                                  homeController
+                                                              .langCode.value ==
+                                                          "en"
                                                       ? track2.date.enDate
                                                       : track2.date.khTilte,
                                                   style: TextStyle(
                                                       color: textColor2,
-                                                      fontFamily: controller
-                                                                  .langCode ==
+                                                      fontFamily: homeController
+                                                                  .langCode
+                                                                  .value ==
                                                               "en"
                                                           ? "SourceSansPro-Regular"
                                                           : "Battambang"),
@@ -354,11 +376,10 @@ class WebNewScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomCard(
-                      controller: controller,
                       child: Column(
                         children: [
                           CustomHeader(
-                            controller: controller,
+                            homeController: homeController,
                             title: "cardDate".tr,
                           ),
                           Container(
@@ -368,29 +389,29 @@ class WebNewScreen extends StatelessWidget {
                             child: Column(
                                 children: [
                               CustomText(
-                                  title: "issuseDate".tr,
-                                  data: controller.workerData!.issuedDate
-                                          .enIssuedDate ??
-                                      "noData".tr,
-                                  controller: controller),
+                                homeController: homeController,
+                                title: "issuseDate".tr,
+                                data: controller
+                                        .workerData!.issuedDate.enIssuedDate ??
+                                    "noData".tr,
+                              ),
                               CustomText(
                                   title: 'expireDate'.tr,
                                   data: controller.workerData!.expiredDate
                                           .enExpiresDate ??
                                       "noData".tr,
-                                  controller: controller),
+                                  homeController: homeController),
                             ].withSpaceBetween(height: 10)),
                           ),
                         ],
                       ),
                     ),
                     CustomCard(
-                      controller: controller,
                       child: Column(
                         children: [
                           CustomHeader(
                               headerWidth: boxConstraints.maxWidth - 520,
-                              controller: controller,
+                              homeController: homeController,
                               title: "workAddress".tr),
                           Container(
                             width: boxConstraints.maxWidth - 520,
@@ -398,7 +419,7 @@ class WebNewScreen extends StatelessWidget {
                             alignment: Alignment.topCenter,
                             padding: const EdgeInsets.all(10),
                             child: Text(
-                              controller.langCode == "en"
+                              homeController.langCode.value == "en"
                                   ? controller.workerData!.workAddress.enName ==
                                               null ||
                                           controller.workerData!.workAddress
@@ -415,10 +436,13 @@ class WebNewScreen extends StatelessWidget {
                                           .workerData!.workAddress.khName!,
                               style: TextStyle(
                                   fontSize:
-                                      controller.langCode == "en" ? 18 : 16,
-                                  fontFamily: controller.langCode == "en"
-                                      ? "SourceSansPro-Regular"
-                                      : "Battambang",
+                                      homeController.langCode.value == "en"
+                                          ? 18
+                                          : 16,
+                                  fontFamily:
+                                      homeController.langCode.value == "en"
+                                          ? "SourceSansPro-Regular"
+                                          : "Battambang",
                                   color: Colors.black),
                             ),
                           ),
@@ -440,11 +464,10 @@ class WebNewScreen extends StatelessWidget {
                         height: 10,
                       ),
                       CustomCard(
-                        controller: controller,
                         child: Column(children: [
                           CustomHeader(
                             headerWidth: contanstraintWidth,
-                            controller: controller,
+                            homeController: homeController,
                             title: "workerpro".tr,
                           ),
                           Container(
@@ -485,64 +508,74 @@ class WebNewScreen extends StatelessWidget {
                                   alignmentTile: Alignment.centerRight,
                                   title: "latinname".tr,
                                   data: controller.workerData!.fullName.enName,
-                                  controller: controller),
+                                  homeController: homeController),
                               CustomText(
                                   alignmentTile: Alignment.centerRight,
                                   title: 'ocwcNo'.tr,
                                   data: controller.workerData!.ocwcNo,
                                   minFontSize: 12,
                                   maxLine: 2,
-                                  controller: controller),
+                                  homeController: homeController),
                               CustomText(
                                   alignmentTile: Alignment.centerRight,
                                   title: 'khmername'.tr,
                                   dataStyle: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize:
-                                          controller.langCode == "en" ? 16 : 16,
+                                          homeController.langCode.value == "en"
+                                              ? 16
+                                              : 16,
                                       fontFamily: "Battambang"),
                                   data: controller.workerData!.fullName.khName,
-                                  controller: controller),
+                                  homeController: homeController),
                               CustomText(
                                   alignmentTile: Alignment.centerRight,
                                   title: 'gender'.tr,
-                                  data: controller.langCode == "en"
+                                  data: homeController.langCode.value == "en"
                                       ? controller.workerData!.gender.enName
                                       : controller.workerData!.gender.khName,
-                                  controller: controller),
+                                  homeController: homeController),
                               CustomText(
                                   alignmentTile: Alignment.centerRight,
                                   title: 'country'.tr,
-                                  data: controller.langCode == "en"
+                                  data: homeController.langCode.value == "en"
                                       ? controller.workerData!.country.enName
                                       : controller.workerData!.country.khName,
-                                  controller: controller),
+                                  homeController: homeController),
                               CustomText(
                                   alignmentTile: Alignment.centerRight,
                                   title: 'SenderAgency'.tr,
                                   maxFontSize: 16,
                                   minFontSize: 12,
                                   maxLine: 2,
-                                  data: controller.langCode == "en"
+                                  data: homeController.langCode.value == "en"
                                       ? controller
                                           .workerData!.sendingAgency.enName
                                       : controller
                                           .workerData!.sendingAgency.khName,
-                                  controller: controller),
+                                  homeController: homeController),
                               const SizedBox(height: 10),
-                              ButtonShowCard(controller: controller),
+                              ButtonShowCard(
+                                  onTap: () {
+                                    DialogWidget.laodingDailog(
+                                        context, homeController.langCode.value);
+                                    controller.showImageCard(
+                                      context,
+                                      homeController.langCode.value,
+                                    );
+                                  },
+                                  controller: homeController),
                               const SizedBox(height: 10),
                             ].withSpaceBetween(height: 10)),
                           )
                         ]),
                       ),
                       CustomCard(
-                        controller: controller,
                         child: Column(
                           children: [
                             CustomHeader(
                               headerWidth: contanstraintWidth,
-                              controller: controller,
+                              homeController: homeController,
                               title: "cardDate".tr,
                             ),
                             SizedBox(
@@ -555,14 +588,14 @@ class WebNewScreen extends StatelessWidget {
                                     data: controller.workerData!.issuedDate
                                             .enIssuedDate ??
                                         "noData".tr,
-                                    controller: controller),
+                                    homeController: homeController),
                                 CustomText(
                                     alignmentTile: Alignment.bottomRight,
                                     title: 'expireDate'.tr,
                                     data: controller.workerData!.expiredDate
                                             .enExpiresDate ??
                                         "noData".tr,
-                                    controller: controller),
+                                    homeController: homeController),
                                 const SizedBox(height: 20),
                               ]),
                             ),
@@ -570,109 +603,105 @@ class WebNewScreen extends StatelessWidget {
                         ),
                       ),
                       CustomCard(
-                          controller: controller,
                           child: Column(
-                            children: [
-                              CustomHeader(
-                                headerWidth: contanstraintWidth,
-                                title: "trackInfo".tr,
-                                controller: controller,
-                              ),
-                              SizedBox(
-                                width: contanstraintWidth,
-                                child: ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        controller.workerData!.tricking.length,
-                                    itemBuilder: (context, index) {
-                                      var track = controller
-                                          .workerData!.tricking[index];
-                                      Color? textColor = Colors.green;
-                                      if (track.check!) {
-                                        textColor = Colors.green;
-                                      } else {
-                                        if (index == controller.falseIndex) {
-                                          textColor = Colors.orange;
-                                        } else {
-                                          textColor = Colors.red[300];
-                                        }
-                                      }
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10, top: 10),
-                                        child: ListTile(
-                                            title: Text(
-                                              controller.langCode == "en"
-                                                  ? track.title.enTitle
-                                                  : track.title.khTilte,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      controller.langCode ==
-                                                              "en"
-                                                          ? 18
-                                                          : 16,
-                                                  fontFamily: controller
-                                                              .langCode ==
-                                                          "en"
-                                                      ? "SourceSansPro-Regular"
-                                                      : "Battambang"),
-                                            ),
-                                            leading: Image.asset(
-                                              iconImage[index],
-                                              color: Colors.blueAccent.shade100,
-                                              width: 20,
-                                            ),
-                                            trailing: track.attachment ==
-                                                        null ||
-                                                    track.attachment!.isEmpty
-                                                ? null
-                                                : IconButton(
-                                                    onPressed: () {},
-                                                    icon: Icon(
-                                                      Icons.folder_open,
-                                                      color: Colors
-                                                          .blueAccent[100],
-                                                    )),
-                                            subtitle: () {
-                                              return Text(
-                                                controller.langCode == "en"
-                                                    ? track.date.enDate
-                                                    : track.date.khTilte,
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        controller.langCode ==
-                                                                "en"
-                                                            ? 18
-                                                            : 16,
-                                                    color: textColor,
-                                                    fontFamily: controller
-                                                                .langCode ==
-                                                            "en"
-                                                        ? "SourceSansPro-Regular"
-                                                        : "Battambang"),
-                                              );
-                                            }()),
-                                      );
-                                    }),
-                              ),
-                            ],
-                          )),
+                        children: [
+                          CustomHeader(
+                            headerWidth: contanstraintWidth,
+                            title: "trackInfo".tr,
+                            homeController: homeController,
+                          ),
+                          SizedBox(
+                            width: contanstraintWidth,
+                            child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount:
+                                    controller.workerData!.tricking.length,
+                                itemBuilder: (context, index) {
+                                  var track =
+                                      controller.workerData!.tricking[index];
+                                  Color? textColor = Colors.green;
+                                  if (track.check!) {
+                                    textColor = Colors.green;
+                                  } else {
+                                    if (index == controller.falseIndex) {
+                                      textColor = Colors.orange;
+                                    } else {
+                                      textColor = Colors.red[300];
+                                    }
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10, top: 10),
+                                    child: ListTile(
+                                        title: Text(
+                                          homeController.langCode.value == "en"
+                                              ? track.title.enTitle
+                                              : track.title.khTilte,
+                                          style: TextStyle(
+                                              fontSize: homeController
+                                                          .langCode.value ==
+                                                      "en"
+                                                  ? 18
+                                                  : 16,
+                                              fontFamily: homeController
+                                                          .langCode.value ==
+                                                      "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                        ),
+                                        leading: Image.asset(
+                                          iconImage[index],
+                                          color: Colors.blueAccent.shade100,
+                                          width: 20,
+                                        ),
+                                        trailing: track.attachment == null ||
+                                                track.attachment!.isEmpty
+                                            ? null
+                                            : IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.folder_open,
+                                                  color: Colors.blueAccent[100],
+                                                )),
+                                        subtitle: () {
+                                          return Text(
+                                            homeController.langCode.value ==
+                                                    "en"
+                                                ? track.date.enDate
+                                                : track.date.khTilte,
+                                            style: TextStyle(
+                                                fontSize: homeController
+                                                            .langCode.value ==
+                                                        "en"
+                                                    ? 18
+                                                    : 16,
+                                                color: textColor,
+                                                fontFamily: homeController
+                                                            .langCode.value ==
+                                                        "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                          );
+                                        }()),
+                                  );
+                                }),
+                          ),
+                        ],
+                      )),
                       CustomCard(
-                        controller: controller,
                         child: Column(
                           children: [
                             CustomHeader(
                                 headerWidth: contanstraintWidth,
-                                controller: controller,
+                                homeController: homeController,
                                 title: "workAddress".tr),
                             Container(
                               width: contanstraintWidth,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(10),
                               child: Text(
-                                controller.langCode == "en"
+                                homeController.langCode.value == "en"
                                     ? controller.workerData!.workAddress
                                                     .enName ==
                                                 null ||
@@ -691,10 +720,13 @@ class WebNewScreen extends StatelessWidget {
                                             .workerData!.workAddress.khName!,
                                 style: TextStyle(
                                     fontSize:
-                                        controller.langCode == "en" ? 18 : 16,
-                                    fontFamily: controller.langCode == "en"
-                                        ? "SourceSansPro-Regular"
-                                        : "Battambang",
+                                        homeController.langCode.value == "en"
+                                            ? 18
+                                            : 16,
+                                    fontFamily:
+                                        homeController.langCode.value == "en"
+                                            ? "SourceSansPro-Regular"
+                                            : "Battambang",
                                     color: Colors.black),
                               ),
                             ),
@@ -721,7 +753,7 @@ class WebNewScreen extends StatelessWidget {
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
-            fontFamily: controller.langCode == "kh"
+            fontFamily: homeController.langCode.value == "kh"
                 ? "Battambang"
                 : "SourceSansPro-Regular"),
       ),
@@ -732,7 +764,7 @@ class WebNewScreen extends StatelessWidget {
             child: PopupMenuButton(
               padding: const EdgeInsets.all(10),
               position: PopupMenuPosition.under,
-              child: controller.initValue.value == "kh"
+              child: homeController.langCode.value == "kh"
                   ? Container(
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
@@ -761,13 +793,13 @@ class WebNewScreen extends StatelessWidget {
                     ),
               onSelected: (value) {
                 if (value == "kh") {
-                  controller.changeLanguage("kh");
+                  homeController.changeLang("kh");
                 } else if (value == "en") {
-                  controller.changeLanguage("en");
+                  homeController.changeLang("en");
                 }
               },
               itemBuilder: (BuildContext context) => [
-                controller.initValue.value == "kh"
+                homeController.langCode.value == "kh"
                     ? PopupMenuItem(
                         padding: const EdgeInsets.all(10),
                         value: "en",
