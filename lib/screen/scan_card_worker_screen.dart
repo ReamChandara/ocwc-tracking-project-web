@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -7,6 +5,9 @@ import 'package:scanning_effect/scanning_effect.dart';
 import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
+
+import '../config/routes/app_route.dart';
+import '../widget/popup_menu_widget.dart';
 
 class ScanWorkerCard extends StatefulWidget {
   const ScanWorkerCard({super.key});
@@ -18,9 +19,11 @@ class ScanWorkerCard extends StatefulWidget {
 class _ScanWorkerCardState extends State<ScanWorkerCard> {
   late NewWorkerController controller = Get.put(NewWorkerController());
   late HomeController homeController;
+
   final MobileScannerController scannerController = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
   );
+
   @override
   void initState() {
     homeController = Get.put(HomeController());
@@ -30,198 +33,185 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
 
   @override
   Widget build(BuildContext context) {
-    // final scanWindow = Rect.fromCenter(
-    //   center: MediaQuery.sizeOf(context).center(Offset.zero),
-    //   width: 200,
-    //   height: 200,
-    // );
-
     return Scaffold(
-      appBar: _buildAppbar(),
       body: LayoutBuilder(builder: (context, boxConstraints) {
         return Container(
-          width: boxConstraints.maxWidth,
-          height: boxConstraints.maxHeight,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage("assets/images/background.jpg"),
+            width: boxConstraints.maxWidth,
+            height: boxConstraints.maxHeight,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage("assets/images/background.jpg"),
+              ),
             ),
-          ),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset(
-                  height: 500,
-                  width: 500,
-                  "assets/images/splash_logo_new.png",
-                ),
-                Container(
-                  height: 600,
-                  width: 400,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(35, 54, 93, 0.5),
-                    // border: Border(
-                    //   top: BorderSide(
-                    //       color: Color.fromARGB(255, 71, 122, 211), width: 5),
-                    //   bottom: BorderSide(
-                    //       color: Color.fromARGB(255, 71, 122, 211), width: 5),
-                    // ),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //       color: Colors.grey,
-                    //       offset: Offset(0.50, 0.50),
-                    //       blurRadius: 1,
-                    //       blurStyle: BlurStyle.outer)
-                    // ],
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        "ស្កេនកាត",
-                        style: TextStyle(
-                            fontFamily: "Battambang",
-                            fontSize: 22,
-                            color: Colors.white),
-                      ),
-                      const Text(
-                        "ដាក់​កាតស្ថិតក្នុងអេក្រង់កាមេរ៉ា ដើម្បីស្កេន",
-                        style: TextStyle(
-                            fontFamily: "Battambang",
-                            fontSize: 18,
-                            color: Colors.white),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        height: 300,
-                        width: 300,
-                        child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                width: 2,
-                                color: const Color.fromARGB(255, 71, 122, 211),
-                              ),
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ScanningEffect(
-                                scanningColor:
-                                    const Color.fromARGB(255, 71, 122, 211),
-                                scanningLinePadding: const EdgeInsets.all(10),
-                                borderLineColor:
-                                    const Color.fromARGB(255, 71, 122, 211),
-                                delay: const Duration(seconds: 2),
-                                duration: const Duration(seconds: 2),
-                                child: MobileScanner(
-                                  controller: scannerController,
-                                  errorBuilder: (context, error, child) {
-                                    return ScannerErrorWidget(error: error);
-                                  },
-                                  overlayBuilder: (context, constraints) {
-                                    return Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: ScannedBarcodeLabel(
-                                            controller: controller,
-                                            barcodes:
-                                                scannerController.barcodes,
-                                          ),
-                                        ));
-                                  },
-                                ),
-                              ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
                             )),
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 71, 122, 211),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.asset(
-                              "assets/icons/credit-card.png",
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Text(
-                            "បើកកាត",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Battambang",
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ],
-                      )
-                    ].withSpaceBetween(height: 10),
+                        PopupMenuWidget(homeController: homeController),
+                      ],
+                    ),
                   ),
-                ),
-              ].withSpaceBetween(width: 20),
-            ),
-          ),
-        );
+                  () {
+                    if (boxConstraints.maxWidth > 900) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: boxConstraints.maxHeight * 0.10,
+                          ),
+                          buildWebUI(context),
+                        ],
+                      );
+                    } else {
+                      return buildPhonUI();
+                    }
+                  }()
+                ],
+              ),
+            ));
       }),
     );
   }
 
-  // Stack buildBody(Rect scanWindow) {
-  //   return Stack(
-  //     fit: StackFit.expand,
-  //     children: [
-  //       Center(
-  //         child: MobileScanner(
-  //           // fit: BoxFit.contain,
-  //           controller: scannerController,
-  //           scanWindow: scanWindow,
-  //           errorBuilder: (context, error, child) {
-  //             return ScannerErrorWidget(error: error);
-  //           },
-  //           overlayBuilder: (context, constraints) {
-  //             return Padding(
-  //               padding: const EdgeInsets.all(16.0),
-  //               child: Align(
-  //                 alignment: Alignment.bottomCenter,
-  //                 child: ScannedBarcodeLabel(
-  //                   barcodes: scannerController.barcodes,
-  //                 ),
-  //               ),
-  //             );
-  //           },
-  //         ),
-  //       ),
-  //       ValueListenableBuilder(
-  //         valueListenable: scannerController,
-  //         builder: (context, value, child) {
-  //           if (!value.isInitialized ||
-  //               !value.isRunning ||
-  //               value.error != null) {
-  //             return const SizedBox();
-  //           }
-  //           return CustomPaint(
-  //             painter: ScannerOverlay(scanWindow: scanWindow),
-  //           );
-  //         },
-  //       ),
-  //     ],
-  //   );
-  // }
+  Widget buildWebUI(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Image.asset(
+          "assets/images/splash_logo_new.png",
+          width: 400,
+        ),
+        buildQrScanWiget(),
+      ],
+    );
+  }
+
+  Widget buildQrScanWiget() {
+    return Container(
+      height: 500,
+      width: 400,
+      margin: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        color: Color.fromRGBO(35, 54, 93, 0.5),
+      ),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            "ស្កេនកាត",
+            style: TextStyle(
+                fontFamily: "Battambang", fontSize: 22, color: Colors.white),
+          ),
+          const Text(
+            "ដាក់​កាតស្ថិតក្នុងអេក្រង់កាមេរ៉ា ដើម្បីស្កេន",
+            style: TextStyle(
+                fontFamily: "Battambang", fontSize: 18, color: Colors.white),
+          ),
+          Container(
+            padding: const EdgeInsets.all(6),
+            height: 300,
+            width: 300,
+            child: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    width: 2,
+                    color: const Color.fromARGB(255, 71, 122, 211),
+                  ),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ScanningEffect(
+                    scanningColor: const Color.fromARGB(255, 71, 122, 211),
+                    scanningLinePadding: const EdgeInsets.all(10),
+                    borderLineColor: const Color.fromARGB(255, 71, 122, 211),
+                    delay: const Duration(seconds: 2),
+                    duration: const Duration(seconds: 2),
+                    child: MobileScanner(
+                      controller: scannerController,
+                      errorBuilder: (context, error, child) {
+                        return ScannerErrorWidget(error: error);
+                      },
+                      overlayBuilder: (context, constraints) {
+                        return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: ScannedBarcodeLabel(
+                                barcodes: scannerController.barcodes,
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
+                )),
+          ),
+          // Column(
+          //   children: [
+          //     Container(
+          //       height: 50,
+          //       width: 50,
+          //       padding: const EdgeInsets.all(10),
+          //       decoration: const BoxDecoration(
+          //         color: Color.fromARGB(255, 71, 122, 211),
+          //         shape: BoxShape.circle,
+          //       ),
+          //       child: Image.asset(
+          //         "assets/icons/credit-card.png",
+          //         color: Colors.white,
+          //       ),
+          //     ),
+          //     const Text(
+          //       "បើកកាត",
+          //       style: TextStyle(
+          //         fontSize: 14,
+          //         fontFamily: "Battambang",
+          //         color: Colors.white,
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          //     )
+          //   ],
+          // )
+        ].withSpaceBetween(height: 10),
+      ),
+    );
+  }
+
+  Widget buildPhonUI() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Image.asset(
+            "assets/images/splash_logo_new.png",
+            width: 400,
+          ),
+        ),
+        const SizedBox(height: 20),
+        buildQrScanWiget(),
+      ],
+    );
+  }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     super.dispose();
     scannerController.dispose();
   }
@@ -360,19 +350,25 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
   }
 }
 
-class ScannedBarcodeLabel extends StatelessWidget {
-  const ScannedBarcodeLabel(
-      {super.key, required this.barcodes, required this.controller});
-  final NewWorkerController controller;
+class ScannedBarcodeLabel extends StatefulWidget {
+  const ScannedBarcodeLabel({
+    super.key,
+    required this.barcodes,
+  });
   final Stream<BarcodeCapture> barcodes;
 
   @override
+  State<ScannedBarcodeLabel> createState() => _ScannedBarcodeLabelState();
+}
+
+class _ScannedBarcodeLabelState extends State<ScannedBarcodeLabel> {
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: barcodes,
+      stream: widget.barcodes,
       builder: (context, snapshot) {
-        final scannedBarcodes = snapshot.data?.barcodes ?? [];
-        if (scannedBarcodes.isEmpty) {
+        final scannedBarcodes = snapshot.data?.barcodes.first;
+        if (scannedBarcodes == null) {
           return const Text(
             'Scan something!',
             overflow: TextOverflow.fade,
@@ -380,7 +376,7 @@ class ScannedBarcodeLabel extends StatelessWidget {
           );
         } else {
           String checkUrl = "/profile?id";
-          String data = scannedBarcodes.first.displayValue!;
+          String data = scannedBarcodes.displayValue!;
           if (!data.contains(checkUrl)) {
             return const Text(
               "QR Code Not valid",
@@ -388,18 +384,17 @@ class ScannedBarcodeLabel extends StatelessWidget {
               style: TextStyle(color: Colors.red),
             );
           } else {
-            controller.searchWorkByQr(
-              context: context,
-              data: scannedBarcodes.first.displayValue!,
+            List<String> hashCodes = data.split("=");
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+              }
+            });
+            return Text(
+              data,
+              style: const TextStyle(fontSize: 12, color: Colors.white),
             );
-            return const SizedBox();
           }
-
-          // return Text(
-          //   scannedBarcodes.first.displayValue ?? 'No display value.',
-          //   overflow: TextOverflow.fade,
-          //   style: const TextStyle(color: Colors.white),
-          // );
         }
       },
     );
@@ -408,9 +403,7 @@ class ScannedBarcodeLabel extends StatelessWidget {
 
 class ScannerErrorWidget extends StatelessWidget {
   const ScannerErrorWidget({super.key, required this.error});
-
   final MobileScannerException error;
-
   @override
   Widget build(BuildContext context) {
     String errorMessage;
@@ -448,249 +441,6 @@ class ScannerErrorWidget extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ScannerOverlay extends CustomPainter {
-  const ScannerOverlay({
-    required this.scanWindow,
-    this.borderRadius = 12.0,
-  });
-
-  final Rect scanWindow;
-  final double borderRadius;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // we need to pass the size to the custom paint widget
-    final backgroundPath = Path()..addRect(Rect.largest);
-
-    final cutoutPath = Path()
-      ..addRRect(
-        RRect.fromRectAndCorners(
-          scanWindow,
-          topLeft: Radius.circular(borderRadius),
-          topRight: Radius.circular(borderRadius),
-          bottomLeft: Radius.circular(borderRadius),
-          bottomRight: Radius.circular(borderRadius),
-        ),
-      );
-
-    final backgroundPaint = Paint()
-      ..color = Colors.black.withOpacity(0.5)
-      ..style = PaintingStyle.fill
-      ..blendMode = BlendMode.dstOut;
-
-    final backgroundWithCutout = Path.combine(
-      PathOperation.difference,
-      backgroundPath,
-      cutoutPath,
-    );
-
-    final borderPaint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 4.0;
-
-    final borderRect = RRect.fromRectAndCorners(
-      scanWindow,
-      topLeft: Radius.circular(borderRadius),
-      topRight: Radius.circular(borderRadius),
-      bottomLeft: Radius.circular(borderRadius),
-      bottomRight: Radius.circular(borderRadius),
-    );
-
-    // First, draw the background,
-    // with a cutout area that is a bit larger than the scan window.
-    // Finally, draw the scan window itself.
-    canvas.drawPath(backgroundWithCutout, backgroundPaint);
-    canvas.drawRRect(borderRect, borderPaint);
-  }
-
-  @override
-  bool shouldRepaint(ScannerOverlay oldDelegate) {
-    return scanWindow != oldDelegate.scanWindow ||
-        borderRadius != oldDelegate.borderRadius;
-  }
-}
-
-class QrScannerOverlayShape extends ShapeBorder {
-  QrScannerOverlayShape({
-    this.borderColor = Colors.red,
-    this.borderWidth = 3.0,
-    this.overlayColor = const Color.fromRGBO(0, 0, 0, 80),
-    this.borderRadius = 0,
-    this.borderLength = 40,
-    double? cutOutSize,
-    double? cutOutWidth,
-    double? cutOutHeight,
-    this.cutOutBottomOffset = 0,
-  })  : cutOutWidth = cutOutWidth ?? cutOutSize ?? 250,
-        cutOutHeight = cutOutHeight ?? cutOutSize ?? 250 {
-    assert(
-      borderLength <=
-          min(this.cutOutWidth, this.cutOutHeight) / 2 + borderWidth * 2,
-      "Border can't be larger than ${min(this.cutOutWidth, this.cutOutHeight) / 2 + borderWidth * 2}",
-    );
-    assert(
-        (cutOutWidth == null && cutOutHeight == null) ||
-            (cutOutSize == null && cutOutWidth != null && cutOutHeight != null),
-        'Use only cutOutWidth and cutOutHeight or only cutOutSize');
-  }
-
-  final Color borderColor;
-  final double borderWidth;
-  final Color overlayColor;
-  final double borderRadius;
-  final double borderLength;
-  final double cutOutWidth;
-  final double cutOutHeight;
-  final double cutOutBottomOffset;
-
-  @override
-  EdgeInsetsGeometry get dimensions => const EdgeInsets.all(10);
-
-  @override
-  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
-    return Path()
-      ..fillType = PathFillType.evenOdd
-      ..addPath(getOuterPath(rect), Offset.zero);
-  }
-
-  @override
-  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    Path getLeftTopPath(Rect rect) {
-      return Path()
-        ..moveTo(rect.left, rect.bottom)
-        ..lineTo(rect.left, rect.top)
-        ..lineTo(rect.right, rect.top);
-    }
-
-    return getLeftTopPath(rect)
-      ..lineTo(
-        rect.right,
-        rect.bottom,
-      )
-      ..lineTo(
-        rect.left,
-        rect.bottom,
-      )
-      ..lineTo(
-        rect.left,
-        rect.top,
-      );
-  }
-
-  @override
-  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
-    final width = rect.width;
-    final borderWidthSize = width / 2;
-    final height = rect.height;
-    final borderOffset = borderWidth / 2;
-    final mBorderLength =
-        borderLength > min(cutOutHeight, cutOutHeight) / 2 + borderWidth * 2
-            ? borderWidthSize / 2
-            : borderLength;
-    final mCutOutWidth =
-        cutOutWidth < width ? cutOutWidth : width - borderOffset;
-    final mCutOutHeight =
-        cutOutHeight < height ? cutOutHeight : height - borderOffset;
-
-    final backgroundPaint = Paint()
-      ..color = overlayColor
-      ..style = PaintingStyle.fill;
-
-    final borderPaint = Paint()
-      ..color = borderColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = borderWidth;
-
-    final boxPaint = Paint()
-      ..color = Colors.cyan
-      ..style = PaintingStyle.fill
-      ..blendMode = BlendMode.dstOut;
-
-    final cutOutRect = Rect.fromLTWH(
-      rect.left + width / 2 - mCutOutWidth / 2 + borderOffset,
-      -cutOutBottomOffset +
-          rect.top +
-          height / 2 -
-          mCutOutHeight / 2 +
-          borderOffset,
-      mCutOutWidth - borderOffset * 2,
-      mCutOutHeight - borderOffset * 2,
-    );
-
-    canvas
-      ..saveLayer(
-        rect,
-        backgroundPaint,
-      )
-      ..drawRect(
-        rect,
-        backgroundPaint,
-      )
-      // Draw top right corner
-      ..drawRRect(
-        RRect.fromLTRBAndCorners(
-          cutOutRect.right - mBorderLength,
-          cutOutRect.top,
-          cutOutRect.right,
-          cutOutRect.top + mBorderLength,
-          topRight: Radius.circular(borderRadius),
-        ),
-        borderPaint,
-      )
-      // Draw top left corner
-      ..drawRRect(
-        RRect.fromLTRBAndCorners(
-          cutOutRect.left,
-          cutOutRect.top,
-          cutOutRect.left + mBorderLength,
-          cutOutRect.top + mBorderLength,
-          topLeft: Radius.circular(borderRadius),
-        ),
-        borderPaint,
-      )
-      // Draw bottom right corner
-      ..drawRRect(
-        RRect.fromLTRBAndCorners(
-          cutOutRect.right - mBorderLength,
-          cutOutRect.bottom - mBorderLength,
-          cutOutRect.right,
-          cutOutRect.bottom,
-          bottomRight: Radius.circular(borderRadius),
-        ),
-        borderPaint,
-      )
-      // Draw bottom left corner
-      ..drawRRect(
-        RRect.fromLTRBAndCorners(
-          cutOutRect.left,
-          cutOutRect.bottom - mBorderLength,
-          cutOutRect.left + mBorderLength,
-          cutOutRect.bottom,
-          bottomLeft: Radius.circular(borderRadius),
-        ),
-        borderPaint,
-      )
-      ..drawRRect(
-        RRect.fromRectAndRadius(
-          cutOutRect,
-          Radius.circular(borderRadius),
-        ),
-        boxPaint,
-      )
-      ..restore();
-  }
-
-  @override
-  ShapeBorder scale(double t) {
-    return QrScannerOverlayShape(
-      borderColor: borderColor,
-      borderWidth: borderWidth,
-      overlayColor: overlayColor,
     );
   }
 }

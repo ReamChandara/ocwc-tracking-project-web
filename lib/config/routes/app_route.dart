@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:tracking_web/binding/home_binding.dart';
 import 'package:tracking_web/screen/list_worker_screen.dart';
 import 'package:tracking_web/screen/scan_card_worker_screen.dart';
-import 'package:tracking_web/screen/test_screen.dart';
+import '../../binding/worker_binding.dart';
 import '../../screen/detial_worker_screen.dart';
 import '../../screen/search_worker_screen.dart';
 
@@ -28,17 +28,13 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.detail,
-      binding: HomeBinding(),
+      bindings: [HomeBinding(), WorkerBinding()],
       page: () => const WorkerDetail(),
     ),
     GetPage(
       name: Routes.scanWorker,
       page: () => const ScanWorkerCard(),
     ),
-    GetPage(
-      name: Routes.test,
-      page: () => const TestScreen(),
-    )
   ];
 }
 

@@ -6,6 +6,7 @@ import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
 import 'package:tracking_web/widget/dialog_widget.dart';
+import '../widget/popup_menu_widget.dart';
 import '../widget/textfield_widget.dart';
 
 class SearchWorkerScreen extends StatefulWidget {
@@ -87,123 +88,32 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 20, right: 20),
+                    padding: const EdgeInsets.all(16),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Obx(
-                          () => PopupMenuButton(
-                            position: PopupMenuPosition.under,
-                            child: homeController.langCode.value == "kh"
-                                ? Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(
-                                          "assets/images/cambodia_flag.png",
-                                        ),
-                                      ),
-                                    ),
-                                    height: 30,
-                                    width: 30,
-                                  )
-                                : Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(
-                                          "assets/images/english_flag.png",
-                                        ),
-                                      ),
-                                    ),
-                                    height: 30,
-                                    width: 30,
-                                  ),
-                            onSelected: (value) {
-                              if (value == "kh") {
-                                homeController.changeLang("kh");
-                              } else if (value == "en") {
-                                homeController.changeLang("en");
-                              }
+                        IconButton(
+                            onPressed: () {
+                              Get.back();
                             },
-                            itemBuilder: (BuildContext context) => [
-                              homeController.langCode.value == "kh"
-                                  ? PopupMenuItem(
-                                      height: 30,
-                                      value: "en",
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                  "assets/images/english_flag.png",
-                                                ),
-                                              ),
-                                            ),
-                                            height: 30,
-                                            width: 30,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const Text(
-                                            "English",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  : PopupMenuItem(
-                                      height: 30,
-                                      value: "kh",
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                  "assets/images/cambodia_flag.png",
-                                                ),
-                                              ),
-                                            ),
-                                            height: 30,
-                                            width: 30,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const Text(
-                                            "ភាសាខ្មែរ",
-                                            style: TextStyle(
-                                              fontFamily: "Battambang",
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                            ],
-                          ),
-                        ),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            )),
+                        PopupMenuWidget(homeController: homeController),
                       ],
                     ),
                   ),
                   () {
                     if (boxConstraints.maxWidth > 1000) {
-                      return buildWebUI(context);
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: boxConstraints.maxHeight * 0.20,
+                          ),
+                          buildWebUI(context),
+                        ],
+                      );
                     } else {
                       return _buildPhoneUI(context);
                     }
@@ -217,7 +127,6 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
 
   Widget buildWebUI(BuildContext context) {
     return SizedBox(
-      height: 900,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -238,7 +147,7 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
         const SizedBox(height: 20),
         Image.asset(
           "assets/images/splash_logo_new.png",
-          width: 250,
+          width: 400,
         ),
         const SizedBox(height: 20),
         buidCardSearch(context),

@@ -8,6 +8,7 @@ import 'package:tracking_web/controller/new_worker_controller.dart';
 import 'package:tracking_web/widget/custom_card.dart';
 import 'package:tracking_web/widget/custom_text.dart';
 import 'package:tracking_web/widget/dialog_widget.dart';
+import 'package:tracking_web/widget/popup_menu_widget.dart';
 import '../config/constant/string_constant.dart';
 import 'button_show_card.dart';
 import 'custom_header.dart';
@@ -758,121 +759,10 @@ class WebNewScreen extends StatelessWidget {
                 : "SourceSansPro-Regular"),
       ),
       actions: [
-        Obx(
-          () => Padding(
-            padding: const EdgeInsets.all(10),
-            child: PopupMenuButton(
-              padding: const EdgeInsets.all(10),
-              position: PopupMenuPosition.under,
-              child: homeController.langCode.value == "kh"
-                  ? Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(
-                            "assets/images/cambodia_flag.png",
-                          ),
-                        ),
-                      ),
-                      height: 30,
-                      width: 30,
-                    )
-                  : Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(
-                            "assets/images/english_flag.png",
-                          ),
-                        ),
-                      ),
-                      height: 30,
-                      width: 30,
-                    ),
-              onSelected: (value) {
-                if (value == "kh") {
-                  homeController.changeLang("kh");
-                } else if (value == "en") {
-                  homeController.changeLang("en");
-                }
-              },
-              itemBuilder: (BuildContext context) => [
-                homeController.langCode.value == "kh"
-                    ? PopupMenuItem(
-                        padding: const EdgeInsets.all(10),
-                        value: "en",
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    "assets/images/english_flag.png",
-                                  ),
-                                ),
-                              ),
-                              height: 30,
-                              width: 30,
-                            ),
-                            // Image.asset(
-                            //   "assets/images/english_flag.png",
-                            //   width: 30,
-                            // ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              "English",
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : PopupMenuItem(
-                        padding: const EdgeInsets.all(10),
-                        value: "kh",
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    "assets/images/cambodia_flag.png",
-                                  ),
-                                ),
-                              ),
-                              height: 30,
-                              width: 30,
-                            ),
-                            // Image.asset(
-                            //   "assets/images/cambodia_flag.png",
-                            //   width: 30,
-                            // ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              "ភាសាខ្មែរ",
-                              style: TextStyle(
-                                fontFamily: "Battambang",
-                                fontSize: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-              ],
-            ),
-          ),
-        )
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PopupMenuWidget(homeController: homeController),
+        ),
       ],
     );
   }

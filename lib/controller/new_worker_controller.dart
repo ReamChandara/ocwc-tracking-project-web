@@ -20,35 +20,23 @@ class NewWorkerController extends GetxController {
   bool loading = true;
 
   void searchWorkByQr({
-    required BuildContext context,
     required String data,
   }) async {
-    String checkUrl = "/profile?id";
-    if (data.contains(checkUrl)) {
-      List<String> hashCodes = data.split("=");
-      String apiUrl = baseUrl + searchWorkerQr;
-      if (hashCodes.isEmpty) {
-      } else {
-        Map<String, String> body = {"qr_code": hashCodes[1]};
-        var response = await http.post(
-          Uri.parse(apiUrl),
-          headers: headers(homeController.langCode.value),
-          body: jsonEncode(body),
-        );
-        if (response.statusCode == 200) {
-          workerData = WorkerData.fromJson(
-            jsonDecode(response.body)["data"],
-          );
-          loading = false;
-          Get.toNamed(Routes.detail, parameters: {"id": workerData!.hashcode});
-        }
-      }
-    } else {
-      DialogWidget.showDialog(
-        context,
-        "qrvalidate".tr,
-        homeController.langCode.value,
+    String apiUrl = baseUrl + searchWorkerQr;
+    Map<String, String> body = {"qr_code": data};
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      headers: headers(homeController.langCode.value),
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 200) {
+      workerData = WorkerData.fromJson(
+        jsonDecode(response.body)["data"],
       );
+      loading = false;
+      update();
+      // Get.toNamed(Routes.detail, parameters: {"id": workerData!.hashcode});
     }
   }
 
@@ -181,27 +169,27 @@ class NewWorkerController extends GetxController {
     }
   }
 
-  initWorkerData() async {
-    String apiUrl = baseUrl + searchWorkerQr;
-    Map<String, String> body = {"qr_code": Get.parameters["id"]!};
-    var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: headers(homeController.langCode.value),
-      body: jsonEncode(body),
-    );
-    if (response.statusCode == 200) {
-      workerData = WorkerData.fromJson(
-        jsonDecode(response.body)["data"],
-      );
-      loading = false;
-      update();
-    }
-  }
+  // initWorkerData() async {
+  //   String apiUrl = baseUrl + searchWorkerQr;
+  //   Map<String, String> body = {"qr_code": Get.parameters["id"]!};
+  //   var response = await http.post(
+  //     Uri.parse(apiUrl),
+  //     headers: headers(homeController.langCode.value),
+  //     body: jsonEncode(body),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     workerData = WorkerData.fromJson(
+  //       jsonDecode(response.body)["data"],
+  //     );
+  //     loading = false;
+  //     update();
+  //   }
+  // }
 
   initData() async {
     if (Get.parameters["id"] == null) {
     } else {
-      initWorkerData();
+      searchWorkByQr(data: Get.parameters["id"]!);
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import '../config/routes/app_route.dart';
+import '../widget/popup_menu_widget.dart';
 
 class HomeScreen extends GetView<HomeController> {
   HomeScreen({super.key});
@@ -14,165 +15,61 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: LayoutBuilder(
-        builder: (context, boxConstraints) {
-          return Container(
-              width: boxConstraints.maxWidth,
-              height: boxConstraints.maxHeight,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/background.jpg"),
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Obx(
-                          () => PopupMenuButton(
-                            position: PopupMenuPosition.under,
-                            child: controller.langCode.value == "kh"
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(
-                                          "assets/images/cambodia_flag.png",
-                                        ),
-                                      ),
-                                    ),
-                                    height: 30,
-                                    width: 30,
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(
-                                          "assets/images/english_flag.png",
-                                        ),
-                                      ),
-                                    ),
-                                    height: 30,
-                                    width: 30,
-                                  ),
-                            onSelected: (value) {
-                              if (value == "kh") {
-                                controller.changeLang("kh");
-                              } else if (value == "en") {
-                                controller.changeLang("en");
-                              }
-                            },
-                            itemBuilder: (BuildContext context) => [
-                              controller.langCode.value == "kh"
-                                  ? PopupMenuItem(
-                                      height: 30,
-                                      value: "en",
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                  "assets/images/english_flag.png",
-                                                ),
-                                              ),
-                                            ),
-                                            height: 30,
-                                            width: 30,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const Text(
-                                            "English",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  : PopupMenuItem(
-                                      height: 30,
-                                      value: "kh",
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                  "assets/images/cambodia_flag.png",
-                                                ),
-                                              ),
-                                            ),
-                                            height: 30,
-                                            width: 30,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const Text(
-                                            "ភាសាខ្មែរ",
-                                            style: TextStyle(
-                                              fontFamily: "Battambang",
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  () {
-                    if (boxConstraints.maxWidth > 1000) {
-                      return buildWebUI(context);
-                    } else {
-                      return _buildPhoneUI(context);
-                    }
-                  }(),
-                ]),
-              ));
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
         },
+        child: LayoutBuilder(
+          builder: (context, boxConstraints) {
+            return Container(
+                // alignment: Alignment.center,
+                width: boxConstraints.maxWidth,
+                height: boxConstraints.maxHeight,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/background.jpg"),
+                  ),
+                ),
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: PopupMenuWidget(homeController: controller),
+                    ),
+                    () {
+                      if (boxConstraints.maxWidth > 900) {
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: boxConstraints.maxHeight * 0.20,
+                            ),
+                            buildWebUI(context),
+                          ],
+                        );
+                      } else {
+                        return _buildPhoneUI(context);
+                      }
+                    }(),
+                  ],
+                )));
+          },
+        ),
       ),
-    ));
+    );
   }
 
   Widget buildWebUI(BuildContext context) {
-    return SizedBox(
-      height: 900,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Image.asset(
-            "assets/images/splash_logo_new.png",
-            width: 400,
-          ),
-          buidOptionSearch(context),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Image.asset(
+          "assets/images/splash_logo_new.png",
+          width: 400,
+        ),
+        buidOptionSearch(context),
+      ],
     );
   }
 
@@ -276,12 +173,14 @@ class HomeScreen extends GetView<HomeController> {
 
   Widget _buildPhoneUI(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: 20),
-        Image.asset(
-          "assets/images/splash_logo_new.png",
-          width: 250,
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Image.asset(
+            "assets/images/splash_logo_new.png",
+            width: 400,
+          ),
         ),
         SizedBox(height: 20),
         buidOptionSearch(context),
