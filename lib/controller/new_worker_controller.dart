@@ -18,6 +18,7 @@ class NewWorkerController extends GetxController {
   WorkerData? workerData;
   int falseIndex = 0;
   bool loading = true;
+  String param = "";
 
   void searchWorkByQr({
     required String data,
@@ -36,7 +37,6 @@ class NewWorkerController extends GetxController {
       );
       loading = false;
       update();
-      // Get.toNamed(Routes.detail, parameters: {"id": workerData!.hashcode});
     }
   }
 
@@ -189,6 +189,7 @@ class NewWorkerController extends GetxController {
   initData() async {
     if (Get.parameters["id"] == null) {
     } else {
+      param = Get.parameters["id"] ?? "No parameter";
       searchWorkByQr(data: Get.parameters["id"]!);
     }
   }

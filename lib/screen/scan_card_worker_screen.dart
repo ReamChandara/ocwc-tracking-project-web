@@ -1,3 +1,7 @@
+// ignore_for_file: avoid_print
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -16,19 +20,95 @@ class ScanWorkerCard extends StatefulWidget {
   State<ScanWorkerCard> createState() => _ScanWorkerCardState();
 }
 
-class _ScanWorkerCardState extends State<ScanWorkerCard> {
+class _ScanWorkerCardState extends State<ScanWorkerCard>
+    with WidgetsBindingObserver {
   late NewWorkerController controller = Get.put(NewWorkerController());
   late HomeController homeController;
 
   final MobileScannerController scannerController = MobileScannerController(
-    formats: const [BarcodeFormat.qrCode],
+    torchEnabled: true,
+    useNewCameraSelector: true,
+    formats: [BarcodeFormat.qrCode],
+    facing: CameraFacing.front,
+    detectionTimeoutMs: 1000,
   );
+
+  Barcode? _barcode;
+  StreamSubscription<Object?>? _subscription;
+
+  Widget _buildBarcode(Barcode? value) {
+    if (value == null) {
+      return const Text(
+        'Scan something!',
+        overflow: TextOverflow.fade,
+        style: TextStyle(color: Colors.white),
+      );
+    } else {
+      String checkUrl = "/profile?id";
+      if (!value.displayValue!.contains(checkUrl)) {
+        return const Text(
+          'Qr not Valid',
+          overflow: TextOverflow.fade,
+          style: TextStyle(color: Colors.red),
+        );
+      } else {
+        List<String> hashCodes = value.displayValue!.split("=");
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+        });
+        return const SizedBox();
+      }
+    }
+  }
+
+  void _handleBarcode(BarcodeCapture barcodes) {
+    if (mounted) {
+      setState(() {
+        _barcode = barcodes.barcodes.firstOrNull;
+      });
+    }
+  }
 
   @override
   void initState() {
     homeController = Get.put(HomeController());
-    scannerController.start();
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _subscription = scannerController.barcodes.listen(_handleBarcode);
+    unawaited(scannerController.start());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.detached:
+        {
+          print("app detached");
+        }
+      case AppLifecycleState.hidden:
+        {
+          print("app hidden");
+        }
+      case AppLifecycleState.paused:
+        {
+          print("app paused");
+          return;
+        }
+
+      case AppLifecycleState.resumed:
+        {
+          _subscription = scannerController.barcodes.listen(_handleBarcode);
+          unawaited(scannerController.start());
+        }
+
+      case AppLifecycleState.inactive:
+        {
+          unawaited(_subscription?.cancel());
+          _subscription = null;
+          unawaited(scannerController.stop());
+        }
+    }
   }
 
   @override
@@ -53,13 +133,14 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            )),
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                        ),
                         PopupMenuWidget(homeController: homeController),
                       ],
                     ),
@@ -149,46 +230,24 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
                       errorBuilder: (context, error, child) {
                         return ScannerErrorWidget(error: error);
                       },
-                      overlayBuilder: (context, constraints) {
-                        return Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: ScannedBarcodeLabel(
-                                barcodes: scannerController.barcodes,
-                              ),
-                            ));
+                      overlayBuilder: (context, constrained) {
+                        return _buildBarcode(_barcode);
                       },
+                      // overlayBuilder: (context, constraints) {
+                      //   return Padding(
+                      //     padding: const EdgeInsets.all(16.0),
+                      //     child: Align(
+                      //       alignment: Alignment.bottomCenter,
+                      //       child: ScannerLayout(
+                      //         mobileScannerController: scannerController,
+                      //       ),
+                      //     ),
+                      //   );
+                      // },
                     ),
                   ),
                 )),
           ),
-          // Column(
-          //   children: [
-          //     Container(
-          //       height: 50,
-          //       width: 50,
-          //       padding: const EdgeInsets.all(10),
-          //       decoration: const BoxDecoration(
-          //         color: Color.fromARGB(255, 71, 122, 211),
-          //         shape: BoxShape.circle,
-          //       ),
-          //       child: Image.asset(
-          //         "assets/icons/credit-card.png",
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //     const Text(
-          //       "បើកកាត",
-          //       style: TextStyle(
-          //         fontSize: 14,
-          //         fontFamily: "Battambang",
-          //         color: Colors.white,
-          //         fontWeight: FontWeight.bold,
-          //       ),
-          //     )
-          //   ],
-          // )
         ].withSpaceBetween(height: 10),
       ),
     );
@@ -215,157 +274,15 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
     super.dispose();
     scannerController.dispose();
   }
-
-  AppBar _buildAppbar() {
-    return AppBar(
-      backgroundColor: const Color.fromARGB(255, 71, 122, 211),
-      centerTitle: true,
-      title: Text(
-        "appbarTitle".tr,
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            fontFamily: homeController.langCode.value == "kh"
-                ? "Battambang"
-                : "SourceSansPro-Regular"),
-      ),
-      actions: [
-        Obx(
-          () => Padding(
-            padding: const EdgeInsets.all(10),
-            child: PopupMenuButton(
-              padding: const EdgeInsets.all(10),
-              position: PopupMenuPosition.under,
-              child: homeController.langCode.value == "kh"
-                  ? Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(
-                            "assets/images/cambodia_flag.png",
-                          ),
-                        ),
-                      ),
-                      height: 30,
-                      width: 30,
-                    )
-                  : Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(
-                            "assets/images/english_flag.png",
-                          ),
-                        ),
-                      ),
-                      height: 30,
-                      width: 30,
-                    ),
-              onSelected: (value) {
-                if (value == "kh") {
-                  homeController.changeLang("kh");
-                } else if (value == "en") {
-                  homeController.changeLang("en");
-                }
-              },
-              itemBuilder: (BuildContext context) => [
-                homeController.langCode.value == "kh"
-                    ? PopupMenuItem(
-                        padding: const EdgeInsets.all(10),
-                        value: "en",
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    "assets/images/english_flag.png",
-                                  ),
-                                ),
-                              ),
-                              height: 30,
-                              width: 30,
-                            ),
-                            // Image.asset(
-                            //   "assets/images/english_flag.png",
-                            //   width: 30,
-                            // ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              "English",
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : PopupMenuItem(
-                        padding: const EdgeInsets.all(10),
-                        value: "kh",
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    "assets/images/cambodia_flag.png",
-                                  ),
-                                ),
-                              ),
-                              height: 30,
-                              width: 30,
-                            ),
-                            // Image.asset(
-                            //   "assets/images/cambodia_flag.png",
-                            //   width: 30,
-                            // ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              "ភាសាខ្មែរ",
-                              style: TextStyle(
-                                fontFamily: "Battambang",
-                                fontSize: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
 }
 
-class ScannedBarcodeLabel extends StatefulWidget {
-  const ScannedBarcodeLabel({
-    super.key,
-    required this.barcodes,
-  });
-  final Stream<BarcodeCapture> barcodes;
-
-  @override
-  State<ScannedBarcodeLabel> createState() => _ScannedBarcodeLabelState();
-}
-
-class _ScannedBarcodeLabelState extends State<ScannedBarcodeLabel> {
+class ScannerLayout extends StatelessWidget {
+  final MobileScannerController mobileScannerController;
+  const ScannerLayout({super.key, required this.mobileScannerController});
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: widget.barcodes,
+    return StreamBuilder<BarcodeCapture>(
+      stream: mobileScannerController.barcodes,
       builder: (context, snapshot) {
         final scannedBarcodes = snapshot.data?.barcodes.first;
         if (scannedBarcodes == null) {
@@ -386,9 +303,7 @@ class _ScannedBarcodeLabelState extends State<ScannedBarcodeLabel> {
           } else {
             List<String> hashCodes = data.split("=");
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted) {
-                Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
-              }
+              Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
             });
             return Text(
               data,
@@ -400,6 +315,24 @@ class _ScannedBarcodeLabelState extends State<ScannedBarcodeLabel> {
     );
   }
 }
+
+// class ScannedBarcodeLabel extends StatefulWidget {
+//   const ScannedBarcodeLabel({
+//     super.key,
+//     required this.barcodes,
+//   });
+//   final Stream<BarcodeCapture> barcodes;
+
+//   @override
+//   State<ScannedBarcodeLabel> createState() => _ScannedBarcodeLabelState();
+// }
+
+// class _ScannedBarcodeLabelState extends State<ScannedBarcodeLabel> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return mobileScannerController
+//   }
+// }
 
 class ScannerErrorWidget extends StatelessWidget {
   const ScannerErrorWidget({super.key, required this.error});
