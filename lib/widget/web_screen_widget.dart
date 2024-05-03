@@ -70,7 +70,7 @@ class WebNewScreen extends StatelessWidget {
       body: LayoutBuilder(
         builder: (context, boxConstraints) {
           var contanstraintWidth = 600.0;
-          double height = 500;
+          double height = 450;
           if (boxConstraints.maxWidth >= 1000) {
             return SingleChildScrollView(
               child: Column(children: [
@@ -94,104 +94,126 @@ class WebNewScreen extends StatelessWidget {
                             width: 400,
                             height: height,
                             child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                              InkWell(
-                                onTap: () {
-                                  dialogShowImage(
-                                    controller.workerData!.photo,
-                                  );
-                                },
-                                child: Container(
-                                  width: 120,
-                                  height: 100,
-                                  margin: const EdgeInsets.only(
-                                    right: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey.shade200,
-                                      width: 3,
-                                    ),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        controller.workerData!.photo,
+                                  Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          dialogShowImage(
+                                            controller.workerData!.photo,
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 120,
+                                          height: 100,
+                                          margin: const EdgeInsets.only(
+                                            right: 10,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey.shade200,
+                                              width: 3,
+                                            ),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                controller.workerData!.photo,
+                                              ),
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    shape: BoxShape.circle,
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        child: AutoSizeText(
+                                          controller
+                                              .workerData!.fullName.enName,
+                                          minFontSize: 12,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              fontFamily:
+                                                  "SourceSansPro-Regular"),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        child: AutoSizeText(
+                                          controller
+                                              .workerData!.fullName.khName,
+                                          minFontSize: 12,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              fontFamily: "Battambang"),
+                                        ),
+                                      ),
+                                    ].withSpaceBetween(height: 10),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                child: AutoSizeText(
-                                  controller.workerData!.fullName.enName,
-                                  minFontSize: 12,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      fontFamily: "SourceSansPro-Regular"),
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                child: AutoSizeText(
-                                  controller.workerData!.fullName.khName,
-                                  minFontSize: 12,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      fontFamily: "Battambang"),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              CustomText(
-                                  dataFlex: 2,
-                                  maxFontSize: 18,
-                                  title: 'ocwcNo'.tr,
-                                  data: controller.workerData!.ocwcNo,
-                                  homeController: homeController),
-                              CustomText(
-                                  dataFlex: 2,
-                                  maxFontSize: 18,
-                                  title: 'gender'.tr,
-                                  data: homeController.langCode.value == "en"
-                                      ? controller.workerData!.gender.enName
-                                      : controller.workerData!.gender.khName,
-                                  homeController: homeController),
-                              CustomText(
-                                  dataFlex: 2,
-                                  maxFontSize: 18,
-                                  title: 'country'.tr,
-                                  data: homeController.langCode.value == "en"
-                                      ? controller.workerData!.country.enName
-                                      : controller.workerData!.country.khName,
-                                  homeController: homeController),
-                              CustomText(
-                                  dataFlex: 2,
-                                  title: 'SenderAgency'.tr,
-                                  maxFontSize: 18,
-                                  minFontSize: 12,
-                                  maxLine: 2,
-                                  data: homeController.langCode.value == "en"
-                                      ? controller
-                                          .workerData!.sendingAgency.enName
-                                      : controller
-                                          .workerData!.sendingAgency.khName,
-                                  homeController: homeController),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              ButtonShowCard(
-                                  onTap: () {
-                                    DialogWidget.laodingDailog(
-                                        context, homeController.langCode.value);
-                                    controller.showImageCard(
-                                      context,
-                                      homeController.langCode.value,
-                                    );
-                                  },
-                                  controller: homeController),
-                            ].withSpaceBetween(height: 10)),
+                                  Column(
+                                    children: [
+                                      CustomText(
+                                          dataFlex: 2,
+                                          maxFontSize: 18,
+                                          title: 'ocwcNo'.tr,
+                                          data: controller.workerData!.ocwcNo,
+                                          homeController: homeController),
+                                      CustomText(
+                                          dataFlex: 2,
+                                          maxFontSize: 18,
+                                          title: 'gender'.tr,
+                                          data: homeController.langCode.value ==
+                                                  "en"
+                                              ? controller
+                                                  .workerData!.gender.enName
+                                              : controller
+                                                  .workerData!.gender.khName,
+                                          homeController: homeController),
+                                      CustomText(
+                                          dataFlex: 2,
+                                          maxFontSize: 18,
+                                          title: 'country'.tr,
+                                          data:
+                                              homeController.langCode.value ==
+                                                      "en"
+                                                  ? controller.workerData!
+                                                      .country.enName
+                                                  : controller.workerData!
+                                                      .country.khName,
+                                          homeController: homeController),
+                                      CustomText(
+                                          dataFlex: 2,
+                                          title: 'SenderAgency'.tr,
+                                          maxFontSize: 18,
+                                          minFontSize: 12,
+                                          maxLine: 2,
+                                          data: homeController.langCode.value ==
+                                                  "en"
+                                              ? controller.workerData!
+                                                  .sendingAgency.enName
+                                              : controller.workerData!
+                                                  .sendingAgency.khName,
+                                          homeController: homeController),
+                                    ].withSpaceBetween(height: 10),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 6),
+                                    child: ButtonShowCard(
+                                        onTap: () {
+                                          DialogWidget.laodingDailog(context,
+                                              homeController.langCode.value);
+                                          controller.showImageCard(
+                                            context,
+                                            homeController.langCode.value,
+                                          );
+                                        },
+                                        controller: homeController),
+                                  ),
+                                ].withSpaceBetween(height: 10)),
                           )
                         ],
                       ),
@@ -622,10 +644,16 @@ class WebNewScreen extends StatelessWidget {
                                   var track =
                                       controller.workerData!.tricking[index];
                                   Color? textColor = Colors.green;
+                                  int falseIndex = controller
+                                      .workerData!.tricking
+                                      .indexWhere(
+                                    (element) => element.check == false,
+                                  );
+
                                   if (track.check!) {
                                     textColor = Colors.green;
                                   } else {
-                                    if (index == controller.falseIndex) {
+                                    if (index == falseIndex) {
                                       textColor = Colors.orange;
                                     } else {
                                       textColor = Colors.red[300];

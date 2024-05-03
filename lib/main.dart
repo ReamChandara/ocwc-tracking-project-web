@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:tracking_web/binding/home_binding.dart';
 import 'package:tracking_web/config/routes/app_route.dart';
 import 'package:tracking_web/screen/home_screen.dart';
+import 'package:tracking_web/screen/unknow_route_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'config/translate/message.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -28,8 +29,6 @@ Locale locale() {
   }
 }
 
-void saveRoute() {}
-
 class MyApp extends StatelessWidget {
   final Locale locale;
   const MyApp({super.key, required this.locale});
@@ -51,12 +50,27 @@ class MyApp extends StatelessWidget {
         Locale("en", "US"),
         Locale("km", "KH"),
       ],
+      unknownRoute: GetPage(
+        name: Routes.uknowRoute,
+        page: () => const UnknowRouteScreen(),
+      ),
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => const UnknowRouteScreen(),
+        );
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => const UnknowRouteScreen(),
+        );
+      },
       fallbackLocale: const Locale("km", "KH"),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "SourceSansPro-Regular",
         useMaterial3: false,
       ),
+      // initialRoute: Routes.uknowRoute,
       home: HomeScreen(),
       getPages: AppPages.pages,
       // routerDelegate: AppRouterDelegate(),

@@ -145,11 +145,11 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: 20),
-        Image.asset(
-          "assets/images/splash_logo_new.png",
-          width: 400,
-        ),
-        const SizedBox(height: 20),
+        // Image.asset(
+        //   "assets/images/splash_logo_new.png",
+        //   width: 300,
+        // ),
+        // const SizedBox(height: 20),
         buidCardSearch(context),
       ],
     );

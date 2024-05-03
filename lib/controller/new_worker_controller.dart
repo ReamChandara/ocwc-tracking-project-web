@@ -21,7 +21,7 @@ class NewWorkerController extends GetxController {
   String param = "";
 
   void searchWorkByQr({
-    required String data,
+    String data = "no param",
   }) async {
     String apiUrl = baseUrl + searchWorkerQr;
     Map<String, String> body = {"qr_code": data};
@@ -30,11 +30,18 @@ class NewWorkerController extends GetxController {
       headers: headers(homeController.langCode.value),
       body: jsonEncode(body),
     );
-
     if (response.statusCode == 200) {
       workerData = WorkerData.fromJson(
         jsonDecode(response.body)["data"],
       );
+      loading = false;
+      update();
+    } else if (response.statusCode == 422) {
+      workerData = null;
+      loading = false;
+      update();
+    } else if (response.statusCode == 404) {
+      workerData = null;
       loading = false;
       update();
     }
@@ -47,11 +54,13 @@ class NewWorkerController extends GetxController {
     Alert(
         style: AlertStyle(
           titleStyle: TextStyle(
-              fontFamily:
-                  langCode == "en" ? "SourceSansPro-Regular" : "Battambang"),
+            fontFamily:
+                langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
+          ),
           descStyle: TextStyle(
-              fontFamily:
-                  langCode == "en" ? "SourceSansPro-Regular" : "Battambang"),
+            fontFamily:
+                langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
+          ),
           descPadding: const EdgeInsets.only(top: 10, right: 10, left: 10),
           animationType: AnimationType.grow,
           overlayColor: Colors.transparent,
@@ -110,12 +119,17 @@ class NewWorkerController extends GetxController {
         Get.back();
         if (context.mounted) {
           dialogShowImage(
-              context: context, path: response.body, langCode: langCode);
+            context: context,
+            path: response.body,
+            langCode: langCode,
+          );
         }
       } else {
         if (context.mounted) {
           DialogWidget.showWarningDialog(
-              context: context, des: "something went wrong");
+            context: context,
+            des: "something went wrong",
+          );
         }
       }
     } catch (e) {
@@ -188,8 +202,8 @@ class NewWorkerController extends GetxController {
 
   initData() async {
     if (Get.parameters["id"] == null) {
+      searchWorkByQr();
     } else {
-      param = Get.parameters["id"] ?? "No parameter";
       searchWorkByQr(data: Get.parameters["id"]!);
     }
   }

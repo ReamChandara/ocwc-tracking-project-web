@@ -38,18 +38,28 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
 
   Widget _buildBarcode(Barcode? value) {
     if (value == null) {
-      return const Text(
-        'Scan something!',
+      return Text(
+        'scanHere'.tr,
         overflow: TextOverflow.fade,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: homeController.langCode.value == "kh"
+              ? "Battambang"
+              : "SourceSansPro-Regular",
+        ),
       );
     } else {
       String checkUrl = "/profile?id";
       if (!value.displayValue!.contains(checkUrl)) {
-        return const Text(
-          'Qr not Valid',
+        return Text(
+          'validQR'.tr,
           overflow: TextOverflow.fade,
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(
+            color: Colors.red,
+            fontFamily: homeController.langCode.value == "kh"
+                ? "Battambang"
+                : "SourceSansPro-Regular",
+          ),
         );
       } else {
         List<String> hashCodes = value.displayValue!.split("=");
@@ -81,6 +91,7 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
+    print(state);
     switch (state) {
       case AppLifecycleState.detached:
         {
@@ -146,7 +157,8 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
                     ),
                   ),
                   () {
-                    if (boxConstraints.maxWidth > 900) {
+                    if (boxConstraints.maxWidth > 800 &&
+                        boxConstraints.maxHeight > 800) {
                       return Column(
                         children: [
                           SizedBox(
@@ -181,7 +193,7 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
 
   Widget buildQrScanWiget() {
     return Container(
-      height: 500,
+      height: 550,
       width: 400,
       margin: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
@@ -192,62 +204,72 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
           const SizedBox(
             height: 20,
           ),
-          const Text(
-            "ស្កេនកាត",
+          Text(
+            "scancardTitle".tr,
             style: TextStyle(
-                fontFamily: "Battambang", fontSize: 22, color: Colors.white),
+                fontFamily: homeController.langCode.value == "kh"
+                    ? "Battambang"
+                    : "SourceSansPro-Regular",
+                fontSize: 22,
+                color: Colors.white),
           ),
-          const Text(
-            "ដាក់​កាតស្ថិតក្នុងអេក្រង់កាមេរ៉ា ដើម្បីស្កេន",
+          Text(
+            "scansubtitle".tr,
             style: TextStyle(
-                fontFamily: "Battambang", fontSize: 18, color: Colors.white),
+                fontFamily: homeController.langCode.value == "kh"
+                    ? "Battambang"
+                    : "SourceSansPro-Regular",
+                fontSize: 18,
+                color: Colors.white),
           ),
           Container(
             padding: const EdgeInsets.all(6),
             height: 300,
             width: 300,
             child: Container(
-                padding: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  width: 2,
+                  color: const Color.fromARGB(255, 71, 122, 211),
+                ),
+              ),
+              child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    width: 2,
-                    color: const Color.fromARGB(255, 71, 122, 211),
+                ),
+                child: ScanningEffect(
+                  scanningColor: const Color.fromARGB(255, 71, 122, 211),
+                  scanningLinePadding: const EdgeInsets.all(10),
+                  borderLineColor: const Color.fromARGB(255, 71, 122, 211),
+                  delay: const Duration(seconds: 2),
+                  duration: const Duration(seconds: 2),
+                  child: MobileScanner(
+                    controller: scannerController,
+                    errorBuilder: (context, error, child) {
+                      return ScannerErrorWidget(error: error);
+                    },
+                    overlayBuilder: (context, constrained) {
+                      return _buildBarcode(_barcode);
+                    },
+                    // overlayBuilder: (context, constraints) {
+                    //   return Padding(
+                    //     padding: const EdgeInsets.all(16.0),
+                    //     child: Align(
+                    //       alignment: Alignment.bottomCenter,
+                    //       child: ScannerLayout(
+                    //         mobileScannerController: scannerController,
+                    //       ),
+                    //     ),
+                    //   );
+                    // },
                   ),
                 ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ScanningEffect(
-                    scanningColor: const Color.fromARGB(255, 71, 122, 211),
-                    scanningLinePadding: const EdgeInsets.all(10),
-                    borderLineColor: const Color.fromARGB(255, 71, 122, 211),
-                    delay: const Duration(seconds: 2),
-                    duration: const Duration(seconds: 2),
-                    child: MobileScanner(
-                      controller: scannerController,
-                      errorBuilder: (context, error, child) {
-                        return ScannerErrorWidget(error: error);
-                      },
-                      overlayBuilder: (context, constrained) {
-                        return _buildBarcode(_barcode);
-                      },
-                      // overlayBuilder: (context, constraints) {
-                      //   return Padding(
-                      //     padding: const EdgeInsets.all(16.0),
-                      //     child: Align(
-                      //       alignment: Alignment.bottomCenter,
-                      //       child: ScannerLayout(
-                      //         mobileScannerController: scannerController,
-                      //       ),
-                      //     ),
-                      //   );
-                      // },
-                    ),
-                  ),
-                )),
+              ),
+            ),
           ),
+          SwitchCameraButton(controller: scannerController)
         ].withSpaceBetween(height: 10),
       ),
     );
@@ -256,14 +278,14 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
   Widget buildPhonUI() {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Image.asset(
-            "assets/images/splash_logo_new.png",
-            width: 400,
-          ),
-        ),
-        const SizedBox(height: 20),
+        // Padding(
+        //   padding: const EdgeInsets.all(16),
+        //   child: Image.asset(
+        //     "assets/images/splash_logo_new.png",
+        //     width: 400,
+        //   ),
+        // ),
+        // const SizedBox(height: 20),
         buildQrScanWiget(),
       ],
     );
@@ -273,6 +295,56 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
   void dispose() {
     super.dispose();
     scannerController.dispose();
+  }
+}
+
+class SwitchCameraButton extends StatelessWidget {
+  const SwitchCameraButton({required this.controller, super.key});
+
+  final MobileScannerController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: controller,
+      builder: (context, state, child) {
+        if (!state.isInitialized || !state.isRunning) {
+          return const SizedBox.shrink();
+        }
+
+        final int? availableCameras = state.availableCameras;
+
+        if (availableCameras != null && availableCameras < 2) {
+          return const SizedBox.shrink();
+        }
+
+        final Widget icon;
+
+        switch (state.cameraDirection) {
+          case CameraFacing.front:
+            icon = const Icon(Icons.camera_front);
+          case CameraFacing.back:
+            icon = const Icon(Icons.camera_rear);
+        }
+
+        return Column(
+          children: [
+            IconButton(
+              color: Colors.white,
+              iconSize: 32.0,
+              icon: icon,
+              onPressed: () async {
+                await controller.switchCamera();
+              },
+            ),
+            const Text(
+              "Switching camera",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            )
+          ],
+        );
+      },
+    );
   }
 }
 

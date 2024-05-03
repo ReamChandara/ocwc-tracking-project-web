@@ -13,6 +13,7 @@ class Routes {
   static const listWorker = '/listWorker';
   static const test = "/test";
   static const scanWorker = "/scanWorker";
+  static const uknowRoute = "/notfound";
 }
 
 abstract class AppPages {

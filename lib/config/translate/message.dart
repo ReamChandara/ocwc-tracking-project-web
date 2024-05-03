@@ -40,7 +40,11 @@ class Message extends Translations {
         "qrvalidate": "Qr Not valid",
         "findby": "Find Your Information",
         "scancard": "Scan OCWC Card",
-        "enterdate": "Enter Name and Date of birth"
+        "enterdate": "Enter Name and Date of birth",
+        "scancardTitle": "Scan OCWC Card",
+        "scansubtitle": "Input Card in front of Camera",
+        "validQR": "Invalid QR Code",
+        "scanHere": "Scan Card Here"
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
@@ -78,7 +82,11 @@ class Message extends Translations {
         "qrvalidate": "កាត ocwc មិនត្រឺមត្រូវ",
         "findby": "ស្វែងរកព័ត៏មានតាមរយៈ",
         "scancard": "ស្កែន OCWC កាត",
-        "enterdate": "បញ្ចូលឈ្មោះនិងថ្ងែខែឆ្នាំកំណើត"
+        "enterdate": "បញ្ចូលឈ្មោះនិងថ្ងែខែឆ្នាំកំណើត",
+        "scancardTitle": "ស្កែនកាត",
+        "scansubtitle": "ដាក់​កាតស្ថិតក្នុងអេក្រង់កាមេរ៉ា ដើម្បីស្កេន",
+        "validQR": "QR មិនត្រឹមត្រូវ",
+        "scanHere": "ដាក់កាតត្រង់នេះ"
       }
     };
   }

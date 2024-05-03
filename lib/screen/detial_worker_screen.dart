@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
+import 'package:tracking_web/screen/unknow_route_screen.dart';
 
 import '../widget/web_screen_widget.dart';
 
@@ -31,10 +33,14 @@ class _WorkerDetailState extends State<WorkerDetail> {
           child: CircularProgressIndicator(),
         );
       } else {
-        return WebNewScreen(
-          controller: controller,
-          homeController: homeController,
-        );
+        if (controller.workerData == null) {
+          return const UnknowRouteScreen();
+        } else {
+          return WebNewScreen(
+            controller: controller,
+            homeController: homeController,
+          );
+        }
       }
     });
   }
