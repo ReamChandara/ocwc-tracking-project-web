@@ -18,6 +18,7 @@ class PopupMenuWidget extends StatelessWidget {
       children: [
         Obx(() {
           return PopupMenuButton(
+            color: Colors.white,
             offset: const Offset(
               0.0,
               10,

@@ -13,23 +13,26 @@ class TextFieldWidget extends StatelessWidget {
   final TextStyle? errorStyle;
   final TextStyle? hintStyle;
   final TextStyle? labelStyle;
-  const TextFieldWidget(
-      {super.key,
-      this.labelText,
-      this.hintText,
-      this.inputFormatters,
-      this.controller,
-      this.suffixIcon,
-      this.prefixIcon,
-      this.onFieldSubmitted,
-      this.validator,
-      this.errorStyle,
-      this.hintStyle,
-      this.labelStyle});
+  const TextFieldWidget({
+    super.key,
+    this.labelText,
+    this.hintText,
+    this.inputFormatters,
+    this.controller,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.onFieldSubmitted,
+    this.validator,
+    this.errorStyle,
+    this.hintStyle,
+    this.labelStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      scrollPadding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       controller: controller,
       style: const TextStyle(fontSize: 14),
       decoration: InputDecoration(

@@ -22,7 +22,18 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
   late NewWorkerController workerController = Get.put(NewWorkerController());
   TextEditingController nameController = TextEditingController();
   TextEditingController dateController = TextEditingController();
+
+  double scrollPosition = 0;
   late Future<DateTime?> selectedDate;
+  final FocusNode _focusNode = FocusNode();
+
+  void isActive() {
+    if (_focusNode.hasFocus) {
+      debugPrint("Keyboard is active");
+    } else {
+      debugPrint("Keyboard is not active");
+    }
+  }
 
   void submit(BuildContext context) {
     String name = nameController.text.trim();
@@ -67,13 +78,13 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
   @override
   void initState() {
     homeController = Get.put(HomeController());
-    // workerController = Get.put(NewWorkerController());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: LayoutBuilder(builder: (context, boxConstraints) {
         return Container(
             width: boxConstraints.maxWidth,
@@ -88,7 +99,7 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -100,12 +111,15 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                               Icons.arrow_back,
                               color: Colors.white,
                             )),
-                        PopupMenuWidget(homeController: homeController),
+                        PopupMenuWidget(
+                          homeController: homeController,
+                        ),
                       ],
                     ),
                   ),
                   () {
-                    if (boxConstraints.maxWidth > 1000) {
+                    if (boxConstraints.maxWidth > 800 &&
+                        boxConstraints.maxHeight > 800) {
                       return Column(
                         children: [
                           SizedBox(
@@ -118,6 +132,11 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                       return _buildPhoneUI(context);
                     }
                   }(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                  )
                 ],
               ),
             ));
@@ -145,19 +164,20 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: 20),
-        // Image.asset(
-        //   "assets/images/splash_logo_new.png",
-        //   width: 300,
-        // ),
-        // const SizedBox(height: 20),
+        Image.asset(
+          "assets/images/splash_logo_new.png",
+          width: 300,
+        ),
+        const SizedBox(height: 20),
         buidCardSearch(context),
+        const SizedBox(height: 10)
       ],
     );
   }
 
   Widget buidCardSearch(BuildContext context) {
     return Container(
-      height: 450,
+      height: 360,
       width: 400,
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
@@ -169,138 +189,141 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "title".tr,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300,
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Regular"
-                          : "Battambang"),
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "title".tr,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: homeController.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+              ),
+              Text(
+                "subTitle".tr,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontFamily: homeController.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+              ),
+              TextFieldWidget(
+                controller: nameController,
+                onFieldSubmitted: (val) {
+                  submit(context);
+                },
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Image.asset(
+                    width: 10,
+                    "assets/icons/id-card.png",
+                    color: Colors.blueGrey,
+                  ),
                 ),
-                Text(
-                  "subTitle".tr,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Regular"
-                          : "Battambang"),
+                errorStyle: TextStyle(
+                    fontSize: 14,
+                    fontFamily: homeController.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                hintStyle: TextStyle(
+                    fontSize: 14,
+                    fontFamily: homeController.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                validator: (val) {
+                  if (val == null || val.isEmpty) {
+                    return "nameWarning".tr;
+                  } else {
+                    return null;
+                  }
+                },
+                hintText: "latin".tr,
+              ),
+              TextFieldWidget(
+                controller: dateController,
+                hintText: "date".tr,
+                errorStyle: TextStyle(
+                    fontSize: 14,
+                    fontFamily: homeController.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                hintStyle: TextStyle(
+                    fontSize: 14,
+                    fontFamily: homeController.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Image.asset(
+                    width: 10,
+                    "assets/icons/calendar.png",
+                    color: Colors.blueGrey,
+                  ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFieldWidget(
-                  controller: nameController,
-                  onFieldSubmitted: (val) {
-                    submit(context);
-                  },
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Image.asset(
-                      width: 10,
-                      "assets/icons/id-card.png",
+                suffixIcon: IconButton(
+                    onPressed: () async {
+                      setDate();
+                    },
+                    icon: const Icon(
+                      Icons.date_range,
                       color: Colors.blueGrey,
-                    ),
-                  ),
-                  errorStyle: TextStyle(
-                      fontSize: 14,
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Regular"
-                          : "Battambang"),
-                  hintStyle: TextStyle(
-                      fontSize: 14,
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Regular"
-                          : "Battambang"),
-                  validator: (val) {
-                    if (val == null || val.isEmpty) {
-                      return "nameWarning".tr;
-                    } else {
-                      return null;
-                    }
-                  },
-                  hintText: "latin".tr,
+                    )),
+                validator: (val) {
+                  if (val == null || val.isEmpty) {
+                    return "dateWarning".tr;
+                  } else if (!validateDate(val)) {
+                    return "dateMatch".tr;
+                  } else {
+                    return null;
+                  }
+                },
+                onFieldSubmitted: (val) {
+                  submit(context);
+                },
+                inputFormatters: [
+                  MaskTextInputFormatter(
+                    mask: '##/##/####',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy,
+                  )
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  submit(context);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 45,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text("track".tr,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: homeController.langCode.value == "en"
+                              ? "SourceSansPro-Regular"
+                              : "Battambang")),
                 ),
-                TextFieldWidget(
-                  controller: dateController,
-                  hintText: "date".tr,
-                  errorStyle: TextStyle(
-                      fontSize: 14,
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Regular"
-                          : "Battambang"),
-                  hintStyle: TextStyle(
-                      fontSize: 14,
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Regular"
-                          : "Battambang"),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Image.asset(
-                      width: 10,
-                      "assets/icons/calendar.png",
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                  suffixIcon: IconButton(
-                      onPressed: () async {
-                        setDate();
-                      },
-                      icon: const Icon(
-                        Icons.date_range,
-                        color: Colors.blueGrey,
-                      )),
-                  validator: (val) {
-                    if (val == null || val.isEmpty) {
-                      return "dateWarning".tr;
-                    } else if (!validateDate(val)) {
-                      return "dateMatch".tr;
-                    } else {
-                      return null;
-                    }
-                  },
-                  onFieldSubmitted: (val) {
-                    submit(context);
-                  },
-                  inputFormatters: [
-                    MaskTextInputFormatter(
-                      mask: '##/##/####',
-                      filter: {"#": RegExp(r'[0-9]')},
-                      type: MaskAutoCompletionType.lazy,
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                InkWell(
-                  onTap: () {
-                    submit(context);
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 45,
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text("track".tr,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: homeController.langCode.value == "en"
-                                ? "SourceSansPro-Regular"
-                                : "Battambang")),
-                  ),
-                ),
-              ].withSpaceBetween(height: 20)),
+              ),
+            ].withSpaceBetween(height: 10),
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 }

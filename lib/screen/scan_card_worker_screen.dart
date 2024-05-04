@@ -278,14 +278,14 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
   Widget buildPhonUI() {
     return Column(
       children: [
-        // Padding(
-        //   padding: const EdgeInsets.all(16),
-        //   child: Image.asset(
-        //     "assets/images/splash_logo_new.png",
-        //     width: 400,
-        //   ),
-        // ),
-        // const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Image.asset(
+            "assets/images/splash_logo_new.png",
+            width: 250,
+          ),
+        ),
+        const SizedBox(height: 20),
         buildQrScanWiget(),
       ],
     );
