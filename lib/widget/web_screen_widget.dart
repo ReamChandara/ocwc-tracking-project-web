@@ -27,20 +27,19 @@ class WebNewScreen extends StatelessWidget {
     dialogShowImage(String path) {
       Alert(
           style: AlertStyle(
-            titleStyle: TextStyle(
-              fontFamily: homeController.langCode.value == "en"
-                  ? "SourceSansPro-Regular"
-                  : "Battambang",
-            ),
-            descStyle: TextStyle(
-              fontFamily: homeController.langCode.value == "en"
-                  ? "SourceSansPro-Regular"
-                  : "Battambang",
-            ),
-            descPadding: const EdgeInsets.only(top: 10, right: 10, left: 10),
-            animationType: AnimationType.grow,
-            overlayColor: Colors.transparent,
-          ),
+              titleStyle: TextStyle(
+                fontFamily: homeController.langCode.value == "en"
+                    ? "SourceSansPro-Regular"
+                    : "Battambang",
+              ),
+              descStyle: TextStyle(
+                fontFamily: homeController.langCode.value == "en"
+                    ? "SourceSansPro-Regular"
+                    : "Battambang",
+              ),
+              descPadding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+              animationType: AnimationType.grow,
+              overlayColor: Colors.grey.shade100.withOpacity(0.9)),
           image: Container(
             padding: const EdgeInsets.all(8.0),
             child: Image.network(path),
@@ -219,67 +218,119 @@ class WebNewScreen extends StatelessWidget {
                       ),
                     ),
                     CustomCard(
-                      child: Column(
-                        children: [
-                          CustomHeader(
-                            headerWidth: boxConstraints.maxWidth - 520,
-                            title: "trackInfo".tr,
-                            homeController: homeController,
-                          ),
-                          Container(
-                            width: boxConstraints.maxWidth - 520,
-                            height: 1,
-                            color: Colors.grey.shade200,
-                          ),
-                          SizedBox(
-                            width: boxConstraints.maxWidth - 520,
-                            height: height,
-                            child: ListView.builder(
-                              itemCount:
-                                  (controller.workerData!.tricking.length / 2)
-                                      .ceil(),
-                              itemBuilder: (BuildContext context, int index) {
-                                var track =
-                                    controller.workerData!.tricking[index * 2];
-                                var track2 = controller
-                                    .workerData!.tricking[index * 2 + 1];
-                                Color? textColor = Colors.green;
-                                Color? textColor2 = Colors.green;
-                                int falseIndex =
-                                    controller.workerData!.tricking.indexWhere(
-                                  (element) => element.check == false,
-                                );
-
-                                if (track.check!) {
-                                  textColor = Colors.green;
+                        child: Column(children: [
+                      CustomHeader(
+                        headerWidth: boxConstraints.maxWidth - 520,
+                        title: "trackInfo".tr,
+                        homeController: homeController,
+                      ),
+                      Container(
+                        width: boxConstraints.maxWidth - 520,
+                        height: 1,
+                        color: Colors.grey.shade200,
+                      ),
+                      SizedBox(
+                        width: boxConstraints.maxWidth - 520,
+                        height: height,
+                        child: ListView.builder(
+                            itemCount:
+                                (controller.workerData!.tricking.length / 2)
+                                    .ceil(),
+                            itemBuilder: (BuildContext context, int index) {
+                              var track =
+                                  controller.workerData!.tricking[index * 2];
+                              var track2 = controller
+                                  .workerData!.tricking[index * 2 + 1];
+                              Color? textColor = Colors.green;
+                              Color? textColor2 = Colors.green;
+                              int falseIndex = controller.workerData!.tricking
+                                  .indexWhere(
+                                      (element) => element.check == false);
+                              if (track.check!) {
+                                textColor = Colors.green;
+                              } else {
+                                if (index * 2 == falseIndex) {
+                                  textColor = Colors.orange;
                                 } else {
-                                  if (index * 2 == falseIndex) {
-                                    textColor = Colors.orange;
-                                  } else {
-                                    textColor = Colors.red[300];
-                                  }
+                                  textColor = Colors.red[300];
                                 }
-                                if (track2.check!) {
-                                  textColor = Colors.green;
+                              }
+                              if (track2.check!) {
+                                textColor = Colors.green;
+                              } else {
+                                if (index * 2 + 1 == falseIndex) {
+                                  textColor2 = Colors.orange;
                                 } else {
-                                  if (index * 2 + 1 == falseIndex) {
-                                    textColor2 = Colors.orange;
-                                  } else {
-                                    textColor2 = Colors.red[300];
-                                  }
+                                  textColor2 = Colors.red[300];
                                 }
-                                return Row(
-                                  children: [
-                                    Expanded(
+                              }
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10, top: 10),
+                                      child: ListTile(
+                                          title: Text(
+                                            homeController.langCode.value ==
+                                                    "en"
+                                                ? track.title.enTitle
+                                                : track.title.khTilte,
+                                            style: TextStyle(
+                                                fontFamily: homeController
+                                                            .langCode.value ==
+                                                        "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                          ),
+                                          leading: Image.asset(
+                                            iconImage[index * 2],
+                                            color: Colors.blueAccent.shade100,
+                                            width: 20,
+                                          ),
+                                          trailing: track.attachment == null ||
+                                                  track.attachment!.isEmpty
+                                              ? null
+                                              : IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                    Icons.folder_open,
+                                                    color:
+                                                        Colors.blueAccent[100],
+                                                  )),
+                                          subtitle: () {
+                                            return Text(
+                                              homeController.langCode.value ==
+                                                      "en"
+                                                  ? track.date.enDate
+                                                  : track.date.khTilte,
+                                              style: TextStyle(
+                                                  color: textColor,
+                                                  fontFamily: homeController
+                                                              .langCode.value ==
+                                                          "en"
+                                                      ? "SourceSansPro-Regular"
+                                                      : "Battambang"),
+                                            );
+                                          }()),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ), // Adjust spacing between items
+                                  Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10, top: 10),
-                                        child: ListTile(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10, top: 10),
+                                    child: index * 2 + 1 <
+                                            controller
+                                                .workerData!.tricking.length
+                                        ? ListTile(
                                             title: Text(
                                               homeController.langCode.value ==
                                                       "en"
-                                                  ? track.title.enTitle
-                                                  : track.title.khTilte,
+                                                  ? track2.title.enTitle
+                                                  : track2.title.khTilte,
                                               style: TextStyle(
                                                   fontFamily: homeController
                                                               .langCode.value ==
@@ -287,12 +338,15 @@ class WebNewScreen extends StatelessWidget {
                                                       ? "SourceSansPro-Regular"
                                                       : "Battambang"),
                                             ),
+                                            // title: index * 2 + 1 < items.length
+                                            // ? Text(items[index * 2 + 1])
+                                            // : Text("hello")),
                                             leading: Image.asset(
-                                              iconImage[index * 2],
+                                              iconImage[index * 2 + 1],
                                               color: Colors.blueAccent.shade100,
                                               width: 20,
                                             ),
-                                            trailing: track.attachment ==
+                                            trailing: track2.attachment ==
                                                         null ||
                                                     track.attachment!.isEmpty
                                                 ? null
@@ -307,10 +361,10 @@ class WebNewScreen extends StatelessWidget {
                                               return Text(
                                                 homeController.langCode.value ==
                                                         "en"
-                                                    ? track.date.enDate
-                                                    : track.date.khTilte,
+                                                    ? track2.date.enDate
+                                                    : track2.date.khTilte,
                                                 style: TextStyle(
-                                                    color: textColor,
+                                                    color: textColor2,
                                                     fontFamily: homeController
                                                                 .langCode
                                                                 .value ==
@@ -318,80 +372,14 @@ class WebNewScreen extends StatelessWidget {
                                                         ? "SourceSansPro-Regular"
                                                         : "Battambang"),
                                               );
-                                            }()),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ), // Adjust spacing between items
-                                    Expanded(
-                                        child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, right: 10, top: 10),
-                                      child: index * 2 + 1 <
-                                              controller
-                                                  .workerData!.tricking.length
-                                          ? ListTile(
-                                              title: Text(
-                                                homeController.langCode.value ==
-                                                        "en"
-                                                    ? track2.title.enTitle
-                                                    : track2.title.khTilte,
-                                                style: TextStyle(
-                                                    fontFamily: homeController
-                                                                .langCode
-                                                                .value ==
-                                                            "en"
-                                                        ? "SourceSansPro-Regular"
-                                                        : "Battambang"),
-                                              ),
-                                              // title: index * 2 + 1 < items.length
-                                              // ? Text(items[index * 2 + 1])
-                                              // : Text("hello")),
-                                              leading: Image.asset(
-                                                iconImage[index * 2 + 1],
-                                                color:
-                                                    Colors.blueAccent.shade100,
-                                                width: 20,
-                                              ),
-                                              trailing: track2.attachment ==
-                                                          null ||
-                                                      track.attachment!.isEmpty
-                                                  ? null
-                                                  : IconButton(
-                                                      onPressed: () {},
-                                                      icon: Icon(
-                                                        Icons.folder_open,
-                                                        color: Colors
-                                                            .blueAccent[100],
-                                                      )),
-                                              subtitle: () {
-                                                return Text(
-                                                  homeController
-                                                              .langCode.value ==
-                                                          "en"
-                                                      ? track2.date.enDate
-                                                      : track2.date.khTilte,
-                                                  style: TextStyle(
-                                                      color: textColor2,
-                                                      fontFamily: homeController
-                                                                  .langCode
-                                                                  .value ==
-                                                              "en"
-                                                          ? "SourceSansPro-Regular"
-                                                          : "Battambang"),
-                                                );
-                                              }())
-                                          : const SizedBox(),
-                                    )),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                                            }())
+                                        : const SizedBox(),
+                                  )),
+                                ],
+                              );
+                            }),
+                      )
+                    ]))
                   ].withSpaceBetween(width: 20),
                 ),
                 Row(

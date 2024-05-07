@@ -63,7 +63,7 @@ class NewWorkerController extends GetxController {
           ),
           descPadding: const EdgeInsets.only(top: 10, right: 10, left: 10),
           animationType: AnimationType.grow,
-          overlayColor: Colors.transparent,
+          overlayColor: Colors.grey.shade100.withOpacity(0.9),
         ),
         image: Padding(
           padding: const EdgeInsets.all(10),

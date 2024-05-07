@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -9,6 +7,7 @@ import 'package:scanning_effect/scanning_effect.dart';
 import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
+import 'package:tracking_web/controller/scanner_controller.dart';
 
 import '../config/routes/app_route.dart';
 import '../widget/popup_menu_widget.dart';
@@ -20,106 +19,58 @@ class ScanWorkerCard extends StatefulWidget {
   State<ScanWorkerCard> createState() => _ScanWorkerCardState();
 }
 
-class _ScanWorkerCardState extends State<ScanWorkerCard>
-    with WidgetsBindingObserver {
+class _ScanWorkerCardState extends State<ScanWorkerCard> {
   late NewWorkerController controller = Get.put(NewWorkerController());
   late HomeController homeController;
+  late ScannerController scannerController;
 
-  final MobileScannerController scannerController = MobileScannerController(
-    torchEnabled: true,
-    useNewCameraSelector: true,
-    formats: [BarcodeFormat.qrCode],
-    facing: CameraFacing.front,
-    detectionTimeoutMs: 1000,
-  );
+  Widget _buildBarcode() {
+    return GetBuilder<ScannerController>(builder: (scannerController) {
+      var value = scannerController.barcode;
 
-  Barcode? _barcode;
-  StreamSubscription<Object?>? _subscription;
-
-  Widget _buildBarcode(Barcode? value) {
-    if (value == null) {
-      return Text(
-        'scanHere'.tr,
-        overflow: TextOverflow.fade,
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: homeController.langCode.value == "kh"
-              ? "Battambang"
-              : "SourceSansPro-Regular",
-        ),
-      );
-    } else {
-      String checkUrl = "/profile?id";
-      if (!value.displayValue!.contains(checkUrl)) {
+      if (value == null) {
         return Text(
-          'validQR'.tr,
+          'scanHere'.tr,
           overflow: TextOverflow.fade,
           style: TextStyle(
-            color: Colors.red,
+            color: Colors.white,
             fontFamily: homeController.langCode.value == "kh"
                 ? "Battambang"
                 : "SourceSansPro-Regular",
           ),
         );
       } else {
-        List<String> hashCodes = value.displayValue!.split("=");
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
-        });
-        return const SizedBox();
+        print("value = ${value.displayValue!}");
+        String checkUrl = "/profile?id";
+        if (!value.displayValue!.contains(checkUrl)) {
+          return Text(
+            'validQR'.tr,
+            overflow: TextOverflow.fade,
+            style: TextStyle(
+              color: Colors.red,
+              fontFamily: homeController.langCode.value == "kh"
+                  ? "Battambang"
+                  : "SourceSansPro-Regular",
+            ),
+          );
+        } else {
+          List<String> hashCodes = value.displayValue!.split("=");
+          print("have data : ${hashCodes[1]}");
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scannerController.setbarcode = null;
+            Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+          });
+          return const SizedBox();
+        }
       }
-    }
-  }
-
-  void _handleBarcode(BarcodeCapture barcodes) {
-    if (mounted) {
-      setState(() {
-        _barcode = barcodes.barcodes.firstOrNull;
-      });
-    }
+    });
   }
 
   @override
   void initState() {
     homeController = Get.put(HomeController());
+    scannerController = Get.put(ScannerController());
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    _subscription = scannerController.barcodes.listen(_handleBarcode);
-    unawaited(scannerController.start());
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    print(state);
-    switch (state) {
-      case AppLifecycleState.detached:
-        {
-          print("app detached");
-        }
-      case AppLifecycleState.hidden:
-        {
-          print("app hidden");
-        }
-      case AppLifecycleState.paused:
-        {
-          print("app paused");
-          return;
-        }
-
-      case AppLifecycleState.resumed:
-        {
-          _subscription = scannerController.barcodes.listen(_handleBarcode);
-          unawaited(scannerController.start());
-        }
-
-      case AppLifecycleState.inactive:
-        {
-          unawaited(_subscription?.cancel());
-          _subscription = null;
-          unawaited(scannerController.stop());
-        }
-    }
   }
 
   @override
@@ -193,8 +144,9 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
 
   Widget buildQrScanWiget() {
     return Container(
-      height: 550,
+      // height: 550,
       width: 400,
+      padding: const EdgeInsets.only(bottom: 20),
       margin: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         color: Color.fromRGBO(35, 54, 93, 0.5),
@@ -245,31 +197,46 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
                   borderLineColor: const Color.fromARGB(255, 71, 122, 211),
                   delay: const Duration(seconds: 2),
                   duration: const Duration(seconds: 2),
-                  child: MobileScanner(
-                    controller: scannerController,
-                    errorBuilder: (context, error, child) {
-                      return ScannerErrorWidget(error: error);
-                    },
-                    overlayBuilder: (context, constrained) {
-                      return _buildBarcode(_barcode);
-                    },
-                    // overlayBuilder: (context, constraints) {
-                    //   return Padding(
-                    //     padding: const EdgeInsets.all(16.0),
-                    //     child: Align(
-                    //       alignment: Alignment.bottomCenter,
-                    //       child: ScannerLayout(
-                    //         mobileScannerController: scannerController,
-                    //       ),
-                    //     ),
-                    //   );
-                    // },
-                  ),
+                  child: GetBuilder<ScannerController>(builder: (controller) {
+                    return controller.file == null
+                        ? MobileScanner(
+                            controller:
+                                scannerController.mobileScannerController,
+                            errorBuilder: (context, error, child) {
+                              return ScannerErrorWidget(error: error);
+                            },
+                            overlayBuilder: (context, constrained) {
+                              return _buildBarcode();
+                            },
+                          )
+                        : Container(
+                            width: 300,
+                            height: 300,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: MemoryImage(
+                                  controller.file!.bytes!,
+                                ),
+                              ),
+                            ),
+                          );
+                  }),
                 ),
               ),
             ),
           ),
-          SwitchCameraButton(controller: scannerController)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnalyzeImageFromGalleryButton(
+                controller: scannerController,
+              ),
+              SwitchCameraButton(
+                controller: scannerController.mobileScannerController,
+                homeController: homeController,
+              )
+            ].withSpaceBetween(width: 20),
+          )
         ].withSpaceBetween(height: 10),
       ),
     );
@@ -278,29 +245,55 @@ class _ScanWorkerCardState extends State<ScanWorkerCard>
   Widget buildPhonUI() {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Image.asset(
-            "assets/images/splash_logo_new.png",
-            width: 250,
-          ),
+        Image.asset(
+          "assets/images/splash_logo_new.png",
+          width: 250,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         buildQrScanWiget(),
       ],
     );
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  void dispose() async {
     scannerController.dispose();
+    scannerController.mobileScannerController.dispose();
+    super.dispose();
+  }
+}
+
+class AnalyzeImageFromGalleryButton extends StatelessWidget {
+  const AnalyzeImageFromGalleryButton({required this.controller, super.key});
+
+  final ScannerController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        IconButton(
+          color: Colors.white,
+          icon: const Icon(Icons.image),
+          iconSize: 32.0,
+          onPressed: () async {
+            controller.pickAndAnalyzeImage();
+          },
+        ),
+        const Text(
+          "បើក OR",
+          style: TextStyle(
+              color: Colors.white, fontSize: 16, fontFamily: "Battambang"),
+        )
+      ],
+    );
   }
 }
 
 class SwitchCameraButton extends StatelessWidget {
-  const SwitchCameraButton({required this.controller, super.key});
-
+  const SwitchCameraButton(
+      {required this.controller, required this.homeController, super.key});
+  final HomeController homeController;
   final MobileScannerController controller;
 
   @override
@@ -337,9 +330,15 @@ class SwitchCameraButton extends StatelessWidget {
                 await controller.switchCamera();
               },
             ),
-            const Text(
-              "Switching camera",
-              style: TextStyle(color: Colors.white, fontSize: 16),
+            Text(
+              "switchCam".tr,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: homeController.langCode.value == "kh"
+                    ? "Battambang"
+                    : "SourceSansPro-Regular",
+              ),
             )
           ],
         );
@@ -347,64 +346,6 @@ class SwitchCameraButton extends StatelessWidget {
     );
   }
 }
-
-class ScannerLayout extends StatelessWidget {
-  final MobileScannerController mobileScannerController;
-  const ScannerLayout({super.key, required this.mobileScannerController});
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<BarcodeCapture>(
-      stream: mobileScannerController.barcodes,
-      builder: (context, snapshot) {
-        final scannedBarcodes = snapshot.data?.barcodes.first;
-        if (scannedBarcodes == null) {
-          return const Text(
-            'Scan something!',
-            overflow: TextOverflow.fade,
-            style: TextStyle(color: Colors.white),
-          );
-        } else {
-          String checkUrl = "/profile?id";
-          String data = scannedBarcodes.displayValue!;
-          if (!data.contains(checkUrl)) {
-            return const Text(
-              "QR Code Not valid",
-              overflow: TextOverflow.fade,
-              style: TextStyle(color: Colors.red),
-            );
-          } else {
-            List<String> hashCodes = data.split("=");
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
-            });
-            return Text(
-              data,
-              style: const TextStyle(fontSize: 12, color: Colors.white),
-            );
-          }
-        }
-      },
-    );
-  }
-}
-
-// class ScannedBarcodeLabel extends StatefulWidget {
-//   const ScannedBarcodeLabel({
-//     super.key,
-//     required this.barcodes,
-//   });
-//   final Stream<BarcodeCapture> barcodes;
-
-//   @override
-//   State<ScannedBarcodeLabel> createState() => _ScannedBarcodeLabelState();
-// }
-
-// class _ScannedBarcodeLabelState extends State<ScannedBarcodeLabel> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return mobileScannerController
-//   }
-// }
 
 class ScannerErrorWidget extends StatelessWidget {
   const ScannerErrorWidget({super.key, required this.error});

@@ -31,12 +31,10 @@ class TextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      scrollPadding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       controller: controller,
       style: const TextStyle(fontSize: 14),
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(top: 8, left: 6),
+          contentPadding: const EdgeInsets.only(top: 10, left: 6),
           errorStyle: errorStyle,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           labelText: labelText,

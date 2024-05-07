@@ -17,7 +17,6 @@ class WorkerDetailScreen extends GetView<NewWorkerController> {
             child: CircularProgressIndicator(),
           );
         } else {
-          print("hello");
           return SizedBox(
             child: Text(
               workerController.param,

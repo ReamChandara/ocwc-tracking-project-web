@@ -132,11 +132,11 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                       return _buildPhoneUI(context);
                     }
                   }(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                    ),
-                  )
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //     bottom: MediaQuery.of(context).viewInsets.bottom,
+                  //   ),
+                  // )
                 ],
               ),
             ));
@@ -177,8 +177,8 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
 
   Widget buidCardSearch(BuildContext context) {
     return Container(
-      height: 360,
       width: 400,
+      padding: const EdgeInsets.only(bottom: 20),
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(35, 54, 93, 0.5),
@@ -314,7 +314,7 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                               : "Battambang")),
                 ),
               ),
-            ].withSpaceBetween(height: 10),
+            ].withSpaceBetween(height: 16),
           ),
         ),
       ),
