@@ -8,8 +8,6 @@ import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
 import 'package:tracking_web/controller/scanner_controller.dart';
-
-import '../config/routes/app_route.dart';
 import '../widget/popup_menu_widget.dart';
 
 class ScanWorkerCard extends StatefulWidget {
@@ -23,48 +21,6 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
   late NewWorkerController controller = Get.put(NewWorkerController());
   late HomeController homeController;
   late ScannerController scannerController;
-
-  Widget _buildBarcode() {
-    return GetBuilder<ScannerController>(builder: (scannerController) {
-      var value = scannerController.barcode;
-
-      if (value == null) {
-        return Text(
-          'scanHere'.tr,
-          overflow: TextOverflow.fade,
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: homeController.langCode.value == "kh"
-                ? "Battambang"
-                : "SourceSansPro-Regular",
-          ),
-        );
-      } else {
-        print("value = ${value.displayValue!}");
-        String checkUrl = "/profile?id";
-        if (!value.displayValue!.contains(checkUrl)) {
-          return Text(
-            'validQR'.tr,
-            overflow: TextOverflow.fade,
-            style: TextStyle(
-              color: Colors.red,
-              fontFamily: homeController.langCode.value == "kh"
-                  ? "Battambang"
-                  : "SourceSansPro-Regular",
-            ),
-          );
-        } else {
-          List<String> hashCodes = value.displayValue!.split("=");
-          print("have data : ${hashCodes[1]}");
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            scannerController.setbarcode = null;
-            Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
-          });
-          return const SizedBox();
-        }
-      }
-    });
-  }
 
   @override
   void initState() {
@@ -197,44 +153,64 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
                   borderLineColor: const Color.fromARGB(255, 71, 122, 211),
                   delay: const Duration(seconds: 2),
                   duration: const Duration(seconds: 2),
-                  child: GetBuilder<ScannerController>(builder: (controller) {
-                    return controller.file == null
-                        ? MobileScanner(
-                            controller:
-                                scannerController.mobileScannerController,
-                            errorBuilder: (context, error, child) {
-                              return ScannerErrorWidget(error: error);
-                            },
-                            overlayBuilder: (context, constrained) {
-                              return _buildBarcode();
-                            },
-                          )
-                        : Container(
-                            width: 300,
-                            height: 300,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: MemoryImage(
-                                  controller.file!.bytes!,
-                                ),
-                              ),
-                            ),
-                          );
-                  }),
+                  child: MobileScanner(
+                    controller: scannerController.mobileScannerController,
+                    errorBuilder: (context, error, child) {
+                      return ScannerErrorWidget(error: error);
+                    },
+                    // overlayBuilder: (context, constrained) {
+                    //   return _buildBarcode();
+                    // },
+                  ),
+                  // child: GetBuilder<ScannerController>(builder: (controller) {
+                  //   return controller.file == null
+                  //       ? MobileScanner(
+                  //           controller:
+                  //               scannerController.mobileScannerController,
+                  //           errorBuilder: (context, error, child) {
+                  //             return ScannerErrorWidget(error: error);
+                  //           },
+                  //           overlayBuilder: (context, constrained) {
+                  //             return _buildBarcode();
+                  //           },
+                  //         )
+                  //       : Container(
+                  //           width: 300,
+                  //           height: 300,
+                  //           decoration: BoxDecoration(
+                  //             image: DecorationImage(
+                  //               image: MemoryImage(
+                  //                 controller.file!.bytes!,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         );
+                  // }),
                 ),
               ),
             ),
           ),
+          Obx(
+            () => scannerController.qrValid.value.isEmpty
+                ? const SizedBox()
+                : Text(
+                    scannerController.qrValid.value,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 14,
+                        fontFamily: homeController.langCode.value == "kh"
+                            ? "Battambang"
+                            : "SourceSansPro-Regular"),
+                  ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AnalyzeImageFromGalleryButton(
-                controller: scannerController,
-              ),
+              // StartScan(controller: scannerController),
+              AnalyzeImageFromGalleryButton(controller: scannerController),
               SwitchCameraButton(
-                controller: scannerController.mobileScannerController,
-                homeController: homeController,
-              )
+                  controller: scannerController.mobileScannerController,
+                  homeController: homeController)
             ].withSpaceBetween(width: 20),
           )
         ].withSpaceBetween(height: 10),
@@ -255,12 +231,12 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
     );
   }
 
-  @override
-  void dispose() async {
-    scannerController.dispose();
-    scannerController.mobileScannerController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() async {
+  //   scannerController.dispose();
+  //   scannerController.mobileScannerController.dispose();
+  //   super.dispose();
+  // }
 }
 
 class AnalyzeImageFromGalleryButton extends StatelessWidget {
@@ -274,14 +250,41 @@ class AnalyzeImageFromGalleryButton extends StatelessWidget {
       children: [
         IconButton(
           color: Colors.white,
-          icon: const Icon(Icons.image),
-          iconSize: 32.0,
+          icon: const Icon(Icons.image_outlined),
+          iconSize: 26,
           onPressed: () async {
-            controller.pickAndAnalyzeImage();
+            controller.pickImage();
           },
         ),
         const Text(
-          "បើក OR",
+          "បើករូបភាព",
+          style: TextStyle(
+              color: Colors.white, fontSize: 16, fontFamily: "Battambang"),
+        )
+      ],
+    );
+  }
+}
+
+class StartScan extends StatelessWidget {
+  const StartScan({required this.controller, super.key});
+
+  final ScannerController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        IconButton(
+          color: Colors.white,
+          icon: const Icon(Icons.qr_code),
+          iconSize: 26,
+          onPressed: () async {
+            controller.startScan();
+          },
+        ),
+        const Text(
+          "ស្កែន",
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontFamily: "Battambang"),
         )
@@ -304,27 +307,22 @@ class SwitchCameraButton extends StatelessWidget {
         if (!state.isInitialized || !state.isRunning) {
           return const SizedBox.shrink();
         }
-
         final int? availableCameras = state.availableCameras;
-
         if (availableCameras != null && availableCameras < 2) {
           return const SizedBox.shrink();
         }
-
         final Widget icon;
-
         switch (state.cameraDirection) {
           case CameraFacing.front:
-            icon = const Icon(Icons.camera_front);
+            icon = const Icon(Icons.camera_front_outlined);
           case CameraFacing.back:
-            icon = const Icon(Icons.camera_rear);
+            icon = const Icon(Icons.camera_rear_outlined);
         }
-
         return Column(
           children: [
             IconButton(
               color: Colors.white,
-              iconSize: 32.0,
+              iconSize: 26,
               icon: icon,
               onPressed: () async {
                 await controller.switchCamera();

@@ -243,9 +243,10 @@ class WebNewScreen extends StatelessWidget {
                                   .workerData!.tricking[index * 2 + 1];
                               Color? textColor = Colors.green;
                               Color? textColor2 = Colors.green;
-                              int falseIndex = controller.workerData!.tricking
-                                  .indexWhere(
-                                      (element) => element.check == false);
+                              int falseIndex =
+                                  controller.workerData!.tricking.indexWhere(
+                                (element) => element.check == false,
+                              );
                               if (track.check!) {
                                 textColor = Colors.green;
                               } else {
@@ -256,7 +257,7 @@ class WebNewScreen extends StatelessWidget {
                                 }
                               }
                               if (track2.check!) {
-                                textColor = Colors.green;
+                                textColor2 = Colors.green;
                               } else {
                                 if (index * 2 + 1 == falseIndex) {
                                   textColor2 = Colors.orange;
