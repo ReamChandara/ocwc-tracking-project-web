@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:scanning_effect/scanning_effect.dart';
 import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
 import 'package:tracking_web/controller/scanner_controller.dart';
+import '../config/routes/app_route.dart';
 import '../widget/popup_menu_widget.dart';
 
 class ScanWorkerCard extends StatefulWidget {
@@ -20,12 +20,11 @@ class ScanWorkerCard extends StatefulWidget {
 class _ScanWorkerCardState extends State<ScanWorkerCard> {
   late NewWorkerController controller = Get.put(NewWorkerController());
   late HomeController homeController;
-  late ScannerController scannerController;
 
   @override
   void initState() {
     homeController = Get.put(HomeController());
-    scannerController = Get.put(ScannerController());
+    // mobileScannerController.start();
     super.initState();
   }
 
@@ -43,60 +42,94 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
               ),
             ),
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
+                child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
                         ),
-                        PopupMenuWidget(homeController: homeController),
-                      ],
-                    ),
+                      ),
+                      PopupMenuWidget(homeController: homeController),
+                    ],
                   ),
-                  () {
-                    if (boxConstraints.maxWidth > 800 &&
-                        boxConstraints.maxHeight > 800) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: boxConstraints.maxHeight * 0.10,
-                          ),
-                          buildWebUI(context),
-                        ],
-                      );
-                    } else {
-                      return buildPhonUI();
-                    }
-                  }()
-                ],
-              ),
-            ));
+                ),
+                () {
+                  if (boxConstraints.maxWidth > 1200) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: boxConstraints.maxHeight * 0.10,
+                        ),
+                        //  buildWebUI(),
+                      ],
+                    );
+                  } else {
+                    return buildPhonUI();
+                  }
+                }()
+              ],
+            )));
       }),
     );
   }
 
-  Widget buildWebUI(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Image.asset(
-          "assets/images/splash_logo_new.png",
-          width: 400,
-        ),
-        buildQrScanWiget(),
-      ],
-    );
-  }
+  // Widget buildWebUI() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: [
+  //       Image.asset(
+  //         "assets/images/splash_logo_new.png",
+  //         width: 400,
+  //       ),
+  //       // buildQrScanWiget(),
+  //       Container(
+  //         padding: const EdgeInsets.all(6),
+  //         height: 300,
+  //         width: 300,
+  //         child: Container(
+  //           padding: const EdgeInsets.all(6),
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(
+  //               width: 2,
+  //               color: const Color.fromARGB(255, 71, 122, 211),
+  //             ),
+  //           ),
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(10),
+  //             ),
+  //             child: MobileScanner(
+  //               controller: mobileScannerController,
+  //               errorBuilder: (context, error, child) {
+  //                 return ScannerErrorWidget(error: error);
+  //               },
+  //               // overlayBuilder: (context, boxConstraints) =>
+  //               //     _buildBarcode(homeController),
+  //             ),
+  //             // child: ScanningEffect(
+  //             //   scanningColor: const Color.fromARGB(255, 71, 122, 211),
+  //             //   scanningLinePadding: const EdgeInsets.all(10),
+  //             //   borderLineColor: const Color.fromARGB(255, 71, 122, 211),
+  //             //   delay: const Duration(seconds: 2),
+  //             //   duration: const Duration(seconds: 2),
+  //             //   child:
+  //             // ),
+  //           ),
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
 
   Widget buildQrScanWiget() {
     return Container(
@@ -133,7 +166,7 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
           Container(
             padding: const EdgeInsets.all(6),
             height: 300,
-            width: 300,
+            width: 280,
             child: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
@@ -143,76 +176,78 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
                   color: const Color.fromARGB(255, 71, 122, 211),
                 ),
               ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ScanningEffect(
-                  scanningColor: const Color.fromARGB(255, 71, 122, 211),
-                  scanningLinePadding: const EdgeInsets.all(10),
-                  borderLineColor: const Color.fromARGB(255, 71, 122, 211),
-                  delay: const Duration(seconds: 2),
-                  duration: const Duration(seconds: 2),
-                  child: MobileScanner(
-                    controller: scannerController.mobileScannerController,
-                    errorBuilder: (context, error, child) {
-                      return ScannerErrorWidget(error: error);
-                    },
-                    // overlayBuilder: (context, constrained) {
-                    //   return _buildBarcode();
-                    // },
-                  ),
-                  // child: GetBuilder<ScannerController>(builder: (controller) {
-                  //   return controller.file == null
-                  //       ? MobileScanner(
-                  //           controller:
-                  //               scannerController.mobileScannerController,
-                  //           errorBuilder: (context, error, child) {
-                  //             return ScannerErrorWidget(error: error);
-                  //           },
-                  //           overlayBuilder: (context, constrained) {
-                  //             return _buildBarcode();
-                  //           },
-                  //         )
-                  //       : Container(
-                  //           width: 300,
-                  //           height: 300,
-                  //           decoration: BoxDecoration(
-                  //             image: DecorationImage(
-                  //               image: MemoryImage(
-                  //                 controller.file!.bytes!,
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         );
-                  // }),
-                ),
-              ),
+              // child: Container(
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: MobileScanner(
+              //     controller: mobileScannerController,
+              //     errorBuilder: (context, error, child) {
+              //       return ScannerErrorWidget(error: error);
+              //     },
+              //     // overlayBuilder: (context, boxConstraints) =>
+              //     //     _buildBarcode(homeController),
+              //   ),
+              //   // child: ScanningEffect(
+              //   //   scanningColor: const Color.fromARGB(255, 71, 122, 211),
+              //   //   scanningLinePadding: const EdgeInsets.all(10),
+              //   //   borderLineColor: const Color.fromARGB(255, 71, 122, 211),
+              //   //   delay: const Duration(seconds: 2),
+              //   //   duration: const Duration(seconds: 2),
+              //   //   child:
+              //   // ),
+              // ),
             ),
           ),
-          Obx(
-            () => scannerController.qrValid.value.isEmpty
-                ? const SizedBox()
-                : Text(
-                    scannerController.qrValid.value,
-                    style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 14,
-                        fontFamily: homeController.langCode.value == "kh"
-                            ? "Battambang"
-                            : "SourceSansPro-Regular"),
-                  ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // StartScan(controller: scannerController),
-              AnalyzeImageFromGalleryButton(controller: scannerController),
-              SwitchCameraButton(
-                  controller: scannerController.mobileScannerController,
-                  homeController: homeController)
-            ].withSpaceBetween(width: 20),
-          )
+          // () {
+          //   if (scannerController.file == null) {
+          //     return ScannerWidget(
+          //       homeController: homeController,
+          //       scanController: scannerController,
+          //     );
+          //   } else {
+          //     return Container(
+          //       width: 300,
+          //       height: 300,
+          //       decoration: BoxDecoration(
+          //         borderRadius: BorderRadius.circular(10),
+          //         border: Border.all(
+          //           width: 2,
+          //           color: const Color.fromARGB(255, 71, 122, 211),
+          //         ),
+          //         image: DecorationImage(
+          //           image: MemoryImage(scannerController.file!.bytes!),
+          //         ),
+          //       ),
+          //     );
+          //   }
+          // }(),
+          // Obx(
+          //   () => scannerController.qrValid.value.isEmpty
+          //       ? const SizedBox()
+          //       : Text(
+          //           scannerController.qrValid.value,
+          //           style: TextStyle(
+          //               color: Colors.red,
+          //               fontSize: 14,
+          //               fontFamily: homeController.langCode.value == "kh"
+          //                   ? "Battambang"
+          //                   : "SourceSansPro-Regular"),
+          //         ),
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     // ScaningQR(
+
+          //     // ),
+          //   //  AnalyzeImageFromGalleryButton(),
+          //     // SwitchCameraButton(
+          //     //   controller: scannerController.mobileScannerController,
+          //     //   homeController: homeController,
+          //     // )
+          //   ].withSpaceBetween(width: 20),
+          // )
         ].withSpaceBetween(height: 10),
       ),
     );
@@ -226,48 +261,49 @@ class _ScanWorkerCardState extends State<ScanWorkerCard> {
           width: 250,
         ),
         const SizedBox(height: 10),
-        buildQrScanWiget(),
+        // buildQrScanWiget(),
+        Container(
+            padding: const EdgeInsets.all(6),
+            height: 300,
+            width: 300,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  width: 2,
+                  color: const Color.fromARGB(255, 71, 122, 211),
+                ),
+              ),
+              // child: Container(
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: MobileScanner(
+              //     controller: mobileScannerController,
+              //     errorBuilder: (context, error, child) {
+              //       return ScannerErrorWidget(error: error);
+              //     },
+              //     // overlayBuilder: (context, boxConstraints) =>
+              //     //     _buildBarcode(homeController),
+              //   ),
+              //   // child: ScanningEffect(
+              //   //   scanningColor: const Color.fromARGB(255, 71, 122, 211),
+              //   //   scanningLinePadding: const EdgeInsets.all(10),
+              //   //   borderLineColor: const Color.fromARGB(255, 71, 122, 211),
+              //   //   delay: const Duration(seconds: 2),
+              //   //   duration: const Duration(seconds: 2),
+              //   //   child:
+              //   // ),
+              // ),
+            ))
       ],
     );
   }
-
-  // @override
-  // void dispose() async {
-  //   scannerController.dispose();
-  //   scannerController.mobileScannerController.dispose();
-  //   super.dispose();
-  // }
 }
 
-class AnalyzeImageFromGalleryButton extends StatelessWidget {
-  const AnalyzeImageFromGalleryButton({required this.controller, super.key});
-
-  final ScannerController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IconButton(
-          color: Colors.white,
-          icon: const Icon(Icons.image_outlined),
-          iconSize: 26,
-          onPressed: () async {
-            controller.pickImage();
-          },
-        ),
-        const Text(
-          "បើករូបភាព",
-          style: TextStyle(
-              color: Colors.white, fontSize: 16, fontFamily: "Battambang"),
-        )
-      ],
-    );
-  }
-}
-
-class StartScan extends StatelessWidget {
-  const StartScan({required this.controller, super.key});
+class ScaningQR extends StatelessWidget {
+  const ScaningQR({required this.controller, super.key});
 
   final ScannerController controller;
 
@@ -280,11 +316,11 @@ class StartScan extends StatelessWidget {
           icon: const Icon(Icons.qr_code),
           iconSize: 26,
           onPressed: () async {
-            controller.startScan();
+            controller.setImageToNull();
           },
         ),
         const Text(
-          "ស្កែន",
+          "បើកQR",
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontFamily: "Battambang"),
         )
@@ -293,57 +329,172 @@ class StartScan extends StatelessWidget {
   }
 }
 
-class SwitchCameraButton extends StatelessWidget {
-  const SwitchCameraButton(
-      {required this.controller, required this.homeController, super.key});
+class ScannerWidget extends StatelessWidget {
+  final ScannerController scanController;
   final HomeController homeController;
-  final MobileScannerController controller;
+  const ScannerWidget({
+    super.key,
+    required this.scanController,
+    required this.homeController,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: controller,
-      builder: (context, state, child) {
-        if (!state.isInitialized || !state.isRunning) {
-          return const SizedBox.shrink();
-        }
-        final int? availableCameras = state.availableCameras;
-        if (availableCameras != null && availableCameras < 2) {
-          return const SizedBox.shrink();
-        }
-        final Widget icon;
-        switch (state.cameraDirection) {
-          case CameraFacing.front:
-            icon = const Icon(Icons.camera_front_outlined);
-          case CameraFacing.back:
-            icon = const Icon(Icons.camera_rear_outlined);
-        }
-        return Column(
-          children: [
-            IconButton(
-              color: Colors.white,
-              iconSize: 26,
-              icon: icon,
-              onPressed: () async {
-                await controller.switchCamera();
-              },
-            ),
-            Text(
-              "switchCam".tr,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontFamily: homeController.langCode.value == "kh"
-                    ? "Battambang"
-                    : "SourceSansPro-Regular",
-              ),
-            )
-          ],
+    print("here");
+    return Container(
+      padding: const EdgeInsets.all(6),
+      height: 300,
+      width: 300,
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            width: 2,
+            color: const Color.fromARGB(255, 71, 122, 211),
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: MobileScanner(
+            controller: scanController.mobileScannerController,
+            errorBuilder: (context, error, child) {
+              return ScannerErrorWidget(error: error);
+            },
+            // overlayBuilder: (context, boxConstraints) =>
+            //     _buildBarcode(homeController),
+          ),
+          // child: ScanningEffect(
+          //   scanningColor: const Color.fromARGB(255, 71, 122, 211),
+          //   scanningLinePadding: const EdgeInsets.all(10),
+          //   borderLineColor: const Color.fromARGB(255, 71, 122, 211),
+          //   delay: const Duration(seconds: 2),
+          //   duration: const Duration(seconds: 2),
+          //   child:
+          // ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBarcode(HomeController homeController) {
+    return GetBuilder<ScannerController>(builder: (scannerController) {
+      var value = scannerController.barcode;
+      if (value == null) {
+        return Text(
+          'scanHere'.tr,
+          overflow: TextOverflow.fade,
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: homeController.langCode.value == "kh"
+                ? "Battambang"
+                : "SourceSansPro-Regular",
+          ),
         );
-      },
+      } else {
+        print("value = ${value.displayValue!}");
+        String checkUrl = "/profile?id";
+        if (!value.displayValue!.contains(checkUrl)) {
+          return Text(
+            'validQR'.tr,
+            overflow: TextOverflow.fade,
+            style: TextStyle(
+              color: Colors.red,
+              fontFamily: homeController.langCode.value == "kh"
+                  ? "Battambang"
+                  : "SourceSansPro-Regular",
+            ),
+          );
+        } else {
+          List<String> hashCodes = value.displayValue!.split("=");
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scannerController.setbarcode = null;
+            Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+          });
+          return const SizedBox();
+        }
+      }
+    });
+  }
+}
+
+class AnalyzeImageFromGalleryButton extends StatelessWidget {
+  const AnalyzeImageFromGalleryButton({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        IconButton(
+          color: Colors.white,
+          icon: const Icon(Icons.image_outlined),
+          iconSize: 26,
+          onPressed: () async {
+            // controller.pickImage();
+          },
+        ),
+        const Text(
+          "បើករូបភាព",
+          style: TextStyle(
+              color: Colors.white, fontSize: 16, fontFamily: "Battambang"),
+        )
+      ],
     );
   }
 }
+
+// class SwitchCameraButton extends StatelessWidget {
+//   const SwitchCameraButton(
+//       {required this.controller, required this.homeController, super.key});
+//   final HomeController homeController;
+//   final MobileScannerController controller;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ValueListenableBuilder(
+//       valueListenable: controller,
+//       builder: (context, state, child) {
+//         if (!state.isInitialized || !state.isRunning) {
+//           return const SizedBox.shrink();
+//         }
+//         final int? availableCameras = state.availableCameras;
+//         if (availableCameras != null && availableCameras < 2) {
+//           return const SizedBox.shrink();
+//         }
+//         final Widget icon;
+//         switch (state.cameraDirection) {
+//           case CameraFacing.front:
+//             icon = const Icon(Icons.camera_front_outlined);
+//           case CameraFacing.back:
+//             icon = const Icon(Icons.camera_rear_outlined);
+//         }
+//         return Column(
+//           children: [
+//             IconButton(
+//               color: Colors.white,
+//               iconSize: 26,
+//               icon: icon,
+//               onPressed: () async {
+//                 await controller.switchCamera();
+//               },
+//             ),
+//             Text(
+//               "switchCam".tr,
+//               style: TextStyle(
+//                 color: Colors.white,
+//                 fontSize: 16,
+//                 fontFamily: homeController.langCode.value == "kh"
+//                     ? "Battambang"
+//                     : "SourceSansPro-Regular",
+//               ),
+//             )
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
 
 class ScannerErrorWidget extends StatelessWidget {
   const ScannerErrorWidget({super.key, required this.error});

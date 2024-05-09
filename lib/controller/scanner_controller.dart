@@ -1,17 +1,15 @@
 // ignore_for_file: avoid_print
 
-import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:image/image.dart' as img;
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:zxing2/qrcode.dart' hide BarcodeFormat;
 import 'package:http/http.dart' as http;
 import '../config/routes/app_route.dart';
 import '../models/qr_scan_data.dart';
+
+enum ScaningType { scanQr, scanImage }
 
 class ScannerController extends GetxController {
   PlatformFile? file;
@@ -34,7 +32,30 @@ class ScannerController extends GetxController {
     _barcode = value;
   }
 
+  void _handleBarcode(BarcodeCapture barcodes) {
+    print("scanning");
+    _barcode = barcodes.barcodes.firstOrNull;
+    if (_barcode == null) {
+    } else {
+      routeToDetail(_barcode!.displayValue!);
+    }
+  }
+
+  void startScan() async {
+    print("start");
+    mobileScannerController.start();
+    mobileScannerController.barcodes.listen(_handleBarcode);
+    update();
+  }
+
+  void stopScan() async {
+    await mobileScannerController.dispose();
+    _barcode = null;
+    update();
+  }
+
   void pickImage() async {
+    await mobileScannerController.stop();
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png'],
@@ -45,6 +66,12 @@ class ScannerController extends GetxController {
       showImageOnWidget(result);
       scanQrCodeFromImage();
     }
+  }
+
+  void setImageToNull() {
+    startScan();
+    file = null;
+    update();
   }
 
   void scanQrCodeFromImage() async {
@@ -71,9 +98,8 @@ class ScannerController extends GetxController {
       var qrData = parseQRDataFromJson(steam.body);
       for (var temp in qrData) {
         if (temp.symbols.first.data == null) {
-          qrValid.value = temp.symbols.first.error ?? "";
+          qrValid.value = 'validQR'.tr;
         } else {
-          file = null;
           routeToDetail(temp.symbols.first.data ?? "");
           update();
         }
@@ -90,7 +116,9 @@ class ScannerController extends GetxController {
     } else {
       List<String> hashCodes = qrData.split("=");
       print("have data : ${hashCodes[1]}");
-      Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]}));
+      // Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
     }
   }
 
@@ -99,67 +127,16 @@ class ScannerController extends GetxController {
     update();
   }
 
-  Future<String> analyzeImage(Uint8List bytes) async {
-    return await Future<String>(() {
-      try {
-        var image = img.decodeImage(bytes)!;
-        LuminanceSource source = RGBLuminanceSource(
-          image.width,
-          image.height,
-          image
-              .convert(numChannels: 4)
-              .getBytes(order: img.ChannelOrder.abgr)
-              .buffer
-              .asInt32List(),
-        );
-        var bitmap = BinaryBitmap(GlobalHistogramBinarizer(source));
-        var reader = QRCodeReader();
-        var result = reader.decode(bitmap);
-        return result.text;
-      } catch (e) {
-        throw Exception('Error analyzing image: $e');
-      }
-    });
-  }
-
-  void processImage() async {
-    try {
-      var result = await analyzeImage(file!.bytes!);
-      print('Image analysis result: $result');
-      List<String> hashCodes = result.split("=");
-      print("have data : ${hashCodes[1]}");
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
-      });
-    } catch (e) {
-      print('Error processing image: $e');
-    }
-  }
-
-  void _handleBarcode(BarcodeCapture barcodes) {
-    _barcode = barcodes.barcodes.firstOrNull;
-    if (_barcode == null) {
-    } else {
-      routeToDetail(_barcode!.displayValue!);
-    }
-  }
-
-  void startScan() {
-    mobileScannerController.barcodes.listen(_handleBarcode);
-    unawaited(mobileScannerController.start());
+  @override
+  void onInit() {
+    //startScan();
+    super.onInit();
   }
 
   @override
-  void onReady() {
-    print("ready");
-    startScan();
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    _barcode = null;
-    unawaited(mobileScannerController.stop());
+  void onClose() async {
+    print("close");
+    // stopScan();
     super.onClose();
   }
 }

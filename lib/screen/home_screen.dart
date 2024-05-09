@@ -18,17 +18,17 @@ class HomeScreen extends GetView<HomeController> {
       body: LayoutBuilder(
         builder: (context, boxConstraints) {
           return Container(
-              // alignment: Alignment.center,
-              width: boxConstraints.maxWidth,
-              height: boxConstraints.maxHeight,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/background.jpg"),
-                ),
+            // alignment: Alignment.center,
+            width: boxConstraints.maxWidth,
+            height: boxConstraints.maxHeight,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage("assets/images/background.jpg"),
               ),
-              child: SingleChildScrollView(
-                  child: Column(
+            ),
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16),
@@ -49,7 +49,9 @@ class HomeScreen extends GetView<HomeController> {
                     }
                   }(),
                 ],
-              )));
+              ),
+            ),
+          );
         },
       ),
     );
