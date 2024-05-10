@@ -111,9 +111,7 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                               Icons.arrow_back,
                               color: Colors.white,
                             )),
-                        PopupMenuWidget(
-                          homeController: homeController,
-                        ),
+                        const PopupMenuWidget(),
                       ],
                     ),
                   ),

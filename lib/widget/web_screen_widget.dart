@@ -775,10 +775,10 @@ class WebNewScreen extends StatelessWidget {
                 ? "Battambang"
                 : "SourceSansPro-Regular"),
       ),
-      actions: [
+      actions: const [
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: PopupMenuWidget(homeController: homeController),
+          padding:  EdgeInsets.all(8.0),
+          child: PopupMenuWidget(),
         ),
       ],
     );

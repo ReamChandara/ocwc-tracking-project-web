@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
@@ -15,14 +14,12 @@ class ScannerController extends GetxController {
   PlatformFile? file;
   RxString qrValid = "".obs;
 
-  final MobileScannerController mobileScannerController =
-      MobileScannerController(
-    torchEnabled: true,
-    useNewCameraSelector: true,
-    formats: [BarcodeFormat.qrCode],
-    facing: CameraFacing.back,
-    detectionTimeoutMs: 1000,
-  );
+  final MobileScannerController mobileScanner = MobileScannerController(
+      autoStart: false,
+      detectionSpeed: DetectionSpeed.normal,
+      formats: [BarcodeFormat.qrCode],
+      facing: CameraFacing.back,
+      detectionTimeoutMs: 1000);
 
   Barcode? _barcode;
 
@@ -33,7 +30,6 @@ class ScannerController extends GetxController {
   }
 
   void _handleBarcode(BarcodeCapture barcodes) {
-    print("scanning");
     _barcode = barcodes.barcodes.firstOrNull;
     if (_barcode == null) {
     } else {
@@ -42,20 +38,16 @@ class ScannerController extends GetxController {
   }
 
   void startScan() async {
-    print("start");
-    mobileScannerController.start();
-    mobileScannerController.barcodes.listen(_handleBarcode);
-    update();
+    mobileScanner.start();
+    mobileScanner.barcodes.listen(_handleBarcode);
   }
 
   void stopScan() async {
-    await mobileScannerController.dispose();
+    await mobileScanner.dispose();
     _barcode = null;
-    update();
   }
 
   void pickImage() async {
-    await mobileScannerController.stop();
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png'],
@@ -68,14 +60,12 @@ class ScannerController extends GetxController {
     }
   }
 
-  void setImageToNull() {
-    startScan();
-    file = null;
-    update();
+  void switchCamera() async {
+    await mobileScanner.switchCamera();
   }
 
   void scanQrCodeFromImage() async {
-    qrValid.value = "Scanning please wait...";
+    qrValid.value = "scaningmess".tr;
     String apiUrl = "https://api.qrserver.com/v1/read-qr-code/";
     final MultipartRequest request = http.MultipartRequest(
       "POST",
@@ -116,9 +106,8 @@ class ScannerController extends GetxController {
     } else {
       List<String> hashCodes = qrData.split("=");
       print("have data : ${hashCodes[1]}");
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]}));
-      // Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+      mobileScanner.barcodes.listen(_handleBarcode).cancel();
+      Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
     }
   }
 
@@ -129,14 +118,14 @@ class ScannerController extends GetxController {
 
   @override
   void onInit() {
-    //startScan();
+    startScan();
     super.onInit();
   }
 
   @override
   void onClose() async {
     print("close");
-    // stopScan();
+    stopScan();
     super.onClose();
   }
 }

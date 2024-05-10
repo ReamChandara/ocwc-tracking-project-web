@@ -45,7 +45,9 @@ class Message extends Translations {
         "scansubtitle": "Input Card in front of Camera",
         "validQR": "Invalid QR Code",
         "scanHere": "Scan Card Here",
-        "switchCam": "Switch Camera"
+        "switchCam": "Switch Camera",
+        "openimage": "Open Image",
+        "scaningmess": "Scanning please wait..."
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
@@ -88,7 +90,9 @@ class Message extends Translations {
         "scansubtitle": "ដាក់​កាតស្ថិតក្នុងអេក្រង់កាមេរ៉ា ដើម្បីស្កេន",
         "validQR": "QR មិនត្រឹមត្រូវ",
         "scanHere": "ដាក់កាតត្រង់នេះ",
-        "switchCam": "ប្ដូកាំមេរា"
+        "switchCam": "ប្ដូកាំមេរា",
+        "openimage": "បើករូបភាព",
+        "scaningmess": "កំពុងស្វែងរកសូមរងចាំ..."
       }
     };
   }

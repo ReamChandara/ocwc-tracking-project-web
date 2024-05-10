@@ -3,13 +3,12 @@ import 'package:get/get.dart';
 
 import '../controller/home_controller.dart';
 
-class PopupMenuWidget extends StatelessWidget {
+class PopupMenuWidget extends GetView<HomeController> {
   const PopupMenuWidget({
     super.key,
-    required this.homeController,
   });
 
-  final HomeController homeController;
+  // final HomeController homeController;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class PopupMenuWidget extends StatelessWidget {
               ),
             ),
             position: PopupMenuPosition.under,
-            child: homeController.langCode.value == "kh"
+            child: controller.langCode.value == "kh"
                 ? Container(
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
@@ -61,13 +60,13 @@ class PopupMenuWidget extends StatelessWidget {
                   ),
             onSelected: (value) {
               if (value == "kh") {
-                homeController.changeLang("kh");
+                controller.changeLang("kh");
               } else if (value == "en") {
-                homeController.changeLang("en");
+                controller.changeLang("en");
               }
             },
             itemBuilder: (BuildContext context) => [
-              homeController.langCode.value == "kh"
+              controller.langCode.value == "kh"
                   ? PopupMenuItem(
                       value: "en",
                       child: Row(

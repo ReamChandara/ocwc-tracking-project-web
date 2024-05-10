@@ -32,7 +32,7 @@ class HomeScreen extends GetView<HomeController> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: PopupMenuWidget(homeController: controller),
+                    child: PopupMenuWidget(),
                   ),
                   () {
                     if (boxConstraints.maxWidth > 900) {
