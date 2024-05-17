@@ -8,43 +8,20 @@ import 'package:http/http.dart' as http;
 import '../config/routes/app_route.dart';
 import '../models/qr_scan_data.dart';
 
-enum ScaningType { scanQr, scanImage }
-
 class ScannerController extends GetxController {
   PlatformFile? file;
   RxString qrValid = "".obs;
 
-  final MobileScannerController mobileScanner = MobileScannerController(
-      autoStart: false,
-      detectionSpeed: DetectionSpeed.normal,
-      formats: [BarcodeFormat.qrCode],
-      facing: CameraFacing.back,
-      detectionTimeoutMs: 1000);
-
-  Barcode? _barcode;
-
-  get barcode => _barcode;
-
-  set setbarcode(value) {
-    _barcode = value;
-  }
-
+  late final MobileScannerController mobileScanner;
   void _handleBarcode(BarcodeCapture barcodes) {
-    _barcode = barcodes.barcodes.firstOrNull;
-    if (_barcode == null) {
+    if (barcodes.barcodes.isEmpty) {
     } else {
-      routeToDetail(_barcode!.displayValue!);
+      findWorker(barcodes.barcodes.first.displayValue!);
     }
-  }
-
-  void startScan() async {
-    mobileScanner.start();
-    mobileScanner.barcodes.listen(_handleBarcode);
   }
 
   void stopScan() async {
     await mobileScanner.dispose();
-    _barcode = null;
   }
 
   void pickImage() async {
@@ -83,14 +60,14 @@ class ScannerController extends GetxController {
     final response = await request.send();
     print(response.statusCode);
     if (response.statusCode == 200) {
-      var steam = await http.Response.fromStream(response);
+      var stream = await http.Response.fromStream(response);
       qrValid.value = "";
-      var qrData = parseQRDataFromJson(steam.body);
+      var qrData = parseQRDataFromJson(stream.body);
       for (var temp in qrData) {
         if (temp.symbols.first.data == null) {
           qrValid.value = 'validQR'.tr;
         } else {
-          routeToDetail(temp.symbols.first.data ?? "");
+          findWorker(temp.symbols.first.data ?? "");
           update();
         }
       }
@@ -99,14 +76,13 @@ class ScannerController extends GetxController {
     }
   }
 
-  void routeToDetail(String qrData) {
+  void findWorker(String qrData) async {
     String validUrl = "/profile?id";
     if (!qrData.contains(validUrl)) {
       qrValid.value = 'validQR'.tr;
     } else {
       List<String> hashCodes = qrData.split("=");
       print("have data : ${hashCodes[1]}");
-      mobileScanner.barcodes.listen(_handleBarcode).cancel();
       Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
     }
   }
@@ -116,12 +92,25 @@ class ScannerController extends GetxController {
     update();
   }
 
-  @override
-  void onInit() {
-    startScan();
-    super.onInit();
+  void clearImage() {
+    file = null;
+    update();
   }
 
+  @override
+  void onInit() async {
+    mobileScanner = MobileScannerController(
+      torchEnabled: false,
+      detectionSpeed: DetectionSpeed.unrestricted,
+      formats: [
+        BarcodeFormat.qrCode,
+      ],
+      detectionTimeoutMs: 1000,
+    );
+    mobileScanner.barcodes.listen(_handleBarcode);
+    super.onInit();
+  }
+  
   @override
   void onClose() async {
     print("close");

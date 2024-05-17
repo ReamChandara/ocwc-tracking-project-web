@@ -67,8 +67,8 @@ class ScanWorkerScreen extends GetView<ScannerController> {
                                 )
                               : const SizedBox(),
                           Container(
-                            width: 400,
                             height: 550,
+                            width: 400,
                             padding: const EdgeInsets.only(bottom: 20),
                             margin: const EdgeInsets.all(16),
                             decoration: const BoxDecoration(
@@ -108,6 +108,27 @@ class ScanWorkerScreen extends GetView<ScannerController> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          iconSize: 26,
+                                          onPressed: () async {
+                                            controller.clearImage();
+                                          },
+                                          icon: const Icon(
+                                            Icons.qr_code,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const Text(
+                                          "បើកQR",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: "Battambang",
+                                              color: Colors.white),
+                                        )
+                                      ],
+                                    ),
                                     Column(
                                       children: [
                                         IconButton(
@@ -158,106 +179,50 @@ class ScanWorkerScreen extends GetView<ScannerController> {
                         ]),
                   ],
                 ),
-              )
-              // child: () {
-              //   if (boxConstraints.maxWidth > 1200) {
-              //     return BuildWebUI(
-              //       controller: controller,
-              //     );
-              //   } else {
-              //     return const BuildPhoneUI();
-              //   }
-              // }(),
-              );
+              ));
         },
       ),
     );
   }
 }
 
-class BuildWebUI extends StatelessWidget {
-  const BuildWebUI({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: Get.height * 0.10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset(
-                "assets/images/splash_logo_new.png",
-                width: 350,
-              ),
-              const SizedBox(height: 10),
-              Container(
-                width: 360,
-                height: 500,
-                padding: const EdgeInsets.only(bottom: 20),
-                margin: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(35, 54, 93, 0.5),
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "scancardTitle".tr,
-                      style: const TextStyle(
-                          fontFamily: "Battambang",
-                          fontSize: 18,
-                          color: Colors.white),
-                    ),
-                    Text(
-                      "scansubtitle".tr,
-                      style: const TextStyle(
-                          fontFamily: "Battambang",
-                          fontSize: 18,
-                          color: Colors.white),
-                    ),
-                    const BuildQRWidget(),
-                  ].withSpaceBetween(height: 10),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class BuildQRWidget extends GetView<ScannerController> {
+class BuildQRWidget extends StatelessWidget {
   const BuildQRWidget({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(6),
-      height: 300,
-      width: 300,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          width: 2,
-          color: const Color.fromARGB(255, 71, 122, 211),
+    return GetBuilder<ScannerController>(builder: (controller) {
+      return Container(
+        padding: const EdgeInsets.all(6),
+        height: 300,
+        width: 300,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            width: 2,
+            color: const Color.fromARGB(255, 71, 122, 211),
+          ),
         ),
-      ),
-      child: MobileScanner(
-        controller: controller.mobileScanner,
-        errorBuilder: (context, error, child) {
-          return ScannerErrorWidget(error: error);
-        },
-      ),
-    );
+        child: controller.file == null
+            ? MobileScanner(
+                // onDetect: (barcode) {
+                //   controller.findWorker(barcode.barcodes.first.displayValue!);
+                // },
+                controller: controller.mobileScanner,
+                errorBuilder: (context, error, child) {
+                  return ScannerErrorWidget(error: error);
+                },
+              )
+            : Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: MemoryImage(controller.file!.bytes!),
+                )),
+              ),
+      );
+    });
   }
 }
 
