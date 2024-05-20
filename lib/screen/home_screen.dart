@@ -35,7 +35,7 @@ class HomeScreen extends GetView<HomeController> {
                     child: PopupMenuWidget(),
                   ),
                   () {
-                    if (boxConstraints.maxWidth > 900) {
+                    if (boxConstraints.maxWidth > 850) {
                       return Column(
                         children: [
                           SizedBox(
@@ -72,7 +72,7 @@ class HomeScreen extends GetView<HomeController> {
 
   Widget buidOptionSearch(BuildContext context) {
     return Container(
-      height: 320,
+      height: 350,
       width: 400,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(

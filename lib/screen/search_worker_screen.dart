@@ -25,15 +25,6 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
 
   double scrollPosition = 0;
   late Future<DateTime?> selectedDate;
-  final FocusNode _focusNode = FocusNode();
-
-  void isActive() {
-    if (_focusNode.hasFocus) {
-      debugPrint("Keyboard is active");
-    } else {
-      debugPrint("Keyboard is not active");
-    }
-  }
 
   void submit(BuildContext context) {
     String name = nameController.text.trim();
@@ -41,12 +32,8 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
     if (validation()) {
     } else {
       DialogWidget.laodingDailog(context, homeController.langCode.value);
-      workerController.searchWoker(
-        context,
-        name,
-        date,
-        langCode: homeController.langCode.value,
-      );
+      workerController.searchWoker(context, name, date,
+          langCode: homeController.langCode.value);
     }
   }
 
@@ -116,8 +103,7 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                     ),
                   ),
                   () {
-                    if (boxConstraints.maxWidth > 800 &&
-                        boxConstraints.maxHeight > 800) {
+                    if (boxConstraints.maxWidth > 850) {
                       return Column(
                         children: [
                           SizedBox(
@@ -130,11 +116,11 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                       return _buildPhoneUI(context);
                     }
                   }(),
-                  // Padding(
-                  //   padding: EdgeInsets.only(
-                  //     bottom: MediaQuery.of(context).viewInsets.bottom,
-                  //   ),
-                  // )
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                  )
                 ],
               ),
             ));
@@ -317,11 +303,5 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
   }
 }

@@ -1,23 +1,41 @@
 // ignore_for_file: avoid_print
+import 'dart:async';
 
+import '../config/routes/app_route.dart';
+import '../models/qr_scan_data.dart';
 import 'package:http/http.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:http/http.dart' as http;
-import '../config/routes/app_route.dart';
-import '../models/qr_scan_data.dart';
 
 class ScannerController extends GetxController {
   PlatformFile? file;
   RxString qrValid = "".obs;
 
-  late final MobileScannerController mobileScanner;
+  late StreamSubscription<Object?> _subscription;
+  late final MobileScannerController mobileScanner = MobileScannerController(
+    torchEnabled: false,
+    detectionSpeed: DetectionSpeed.unrestricted,
+    formats: [
+      BarcodeFormat.qrCode,
+    ],
+    detectionTimeoutMs: 1000,
+  );
+
   void _handleBarcode(BarcodeCapture barcodes) {
     if (barcodes.barcodes.isEmpty) {
     } else {
+      _subscription.cancel();
       findWorker(barcodes.barcodes.first.displayValue!);
+      update();
     }
+  }
+
+  void startScanning() {
+    print("startScanning");
+    _subscription = mobileScanner.barcodes.listen(_handleBarcode);
+    update();
   }
 
   void stopScan() async {
@@ -83,7 +101,12 @@ class ScannerController extends GetxController {
     } else {
       List<String> hashCodes = qrData.split("=");
       print("have data : ${hashCodes[1]}");
-      Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+      var data =
+          await Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+      if (data == null) {
+      } else {
+        startScanning();
+      }
     }
   }
 
@@ -99,18 +122,10 @@ class ScannerController extends GetxController {
 
   @override
   void onInit() async {
-    mobileScanner = MobileScannerController(
-      torchEnabled: false,
-      detectionSpeed: DetectionSpeed.unrestricted,
-      formats: [
-        BarcodeFormat.qrCode,
-      ],
-      detectionTimeoutMs: 1000,
-    );
-    mobileScanner.barcodes.listen(_handleBarcode);
+    startScanning();
     super.onInit();
   }
-  
+
   @override
   void onClose() async {
     print("close");
