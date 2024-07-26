@@ -10,11 +10,14 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.only(top: 10),
         decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(
-            top: BorderSide(color: Color.fromARGB(255, 71, 122, 211), width: 5),
+            top: BorderSide(
+              color: Color.fromARGB(255, 71, 122, 211),
+              width: 5,
+            ),
           ),
           boxShadow: [
             BoxShadow(

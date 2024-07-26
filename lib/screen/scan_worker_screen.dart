@@ -26,6 +26,11 @@ class ScanWorkerScreen extends GetView<ScannerController> {
               child: SingleChildScrollView(
                 child: Column(children: [
                   buildAppbar(),
+                  boxConstraints.maxWidth > 850
+                      ? SizedBox(
+                          height: boxConstraints.maxHeight * 0.10,
+                        )
+                      : const SizedBox(),
                   buildBody(boxConstraints),
                 ]),
               ));
@@ -34,14 +39,157 @@ class ScanWorkerScreen extends GetView<ScannerController> {
     );
   }
 
-  Widget buildBody(BoxConstraints constraints) {
-    return Column(
+  Widget buildBody(BoxConstraints boxConstraints) {
+    return Row(
       children: [
-        Image.asset(
-          "assets/images/splash_logo_new.png",
-          width: 300,
+        boxConstraints.maxWidth > 850
+            ? Expanded(
+                child: SizedBox(
+                  height: 400,
+                  width: 400,
+                  child: Image.asset(
+                    "assets/images/splash_logo_new.png",
+                  ),
+                ),
+              )
+            : const SizedBox(),
+        Expanded(
+          child: Column(
+            children: [
+              boxConstraints.maxWidth < 850
+                  ? SizedBox(
+                      width: 300,
+                      child: Image.asset(
+                        "assets/images/splash_logo_new.png",
+                      ),
+                    )
+                  : const SizedBox(),
+              Container(
+                padding: const EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(35, 54, 93, 0.5),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: SizedBox(
+                  width: 400,
+                  child: Column(children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "scancardTitle".tr,
+                      style: const TextStyle(
+                          fontFamily: "Battambang",
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      "scansubtitle".tr,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontFamily: "Battambang",
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const BuildQRWidget(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Obx(
+                      () => controller.qrValid.value.isEmpty
+                          ? const SizedBox()
+                          : Text(
+                              controller.qrValid.value,
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontFamily: "Battambang",
+                                  fontSize: 14),
+                            ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              IconButton(
+                                iconSize: 26,
+                                onPressed: () async {
+                                  controller.clearImage();
+                                },
+                                icon: const Icon(
+                                  Icons.qr_code,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const Text(
+                                "បើកQR",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "Battambang",
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                iconSize: 26,
+                                onPressed: () {
+                                  controller.pickImage();
+                                },
+                                icon: const Icon(
+                                  Icons.image_outlined,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                "openimage".tr,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "Battambang",
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                iconSize: 26,
+                                onPressed: () async {
+                                  controller.switchCamera();
+                                },
+                                icon: const Icon(
+                                  Icons.camera_front_outlined,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                "switchCam".tr,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: "Battambang",
+                                    color: Colors.white),
+                              )
+                            ],
+                          )
+                        ].withSpaceBetween(width: 10),
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+            ],
+          ),
         ),
-        const BuildQRScanWidget(),
       ],
     );
   }
@@ -73,7 +221,7 @@ class ScanWorkerScreen extends GetView<ScannerController> {
           "assets/images/splash_logo_new.png",
           width: 300,
         ),
-        buildQRScanWidget()
+        const BuildQRScanWidget(),
       ],
     );
   }
@@ -89,154 +237,8 @@ class ScanWorkerScreen extends GetView<ScannerController> {
         const SizedBox(
           height: 200,
         ),
-        buildQRScanWidget()
+        const BuildQRScanWidget(),
       ],
-    );
-  }
-
-  Widget buildQRScanWidget() {
-    print("start scanning...");
-    return Container(
-      width: 400,
-      padding: const EdgeInsets.only(bottom: 20),
-      margin: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(35, 54, 93, 0.5),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(children: [
-        const SizedBox(
-          height: 20,
-        ),
-        Text(
-          "scancardTitle".tr,
-          style: const TextStyle(
-              fontFamily: "Battambang", fontSize: 18, color: Colors.white),
-        ),
-        Text(
-          "scansubtitle".tr,
-          style: const TextStyle(
-              fontFamily: "Battambang", fontSize: 18, color: Colors.white),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        GetBuilder<ScannerController>(builder: (controller) {
-          return Container(
-            padding: const EdgeInsets.all(6),
-            height: 250,
-            width: 300,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 2,
-                color: const Color.fromARGB(255, 71, 122, 211),
-              ),
-            ),
-            child: controller.file == null
-                ? MobileScanner(
-                    controller: controller.mobileScanner,
-                    errorBuilder: (context, error, child) {
-                      return ScannerErrorWidget(error: error);
-                    },
-                  )
-                : Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      image: MemoryImage(controller.file!.bytes!),
-                    )),
-                  ),
-          );
-        }),
-        const SizedBox(
-          height: 10,
-        ),
-        Obx(
-          () => controller.qrValid.value.isEmpty
-              ? const SizedBox()
-              : Text(
-                  controller.qrValid.value,
-                  style: const TextStyle(
-                      color: Colors.red,
-                      fontFamily: "Battambang",
-                      fontSize: 14),
-                ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  IconButton(
-                    iconSize: 26,
-                    onPressed: () async {
-                      controller.clearImage();
-                    },
-                    icon: const Icon(
-                      Icons.qr_code,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Text(
-                    "បើកQR",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Battambang",
-                        color: Colors.white),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  IconButton(
-                    iconSize: 26,
-                    onPressed: () {
-                      controller.pickImage();
-                    },
-                    icon: const Icon(
-                      Icons.image_outlined,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    "openimage".tr,
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Battambang",
-                        color: Colors.white),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  IconButton(
-                    iconSize: 26,
-                    onPressed: () async {
-                      controller.switchCamera();
-                    },
-                    icon: const Icon(
-                      Icons.camera_front_outlined,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    "switchCam".tr,
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Battambang",
-                        color: Colors.white),
-                  )
-                ],
-              )
-            ].withSpaceBetween(width: 10),
-          ),
-        ),
-      ]),
     );
   }
 }
@@ -296,48 +298,48 @@ class BuildQRScanWidget extends GetView<ScannerController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Column(
-                children: [
-                  IconButton(
-                    iconSize: 26,
-                    onPressed: () async {
-                      controller.clearImage();
-                    },
-                    icon: const Icon(
-                      Icons.qr_code,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Text(
-                    "បើកQR",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Battambang",
-                        color: Colors.white),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  IconButton(
-                    iconSize: 26,
-                    onPressed: () {
-                      controller.pickImage();
-                    },
-                    icon: const Icon(
-                      Icons.image_outlined,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    "openimage".tr,
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Battambang",
-                        color: Colors.white),
-                  )
-                ],
-              ),
+              // Column(
+              //   children: [
+              //     IconButton(
+              //       iconSize: 26,
+              //       onPressed: () async {
+              //         controller.clearImage();
+              //       },
+              //       icon: const Icon(
+              //         Icons.qr_code,
+              //         color: Colors.white,
+              //       ),
+              //     ),
+              //     const Text(
+              //       "បើកQR",
+              //       style: TextStyle(
+              //           fontSize: 14,
+              //           fontFamily: "Battambang",
+              //           color: Colors.white),
+              //     )
+              //   ],
+              // ),
+              // Column(
+              //   children: [
+              //     IconButton(
+              //       iconSize: 26,
+              //       onPressed: () {
+              //         controller.pickImage();
+              //       },
+              //       icon: const Icon(
+              //         Icons.image_outlined,
+              //         color: Colors.white,
+              //       ),
+              //     ),
+              //     Text(
+              //       "openimage".tr,
+              //       style: const TextStyle(
+              //           fontSize: 14,
+              //           fontFamily: "Battambang",
+              //           color: Colors.white),
+              //     )
+              //   ],
+              // ),
               Column(
                 children: [
                   IconButton(
@@ -404,37 +406,37 @@ class BuildQRWidget extends StatelessWidget {
   }
 }
 
-class BuildPhoneUI extends StatelessWidget {
-  const BuildPhoneUI({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Image.asset(
-          "assets/images/splash_logo_new.png",
-          width: 250,
-        ),
-        const SizedBox(height: 10),
-        // buildQrScanWiget(),
-        Container(
-          padding: const EdgeInsets.all(6),
-          height: 300,
-          width: 300,
-          child: Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 2,
-                color: const Color.fromARGB(255, 71, 122, 211),
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-}
+// class BuildPhoneUI extends StatelessWidget {
+//   const BuildPhoneUI({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Image.asset(
+//           "assets/images/splash_logo_new.png",
+//           width: 250,
+//         ),
+//         const SizedBox(height: 10),
+//         const BuildQRWidget(),
+//         Container(
+//           padding: const EdgeInsets.all(6),
+//           height: 300,
+//           width: 300,
+//           child: Container(
+//             padding: const EdgeInsets.all(6),
+//             decoration: BoxDecoration(
+//               borderRadius: BorderRadius.circular(10),
+//               border: Border.all(
+//                 width: 2,
+//                 color: const Color.fromARGB(255, 71, 122, 211),
+//               ),
+//             ),
+//           ),
+//         )
+//       ],
+//     );
+//   }
+// }
 
 class ScannerErrorWidget extends StatelessWidget {
   const ScannerErrorWidget({super.key, required this.error});

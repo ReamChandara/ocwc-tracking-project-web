@@ -8,7 +8,8 @@ const String baseUrl = "https://go.tracking.ocwc.co/api/v1";
 const String searchWorkerUrl = "/workers/search";
 const String searchWorkerQr = "/workers/search-by-qr";
 const String cardImage = "/workers/preview-card?id=";
-
+const String findWorkerNumberCard = "/workers/search-by-ocwc-number";
+const String searchAgency = '/agencies/search';
 //search one worker
 //const String searchWorkerUrl = "/api/v1/workers/search-by-name";
 

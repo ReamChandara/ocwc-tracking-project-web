@@ -1,11 +1,13 @@
-import 'dart:convert';
+// ignore_for_file: avoid_print
 
+import 'dart:convert';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/controller/home_controller.dart';
+import 'package:tracking_web/controller/scanner_controller.dart';
 import 'package:tracking_web/widget/dialog_widget.dart';
 import '../config/constant/api_constant.dart';
 import '../config/routes/app_route.dart';
@@ -14,22 +16,44 @@ import '../models/worker_models.dart';
 
 class NewWorkerController extends GetxController {
   HomeController homeController = Get.put(HomeController());
+  ScannerController scannerController = Get.put(ScannerController());
   WorkerModel? workerModel;
   WorkerData? workerData;
   int falseIndex = 0;
   bool loading = true;
   String param = "";
 
+  RxBool cloudFlare = false.obs;
+
+  Future<void> verifyCloudFlare(String token) async {
+    await Future.delayed(const Duration(seconds: 1)).whenComplete(
+      () => token != '' ? cloudFlare.value = true : cloudFlare.value = false,
+    );
+  }
+
+  List<String> prefixCodes = [
+    "KH-MOU",
+    "KH-BMC",
+    "KH-BTB",
+    "TH-NV",
+  ];
+  RxString prefixCodeSelected = "".obs;
+  void onChange(String value) {
+    prefixCodeSelected.value = value;
+  }
+
   void searchWorkByQr({
     String data = "no param",
   }) async {
     String apiUrl = baseUrl + searchWorkerQr;
     Map<String, String> body = {"qr_code": data};
+
     var response = await http.post(
       Uri.parse(apiUrl),
       headers: headers(homeController.langCode.value),
       body: jsonEncode(body),
     );
+    print(response.statusCode);
     if (response.statusCode == 200) {
       workerData = WorkerData.fromJson(
         jsonDecode(response.body)["data"],
@@ -137,6 +161,51 @@ class NewWorkerController extends GetxController {
     }
   }
 
+  void findWorkerByNumberCard(BuildContext context, String number,
+      {String langCode = "en"}) async {
+    try {
+      String apiUrl = baseUrl + findWorkerNumberCard;
+      var body = {"number": number};
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers(langCode),
+        body: jsonEncode(body),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Get.back();
+        workerData = WorkerData.fromJson(
+          jsonDecode(response.body)["data"],
+        );
+        Get.toNamed(Routes.detail, parameters: {"id": workerData!.hashcode});
+        loading = false;
+        update();
+      } else if (response.statusCode == 400) {
+        Get.back();
+        if (context.mounted) {
+          DialogWidget.showDialog(context,
+              jsonDecode(response.body)["errors"]["message"], langCode);
+        }
+      } else if (response.statusCode == 429) {
+        Get.back();
+        if (context.mounted) {
+          DialogWidget.showWarningDialog(
+            context: context,
+            title: "ស្នើលើសកំណត់",
+            des: 'សូមរង់ចាំ១នាទីក្រោយ',
+            langCode: langCode,
+            buttomTitle: "close".tr,
+          );
+        }
+      } else {
+        Get.back();
+      }
+    } catch (e) {
+      print(e);
+      Get.back();
+    }
+  }
+
   void searchWoker(BuildContext context, String name, String date,
       {String langCode = "en"}) async {
     try {
@@ -201,6 +270,7 @@ class NewWorkerController extends GetxController {
   // }
 
   initData() async {
+    print("hello world!");
     if (Get.parameters["id"] == null) {
       searchWorkByQr();
     } else {

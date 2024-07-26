@@ -93,6 +93,7 @@ class DialogWidget {
       {required BuildContext context,
       String? des,
       String? title,
+      String? buttomTitle,
       String? langCode}) {
     Alert(
         style: AlertStyle(
@@ -101,6 +102,7 @@ class DialogWidget {
                 langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
           ),
           descStyle: TextStyle(
+            fontSize: 14,
             fontFamily:
                 langCode == "en" ? "SourceSansPro-Regular" : "Battambang",
           ),
@@ -115,7 +117,7 @@ class DialogWidget {
         buttons: [
           DialogButton(
               child: Text(
-                "try".tr,
+                buttomTitle ?? "try".tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,

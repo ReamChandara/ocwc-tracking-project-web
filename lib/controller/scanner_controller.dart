@@ -1,6 +1,10 @@
 // ignore_for_file: avoid_print
 import 'dart:async';
-
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
+import 'package:qr_code_vision/decode/decode_data.dart';
+import 'package:qr_code_vision/qr_code_vision.dart';
 import '../config/routes/app_route.dart';
 import '../models/qr_scan_data.dart';
 import 'package:http/http.dart';
@@ -14,21 +18,18 @@ class ScannerController extends GetxController {
   RxString qrValid = "".obs;
 
   late StreamSubscription<Object?> _subscription;
-  late final MobileScannerController mobileScanner = MobileScannerController(
+  late MobileScannerController mobileScanner = MobileScannerController(
+    autoStart: true,
     torchEnabled: false,
-    detectionSpeed: DetectionSpeed.unrestricted,
-    formats: [
-      BarcodeFormat.qrCode,
-    ],
+    // detectionSpeed: DetectionSpeed.unrestricted,
+    formats: [BarcodeFormat.qrCode],
     detectionTimeoutMs: 1000,
   );
 
   void _handleBarcode(BarcodeCapture barcodes) {
     if (barcodes.barcodes.isEmpty) {
     } else {
-      _subscription.cancel();
       findWorker(barcodes.barcodes.first.displayValue!);
-      update();
     }
   }
 
@@ -50,13 +51,51 @@ class ScannerController extends GetxController {
     if (result == null) {
       return;
     } else {
-      showImageOnWidget(result);
-      scanQrCodeFromImage();
+      // scanQrCodeFromImage();
+      // showImageOnWidget(result);
+      // detectImage(result.files.first.bytes!);
+      startScanImage(result);
     }
   }
 
   void switchCamera() async {
     await mobileScanner.switchCamera();
+  }
+
+  final qrCode = QrCode();
+  QrContent? qrContent;
+  QrLocation? qrLocation;
+  void startScanImage(FilePickerResult result) async {
+    qrValid.value = "scaningmess".tr;
+    showImageOnWidget(result);
+    await Future.delayed(const Duration(seconds: 2)).whenComplete(
+      () => detectImage(result.files.first.bytes!),
+    );
+    qrValid.value = "";
+    if (qrContent == null) {
+      qrValid.value = 'validQR'.tr;
+    } else {
+      findWorker(qrContent!.text);
+    }
+  }
+
+  void detectImage(Uint8List bytes) async {
+    ui.Image image = await decodeImageFromList(bytes);
+    final byteData =
+        (await image.toByteData(format: ui.ImageByteFormat.rawRgba))
+            ?.buffer
+            .asUint8List();
+    print(image.height);
+    qrCode.scanRgbaBytes(byteData!, image.width, image.height);
+    if (qrCode.location == null) {
+      print('No QR code found');
+    } else {
+      if (qrCode.content == null) {
+        // print('The content of the QR code could not be decoded');
+      } else {
+        qrContent = qrCode.content;
+      }
+    }
   }
 
   void scanQrCodeFromImage() async {
@@ -91,18 +130,21 @@ class ScannerController extends GetxController {
       }
     } else if (response.statusCode == 400) {
       qrValid.value = 'validQR'.tr;
-    }
+    } else if (response.statusCode == 404) {}
   }
 
   void findWorker(String qrData) async {
+    print("qr code : $qrData");
     String validUrl = "/profile?id";
     if (!qrData.contains(validUrl)) {
       qrValid.value = 'validQR'.tr;
     } else {
+      _subscription.cancel();
       List<String> hashCodes = qrData.split("=");
       print("have data : ${hashCodes[1]}");
       var data =
           await Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
+      print(data);
       if (data == null) {
       } else {
         startScanning();

@@ -27,29 +27,27 @@ class HomeScreen extends GetView<HomeController> {
                 image: AssetImage("assets/images/background.jpg"),
               ),
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: PopupMenuWidget(),
-                  ),
-                  () {
-                    if (boxConstraints.maxWidth > 850) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: boxConstraints.maxHeight * 0.20,
-                          ),
-                          buildWebUI(context),
-                        ],
-                      );
-                    } else {
-                      return _buildPhoneUI(context);
-                    }
-                  }(),
-                ],
-              ),
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: PopupMenuWidget(),
+                ),
+                () {
+                  if (boxConstraints.maxWidth > 850) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: boxConstraints.maxHeight * 0.20,
+                        ),
+                        buildWebUI(context),
+                      ],
+                    );
+                  } else {
+                    return _buildPhoneUI(context);
+                  }
+                }(),
+              ],
             ),
           );
         },
@@ -65,15 +63,91 @@ class HomeScreen extends GetView<HomeController> {
           "assets/images/splash_logo_new.png",
           width: 400,
         ),
-        buidOptionSearch(context),
+        buildOption(context),
       ],
+    );
+  }
+
+  Widget buildOption(BuildContext context) {
+    return Container(
+      width: 400,
+      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(35, 54, 93, 0.5),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          // Text(
+          //   "ប្រព័ន្ធស្វែងរកព័ត៌មាន".tr,
+          //   textAlign: TextAlign.center,
+          //   style: TextStyle(
+          //       fontSize: 22,
+          //       color: Colors.white,
+          //       fontWeight: FontWeight.w300,
+          //       fontFamily: controller.langCode.value == "en"
+          //           ? "SourceSansPro-Regular"
+          //           : "Battambang"),
+          // ),
+          InkWell(
+            onTap: () {
+              Get.toNamed(Routes.findworker);
+            },
+            child: Container(
+              height: 50,
+              width: 400,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                "findocwc".tr,
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: controller.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Get.toNamed(Routes.findagentcy);
+            },
+            child: Container(
+              height: 50,
+              width: 400,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                "findagentcy".tr,
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: controller.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+              ),
+            ),
+          ),
+        ].withSpaceBetween(height: 20),
+      ),
     );
   }
 
   Widget buidOptionSearch(BuildContext context) {
     return Container(
-      height: 350,
+      // height: 400,
       width: 400,
+      padding: const EdgeInsets.only(bottom: 20),
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
         color: Color.fromRGBO(35, 54, 93, 0.5),
@@ -109,13 +183,13 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ]),
             SizedBox(
-              height: 50,
+              height: 30,
             ),
             Column(
               children: [
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.scanWorker);
+                    Get.toNamed(Routes.numberCard);
                   },
                   child: Container(
                     height: 50,
@@ -126,7 +200,8 @@ class HomeScreen extends GetView<HomeController> {
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      "scancard".tr,
+                      "enternumbercard".tr,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -162,6 +237,30 @@ class HomeScreen extends GetView<HomeController> {
                     ),
                   ),
                 ),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(Routes.scanWorker);
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 400,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "scancard".tr,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: controller.langCode.value == "en"
+                              ? "SourceSansPro-Regular"
+                              : "Battambang"),
+                    ),
+                  ),
+                ),
               ].withSpaceBetween(height: 20),
             ),
           ],
@@ -177,11 +276,11 @@ class HomeScreen extends GetView<HomeController> {
           padding: const EdgeInsets.all(16),
           child: Image.asset(
             "assets/images/splash_logo_new.png",
-            width: 250,
+            width: 300,
           ),
         ),
         SizedBox(height: 20),
-        buidOptionSearch(context),
+        buildOption(context),
         SizedBox(height: 20),
         // buidCardSearch(context),
         // Container(

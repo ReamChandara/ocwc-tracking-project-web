@@ -103,9 +103,10 @@ class AppTextStyle {
     );
   }
 
-  static TextStyle regular12({Color? color}) {
+  static TextStyle regular12(
+      {Color? color, String fontFamily = "SourceSansPro-Regular"}) {
     return TextStyle(
-      fontFamily: 'SourceSansPro-Regular',
+      fontFamily: fontFamily,
       fontWeight: FontWeight.normal,
       fontSize: 12,
       color: color ?? AppColors.white,
@@ -121,23 +122,27 @@ class AppTextStyle {
     );
   }
 
-  static TextStyle regular14({double? height, Color? color, bool? underline}) {
+  static TextStyle regular14(
+      {double? height,
+      Color? color,
+      bool? underline,
+      String fontFamily = "Battambang"}) {
     return TextStyle(
-      fontWeight: FontWeight.normal,
-      height: height,
-      decoration:
-          underline == true ? TextDecoration.underline : TextDecoration.none,
-      fontSize: 14,
-      color: color ?? Colors.black,
-    );
+        fontWeight: FontWeight.normal,
+        height: height,
+        decoration:
+            underline == true ? TextDecoration.underline : TextDecoration.none,
+        fontSize: 14,
+        color: color ?? Colors.black,
+        fontFamily: fontFamily);
   }
 
-  static TextStyle regular16({Color? color}) {
+  static TextStyle regular16({Color? color, String fontFamily = "Battambang"}) {
     return TextStyle(
-      fontWeight: FontWeight.normal,
-      fontSize: 16,
-      color: color ?? AppColors.white,
-    );
+        fontWeight: FontWeight.normal,
+        fontSize: 16,
+        color: color ?? Colors.black,
+        fontFamily: fontFamily);
   }
 
   static TextStyle regular15({Color? color}) {
@@ -148,12 +153,13 @@ class AppTextStyle {
     );
   }
 
-  static TextStyle regular18({Color? color}) {
+  static TextStyle regular18(
+      {Color? color, String fontFamily = "SourceSansPro-Regular"}) {
     return TextStyle(
-      fontWeight: FontWeight.normal,
-      fontSize: 18,
-      color: color ?? AppColors.white,
-    );
+        fontWeight: FontWeight.normal,
+        fontSize: 18,
+        color: color ?? Colors.black,
+        fontFamily: fontFamily);
   }
 
   static TextStyle regular20({Color? color, double? height}) {
@@ -221,12 +227,13 @@ class AppTextStyle {
     );
   }
 
-  static TextStyle bold14({Color? color}) {
+  static TextStyle bold14(
+      {Color? color, String fontFamily = "Battambang-Bold"}) {
     return TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.bold,
-      color: color ?? Colors.black,
-    );
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: color ?? Colors.black,
+        fontFamily: fontFamily);
   }
 
   static TextStyle bold10({Color? color}) {
@@ -243,19 +250,23 @@ class AppTextStyle {
     );
   }
 
-  static TextStyle bold12({Color? color}) {
+  static TextStyle bold12({Color? color, }) {
     return TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,
-      color: color ?? AppColors.white,
+      color: color ?? Colors.black,
     );
   }
 
-  static TextStyle bold16({Color? color, double? height, String? fontFamily}) {
+  static TextStyle bold16(
+      {Color? color,
+      double? height,
+      String fontFamily = "SourceSansPro-Regular"}) {
     return TextStyle(
       height: height,
       fontWeight: FontWeight.bold,
       fontSize: 16,
+      fontFamily: fontFamily,
       color: color ?? Colors.black,
     );
   }
@@ -276,10 +287,14 @@ class AppTextStyle {
     );
   }
 
-  static TextStyle bold18({Color? color, double? height}) {
+  static TextStyle bold18(
+      {Color? color,
+      double? height,
+      String fontFamily = "SourceSansPro-Regular"}) {
     return TextStyle(
-      height: height,
+      fontWeight: FontWeight.bold,
       fontSize: 18,
+      fontFamily: fontFamily,
       color: color ?? Colors.black,
     );
   }
@@ -315,9 +330,7 @@ class AppTextStyle {
 
   static TextStyle bold26({Color? color, String? fontFamily}) {
     return TextStyle(
-      fontSize: 26,
-      color: color ?? AppColors.white,
-    );
+        fontSize: 26, color: color ?? AppColors.white, fontFamily: fontFamily);
   }
 
   static TextStyle bold28({Color? color}) {

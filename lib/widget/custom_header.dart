@@ -4,11 +4,13 @@ import 'package:tracking_web/controller/home_controller.dart';
 class CustomHeader extends StatelessWidget {
   final String title;
   final double? headerWidth;
+  final String? fontFamily;
   const CustomHeader({
     super.key,
     this.headerWidth,
     required this.title,
     required this.homeController,
+    this.fontFamily,
   });
 
   final HomeController homeController;
@@ -21,9 +23,6 @@ class CustomHeader extends StatelessWidget {
       height: 55,
       decoration: BoxDecoration(
         color: Colors.grey[100],
-        // borderRadius: const BorderRadius.only(
-        //     topLeft: Radius.circular(5),
-        //     topRight: Radius.circular(5)),
       ),
       child: Text(
         title,

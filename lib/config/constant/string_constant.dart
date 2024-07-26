@@ -10,3 +10,9 @@ const List<String> iconImage = [
   'assets/icons/calendar.png',
   'assets/icons/travel.png',
 ];
+
+// SiteKey: 0x4AAAAAAAerXBorLA0nnsqK
+// SecretKey: 0x4AAAAAAAerXJl7jvpzj8R7ibwrLYpFlis
+
+String siteKey = "0x4AAAAAAAerXBorLA0nnsqK";
+String secretKey = "0x4AAAAAAAerXJl7jvpzj8R7ibwrLYpFlis";

@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:tracking_web/config/helper/function.dart';
 
 class UnknowRouteScreen extends StatelessWidget {
-  const UnknowRouteScreen({super.key});
+  
+  const UnknowRouteScreen({super.key,});
+  
 
   @override
   Widget build(BuildContext context) {

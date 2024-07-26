@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -58,9 +59,47 @@ class WebNewScreen extends StatelessWidget {
             descPadding: const EdgeInsets.only(top: 10, right: 10, left: 10),
             animationType: AnimationType.grow,
             overlayColor: Colors.grey.shade100.withOpacity(0.9)),
-        image: Container(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.network(path),
+        image: CachedNetworkImage(
+          imageUrl: controller.workerData!.photo,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              CircularProgressIndicator(
+            value: downloadProgress.progress,
+          ),
+          imageBuilder: (context, imageProvider) {
+            return Container(
+              height: 250,
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                image: DecorationImage(image: imageProvider),
+              ),
+            );
+          },
+          errorWidget: (context, url, error) => Container(
+            height: 250,
+            padding: const EdgeInsets.all(8.0),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/noimage.jpg')),
+            ),
+          ),
+          // Container(
+          //   alignment: Alignment.center,
+          //   width: 120,
+          //   height: 100,
+          //   margin: const EdgeInsets.only(
+          //     right: 10,
+          //   ),
+          //   decoration: BoxDecoration(
+          //     border: Border.all(
+          //       color: Colors.grey.shade200,
+          //       width: 3,
+          //     ),
+          //     image: const DecorationImage(
+          //         image: AssetImage('assets/images/noimage.jpg')),
+          //     shape: BoxShape.circle,
+          //   ),
+          //   // child: const Icon(Icons.error),
+          // ),
         ),
         context: context,
         buttons: [
@@ -115,25 +154,62 @@ class WebNewScreen extends StatelessWidget {
                                   controller.workerData!.photo,
                                 );
                               },
-                              child: Container(
-                                width: 120,
-                                height: 100,
-                                margin: const EdgeInsets.only(
-                                  right: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey.shade200,
-                                    width: 3,
-                                  ),
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                      controller.workerData!.photo,
-                                    ),
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
+                              child: CachedNetworkImage(
+                                  httpHeaders: const <String, String>{
+                                    "Access-Control-Allow-Origin": "*",
+                                    "Access-Control-Allow-Methods": "GET",
+                                    'Content-Type': 'application/json',
+                                    "Origin":
+                                        "https://ocwc.co/volume/uploads/worker/profile*",
+                                  },
+                                  // imageUrl:
+                                  //     "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
+                                  imageUrl: controller.workerData!.photo,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                            value: downloadProgress.progress,
+                                          ),
+                                  imageBuilder: (context, imageProvider) {
+                                    return Container(
+                                      width: 120,
+                                      height: 100,
+                                      margin: const EdgeInsets.only(
+                                        right: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey.shade200,
+                                          width: 3,
+                                        ),
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                        ),
+                                        shape: BoxShape.circle,
+                                      ),
+                                    );
+                                  },
+                                  errorWidget: (context, url, error) {
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      width: 120,
+                                      height: 100,
+                                      margin: const EdgeInsets.only(
+                                        right: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey.shade200,
+                                          width: 3,
+                                        ),
+                                        image: const DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/noimage.jpg'),
+                                        ),
+                                        shape: BoxShape.circle,
+                                      ),
+                                    );
+                                  }),
                             ),
                             Container(
                               margin: const EdgeInsets.only(right: 10),
@@ -160,6 +236,7 @@ class WebNewScreen extends StatelessWidget {
                           ].withSpaceBetween(height: 10),
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CustomText(
                                 dataFlex: 2,
@@ -475,21 +552,49 @@ class WebNewScreen extends StatelessWidget {
                           controller.workerData!.photo,
                         );
                       },
-                      child: Container(
-                        width: 120,
-                        height: 100,
-                        margin: const EdgeInsets.only(right: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey.shade200,
-                            width: 3,
-                          ),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              controller.workerData!.photo,
+                      child: CachedNetworkImage(
+                        imageUrl: controller.workerData!.photo,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                          value: downloadProgress.progress,
+                        ),
+                        imageBuilder: (context, imageProvider) {
+                          return Container(
+                            width: 120,
+                            height: 100,
+                            margin: const EdgeInsets.only(
+                              right: 10,
                             ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey.shade200,
+                                width: 3,
+                              ),
+                              image: DecorationImage(
+                                image: imageProvider,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                          );
+                        },
+                        errorWidget: (context, url, error) => Container(
+                          alignment: Alignment.center,
+                          width: 120,
+                          height: 100,
+                          margin: const EdgeInsets.only(
+                            right: 10,
                           ),
-                          shape: BoxShape.circle,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey.shade200,
+                              width: 3,
+                            ),
+                            image: const DecorationImage(
+                                image: AssetImage('assets/images/noimage.jpg')),
+                            shape: BoxShape.circle,
+                          ),
+                          // child: const Icon(Icons.error),
                         ),
                       ),
                     ),
@@ -717,10 +822,11 @@ class WebNewScreen extends StatelessWidget {
   AppBar _buildAppbar() {
     return AppBar(
       leading: IconButton(
-          onPressed: () {
-            Get.back(result: true);
-          },
-          icon: const Icon(Icons.arrow_back)),
+        onPressed: () {
+          Get.back(result: true);
+        },
+        icon: const Icon(Icons.arrow_back),
+      ),
       backgroundColor: const Color.fromARGB(255, 71, 122, 211),
       centerTitle: true,
       title: Text(

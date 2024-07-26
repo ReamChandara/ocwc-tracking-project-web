@@ -2,26 +2,26 @@ import 'package:cloudflare_turnstile/cloudflare_turnstile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tracking_web/config/helper/function.dart';
-import 'package:tracking_web/controller/home_controller.dart';
-import 'package:tracking_web/controller/new_worker_controller.dart';
-import 'package:tracking_web/widget/dialog_widget.dart';
+import 'package:tracking_web/controller/agency_controller.dart';
 import '../config/constant/string_constant.dart';
+import '../controller/home_controller.dart';
+import '../widget/dialog_widget.dart';
 import '../widget/popup_menu_widget.dart';
 import '../widget/textfield_widget.dart';
 
-class SearchWorkerScreen extends StatefulWidget {
-  const SearchWorkerScreen({super.key});
+class FindingAgency extends StatefulWidget {
+  const FindingAgency({super.key});
 
   @override
-  State<SearchWorkerScreen> createState() => _SearchWorkerScreenState();
+  State<FindingAgency> createState() => _FindingAgencyState();
 }
 
-class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
+class _FindingAgencyState extends State<FindingAgency> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   late HomeController homeController;
-  late NewWorkerController workerController = Get.put(NewWorkerController());
+  final AgencyController agencyController = Get.put(AgencyController());
   TextEditingController nameController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
@@ -29,12 +29,10 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
   late Future<DateTime?> selectedDate;
 
   void submit(BuildContext context) {
-    String name = nameController.text.trim();
-    String date = dateController.text.replaceAll("/", "-");
     if (validation()) {
     } else {
       DialogWidget.laodingDailog(context, homeController.langCode.value);
-      workerController.searchWoker(context, name, date,
+      agencyController.getAgencyDetail(context, nameController.text,
           langCode: homeController.langCode.value);
     }
   }
@@ -65,8 +63,8 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
   }
 
   final FocusNode _focusNode1 = FocusNode();
-  final FocusNode _focusNode2 = FocusNode();
   final ScrollController _scrollController = ScrollController();
+
   // void _scrollToFocusedNode(FocusNode focusNode) {
   //   if (focusNode.hasFocus) {
   //     _scrollController.animateTo(
@@ -100,7 +98,6 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
             child: GestureDetector(
               onTap: () {
                 _focusNode1.unfocus();
-                _focusNode2.unfocus();
               },
               child: ListView(
                 controller: _scrollController,
@@ -198,7 +195,7 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                 height: 10,
               ),
               Text(
-                "title".tr,
+                "findagentcy".tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 22,
@@ -209,7 +206,7 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                         : "Battambang"),
               ),
               Text(
-                "subTitle".tr,
+                "agentcytitle".tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.white,
@@ -221,9 +218,14 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
               TextFieldWidget(
                 controller: nameController,
                 onFieldSubmitted: (val) {
-                  submit(context);
+                  if (agencyController.cloudFlare.value) {
+                    submit(context);
+                  }
                 },
-                focusNode: _focusNode1,
+                onTap: () {
+                  // _scrollToFocusedNode(_focusNode1);
+                },
+                // focusNode: _focusNode1,
                 prefixIcon: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Image.asset(
@@ -249,81 +251,65 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                     return null;
                   }
                 },
-                hintText: "latin".tr,
+                hintText: "agentcyhint".tr,
               ),
-              TextFieldWidget(
-                controller: dateController,
-                hintText: "date".tr,
-                errorStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: homeController.langCode.value == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-                hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: homeController.langCode.value == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-                focusNode: _focusNode2,
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Image.asset(
-                    width: 10,
-                    "assets/icons/calendar.png",
-                    color: Colors.blueGrey,
-                  ),
-                ),
-                suffixIcon: IconButton(
-                    onPressed: () async {
-                      setDate();
-                    },
-                    icon: const Icon(
-                      Icons.date_range,
-                      color: Colors.blueGrey,
-                    )),
-                validator: (val) {
-                  if (val == null || val.isEmpty) {
-                    return "dateWarning".tr;
-                  } else if (!validateDate(val)) {
-                    return "dateMatch".tr;
-                  } else {
-                    return null;
-                  }
-                },
-                onFieldSubmitted: (val) {
-                  submit(context);
-                },
-                inputFormatters: [
-                  MaskTextInputFormatter(
-                    mask: '##/##/####',
-                    filter: {"#": RegExp(r'[0-9]')},
-                    type: MaskAutoCompletionType.lazy,
-                  )
-                ],
-              ),
-              // InkWell(
+              // TextFieldWidget(
+              //   controller: dateController,
+              //   hintText: "date".tr,
+              //   errorStyle: TextStyle(
+              //       fontSize: 14,
+              //       fontFamily: homeController.langCode.value == "en"
+              //           ? "SourceSansPro-Regular"
+              //           : "Battambang"),
+              //   hintStyle: TextStyle(
+              //       fontSize: 14,
+              //       fontFamily: homeController.langCode.value == "en"
+              //           ? "SourceSansPro-Regular"
+              //           : "Battambang"),
+              //   focusNode: _focusNode2,
               //   onTap: () {
+              //     _scrollToFocusedNode(_focusNode2);
+              //   },
+              //   prefixIcon: Padding(
+              //     padding: const EdgeInsets.all(10),
+              //     child: Image.asset(
+              //       width: 10,
+              //       "assets/icons/calendar.png",
+              //       color: Colors.blueGrey,
+              //     ),
+              //   ),
+              //   suffixIcon: IconButton(
+              //       onPressed: () async {
+              //         setDate();
+              //       },
+              //       icon: const Icon(
+              //         Icons.date_range,
+              //         color: Colors.blueGrey,
+              //       )),
+              //   validator: (val) {
+              //     if (val == null || val.isEmpty) {
+              //       return "dateWarning".tr;
+              //     } else if (!validateDate(val)) {
+              //       return "dateMatch".tr;
+              //     } else {
+              //       return null;
+              //     }
+              //   },
+              //   onFieldSubmitted: (val) {
               //     submit(context);
               //   },
-              //   child: Container(
-              //     alignment: Alignment.center,
-              //     height: 45,
-              //     decoration: BoxDecoration(
-              //         color: Colors.blue,
-              //         borderRadius: BorderRadius.circular(10)),
-              //     child: Text("track".tr,
-              //         style: TextStyle(
-              //             color: Colors.white,
-              //             fontSize: 14,
-              //             fontFamily: homeController.langCode.value == "en"
-              //                 ? "SourceSansPro-Regular"
-              //                 : "Battambang")),
-              //   ),
+              //   inputFormatters: [
+              //     MaskTextInputFormatter(
+              //       mask: '##/##/####',
+              //       filter: {"#": RegExp(r'[0-9]')},
+              //       type: MaskAutoCompletionType.lazy,
+              //     )
+              //   ],
               // ),
               Obx(
-                () => workerController.cloudFlare.value
+                () => agencyController.cloudFlare.value
                     ? InkWell(
-                        onTap: () {
+                        onTap: () async {
                           submit(context);
                         },
                         child: Container(
@@ -349,22 +335,66 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                         ),
                         siteKey: siteKey,
                         onTokenRecived: (token) async {
-                          await workerController.verifyCloudFlare(token);
+                          await agencyController.verifyCloudFlare(token);
                         },
                       ),
-              )
-            ].withSpaceBetween(height: 16),
+              ),
+              // InkWell(
+              //   onTap: () {
+              //     submit(context);
+              //   },
+              //   child: Container(
+              //     alignment: Alignment.center,
+              //     height: 45,
+              //     decoration: BoxDecoration(
+              //         color: Colors.blue,
+              //         borderRadius: BorderRadius.circular(10)),
+              //     child: Text("track".tr,
+              //         style: TextStyle(
+              //             color: Colors.white,
+              //             fontSize: 14,
+              //             fontFamily: homeController.langCode.value == "en"
+              //                 ? "SourceSansPro-Regular"
+              //                 : "Battambang")),
+              //   ),
+              // )
+              // Obx(
+              //   () => workerController.cloudFlare.value
+              //       ? InkWell(
+              //           onTap: () {
+              //             submit(context);
+              //           },
+              //           child: Container(
+              //             alignment: Alignment.center,
+              //             height: 45,
+              //             decoration: BoxDecoration(
+              //                 color: Colors.blue,
+              //                 borderRadius: BorderRadius.circular(10)),
+              //             child: Text("track".tr,
+              //                 style: TextStyle(
+              //                     color: Colors.white,
+              //                     fontSize: 14,
+              //                     fontFamily:
+              //                         homeController.langCode.value == "en"
+              //                             ? "SourceSansPro-Regular"
+              //                             : "Battambang")),
+              //           ),
+              //         )
+              //       : CloudFlareTurnstile(
+              //           options: TurnstileOptions(
+              //             theme: TurnstileTheme.light,
+              //             retryAutomatically: false,
+              //           ),
+              //           siteKey: siteKey,
+              //           onTokenRecived: (token) async {
+              //             await workerController.verifyCloudFlare(token);
+              //           },
+              //         ),
+              // )
+            ].withSpaceBetween(height: 10),
           ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _focusNode1.dispose();
-    _focusNode2.dispose();
-    _scrollController.dispose();
-    super.dispose();
   }
 }
