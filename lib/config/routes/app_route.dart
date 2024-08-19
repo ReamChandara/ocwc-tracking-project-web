@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:tracking_web/binding/agency_binding.dart';
 import 'package:tracking_web/binding/home_binding.dart';
 import 'package:tracking_web/binding/scanner_binding.dart';
+import 'package:tracking_web/screen/agency_list_screen.dart';
 import 'package:tracking_web/screen/finding_agency_screen.dart';
 import 'package:tracking_web/screen/list_worker_screen.dart';
 import '../../binding/worker_binding.dart';
@@ -24,6 +25,7 @@ class Routes {
   static const numberCard = "/numberCard";
   static const agencyDetail = "/agencyDetail";
   static const filepreview = "/filepreview";
+  static const listAgency = "/list";
 }
 
 abstract class AppPages {
@@ -66,6 +68,9 @@ abstract class AppPages {
       binding: AgencyBinding(),
       page: () => AgencyDetailScreen(),
     ),
-    GetPage(name: Routes.filepreview, page: () => const FilePreview())
+    GetPage(
+        binding: AgencyBinding(),
+        name: Routes.listAgency,
+        page: () => AgencyListScreen()),
   ];
 }

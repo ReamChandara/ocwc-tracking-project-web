@@ -20,8 +20,8 @@ import '../widget/custom_text.dart';
 class AgencyDetailScreen extends GetView<AgencyController> {
   AgencyDetailScreen({super.key});
   final HomeController homeController = Get.put(HomeController());
-  final int tilteFlex = 1;
-
+  final int tilteFlex = 2;
+  final int dataFlex = 2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,23 +29,27 @@ class AgencyDetailScreen extends GetView<AgencyController> {
       body: Obx(
         () => controller.loading.value
             ? const Center(child: CircularProgressIndicator())
-            : MainResposive(
-                large: LayoutBuilder(builder: ((context, constraints) {
-                  // print("max width : ${constraints.maxWidth}");
-                  if (constraints.maxWidth > 1730) {
-                    return _buildLargeScreen(context);
-                  } else {
-                    return _buildMidiumScreen(context);
-                  }
-                })),
-                medium: LayoutBuilder(builder: ((context, constraints) {
-                  if (constraints.maxWidth > 1210) {
-                    return _buildMidiumScreen(context);
-                  } else {
-                    return _buildSmallWidget(constraints, context);
-                  }
-                })),
-              ),
+            : controller.notFound.value
+                ? Center(
+                    child: Image.asset("assets/images/no-results.png"),
+                  )
+                : MainResposive(
+                    large: LayoutBuilder(builder: ((context, constraints) {
+                      return _buildMidiumScreen(context);
+                      // if (constraints.maxWidth > 1730) {
+                      //   return _buildLargeScreen(context);
+                      // } else {
+                      //   return _buildMidiumScreen(context);
+                      // }
+                    })),
+                    medium: LayoutBuilder(builder: ((context, constraints) {
+                      if (constraints.maxWidth > 1210) {
+                        return _buildMidiumScreen(context);
+                      } else {
+                        return _buildSmallWidget(constraints, context);
+                      }
+                    })),
+                  ),
       ),
     );
   }
@@ -230,40 +234,40 @@ class AgencyDetailScreen extends GetView<AgencyController> {
         ]).show();
   }
 
-  _buildLargeScreen(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildAgencyWidget(),
-              const SizedBox(width: 10),
-              _buildContact(),
-              const SizedBox(width: 10),
-              _buildPokasWidget(),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildAddressWidget(),
-              const SizedBox(width: 10),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildQuotaWidget(),
-                  _buildAttachmentWidget(context),
-                ],
-              )
-            ],
-          ),
-          const SizedBox(height: 10),
-        ],
-      ),
-    );
-  }
+  // _buildLargeScreen(BuildContext context) {
+  //   return SingleChildScrollView(
+  //     child: Column(
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             _buildAgencyWidget(),
+  //             const SizedBox(width: 10),
+  //             _buildContact(),
+  //             const SizedBox(width: 10),
+  //             _buildPokasWidget(),
+  //           ],
+  //         ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             _buildAddressWidget(),
+  //             const SizedBox(width: 10),
+  //             // Column(
+  //             //   mainAxisAlignment: MainAxisAlignment.start,
+  //             //   children: [
+  //             //     // _buildQuotaWidget(),
+  //             //     // _buildAttachmentWidget(context),
+  //             //   ],
+  //             // )
+  //           ],
+  //         ),
+  //         const SizedBox(height: 10),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   _buildMidiumScreen(BuildContext context) {
     return SingleChildScrollView(
@@ -286,8 +290,8 @@ class AgencyDetailScreen extends GetView<AgencyController> {
               _buildPokasWidget(height: 520),
             ],
           ),
-          _buildQuotaWidget(),
-          _buildAttachmentWidget(context),
+          // _buildQuotaWidget(),
+          // _buildAttachmentWidget(context),
           const SizedBox(height: 10),
         ],
       ),
@@ -302,10 +306,10 @@ class AgencyDetailScreen extends GetView<AgencyController> {
           children: [
             _buildAgencyWidget(constraints: constraints),
             _buildContact(constraints: constraints, hasHeight: false),
-            _buildAddressWidget(constraints: constraints),
+            _buildAddressWidget(constraints: constraints, height: null),
             _buildProkasSmallWidget(constraints: constraints),
-            _buildQuotaWidget(constraints: constraints),
-            _buildAttachmentSmall(constraints, context),
+            // _buildQuotaWidget(constraints: constraints),
+            // _buildAttachmentSmall(constraints, context),
             const SizedBox(height: 10)
           ],
         ),
@@ -452,115 +456,138 @@ class AgencyDetailScreen extends GetView<AgencyController> {
   //   );
   // }
 
-  _buildAttachmentSmall(BoxConstraints constraints, BuildContext context) {
-    return CustomCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomHeader(
-              headerWidth: constraints.maxWidth,
-              title: "attachment".tr,
-              homeController: homeController),
-          Container(
-            padding: const EdgeInsets.all(16),
-            width: constraints.maxWidth,
-            child: Column(
-              children: List.generate(controller.attachment.length, (index) {
-                var attachment = controller.attachment[index];
-                var extension = controller
-                    .splitUrl(controller.attachment[index].documentPath);
-                bool isImage = controller.checkExtenstion(extension);
-                return customAttachment(
-                  child: constraints.maxWidth >= 510
-                      ? Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                customAttachmentText(
-                                  title: "documenttype".tr,
-                                  data: attachment.documentType,
-                                ),
-                                customAttachmentText(
-                                    title: "ducumentnumber".tr,
-                                    data: attachment.documentNumber),
-                              ].withSpaceBetween(height: 16),
-                            ),
-                            const SizedBox(height: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                customAttachmentText(
-                                  title: "ducumentissuse".tr,
-                                  data: attachment.documentIssuedAt,
-                                ),
-                                customAttachmentText(
-                                  title: "documentexpired".tr,
-                                  data: attachment.documentExpiredAt,
-                                ),
-                              ].withSpaceBetween(height: 16),
-                            ),
-                            _buildImage(
-                                context: context,
-                                isImage: isImage,
-                                documentPath: attachment.documentPath),
-                          ],
-                        )
-                      : SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: customAttachmentText(
-                                      title: "documenttype".tr,
-                                      data: attachment.documentType,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: customAttachmentText(
-                                        title: "ducumentnumber".tr,
-                                        data: attachment.documentNumber),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: customAttachmentText(
-                                      title: "ducumentissuse".tr,
-                                      data: attachment.documentIssuedAt,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: customAttachmentText(
-                                      title: "documentexpired".tr,
-                                      data: attachment.documentExpiredAt,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              _buildImage(
-                                  context: context,
-                                  isImage: isImage,
-                                  documentPath: attachment.documentPath),
-                            ],
-                          ),
-                        ),
-                );
-              }).withSpaceBetween(height: 10),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // _buildAttachmentSmall(BoxConstraints constraints, BuildContext context) {
+  //   return CustomCard(
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         CustomHeader(
+  //             headerWidth: constraints.maxWidth,
+  //             title: "attachment".tr,
+  //             homeController: homeController),
+  //         Container(
+  //           padding: const EdgeInsets.all(16),
+  //           width: constraints.maxWidth,
+  //           child: controller.attachment.isEmpty
+  //               ? Center(
+  //                   child: Text(
+  //                     "noData".tr,
+  //                     style: TextStyle(
+  //                         fontWeight: FontWeight.bold,
+  //                         fontSize:
+  //                             homeController.langCode.value == "kh" ? 18 : 16,
+  //                         fontFamily: homeController.langCode.value == "kh"
+  //                             ? "Battambang"
+  //                             : "SourceSansPro-Regular"),
+  //                   ),
+  //                 )
+  //               : Column(
+  //                   children:
+  //                       List.generate(controller.attachment.length, (index) {
+  //                     var attachment = controller.attachment[index];
+  //                     var extension = controller
+  //                         .splitUrl(controller.attachment[index].documentPath);
+  //                     bool isImage = controller.checkExtenstion(extension);
+  //                     return customAttachment(
+  //                       child: constraints.maxWidth >= 510
+  //                           ? Row(
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               mainAxisAlignment:
+  //                                   MainAxisAlignment.spaceBetween,
+  //                               children: [
+  //                                 Column(
+  //                                   crossAxisAlignment:
+  //                                       CrossAxisAlignment.start,
+  //                                   children: [
+  //                                     customAttachmentText(
+  //                                       title: "documenttype".tr,
+  //                                       data: attachment.documentType,
+  //                                     ),
+  //                                     customAttachmentText(
+  //                                         title: "ducumentnumber".tr,
+  //                                         data: attachment.documentNumber),
+  //                                   ].withSpaceBetween(height: 16),
+  //                                 ),
+  //                                 const SizedBox(height: 10),
+  //                                 Column(
+  //                                   crossAxisAlignment:
+  //                                       CrossAxisAlignment.start,
+  //                                   children: [
+  //                                     customAttachmentText(
+  //                                       title: "ducumentissuse".tr,
+  //                                       data: attachment.documentIssuedAt,
+  //                                     ),
+  //                                     customAttachmentText(
+  //                                       title: "documentexpired".tr,
+  //                                       data: attachment.documentExpiredAt,
+  //                                     ),
+  //                                   ].withSpaceBetween(height: 16),
+  //                                 ),
+  //                                 _buildImage(
+  //                                     context: context,
+  //                                     isImage: isImage,
+  //                                     documentPath: attachment.documentPath),
+  //                               ],
+  //                             )
+  //                           : SingleChildScrollView(
+  //                               scrollDirection: Axis.horizontal,
+  //                               child: Row(
+  //                                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                                 mainAxisAlignment:
+  //                                     MainAxisAlignment.spaceBetween,
+  //                                 children: [
+  //                                   Column(
+  //                                     crossAxisAlignment:
+  //                                         CrossAxisAlignment.start,
+  //                                     children: [
+  //                                       Padding(
+  //                                         padding:
+  //                                             const EdgeInsets.only(top: 10),
+  //                                         child: customAttachmentText(
+  //                                           title: "documenttype".tr,
+  //                                           data: attachment.documentType,
+  //                                         ),
+  //                                       ),
+  //                                       Padding(
+  //                                         padding:
+  //                                             const EdgeInsets.only(top: 10),
+  //                                         child: customAttachmentText(
+  //                                             title: "ducumentnumber".tr,
+  //                                             data: attachment.documentNumber),
+  //                                       ),
+  //                                       Padding(
+  //                                         padding:
+  //                                             const EdgeInsets.only(top: 10),
+  //                                         child: customAttachmentText(
+  //                                           title: "ducumentissuse".tr,
+  //                                           data: attachment.documentIssuedAt,
+  //                                         ),
+  //                                       ),
+  //                                       Padding(
+  //                                         padding:
+  //                                             const EdgeInsets.only(top: 10),
+  //                                         child: customAttachmentText(
+  //                                           title: "documentexpired".tr,
+  //                                           data: attachment.documentExpiredAt,
+  //                                         ),
+  //                                       ),
+  //                                     ],
+  //                                   ),
+  //                                   _buildImage(
+  //                                       context: context,
+  //                                       isImage: isImage,
+  //                                       documentPath: attachment.documentPath),
+  //                                 ],
+  //                               ),
+  //                             ),
+  //                     );
+  //                   }).withSpaceBetween(height: 10),
+  //                 ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   _buildAgencyWidget({BoxConstraints? constraints}) {
     return CustomCard(
@@ -585,12 +612,15 @@ class AgencyDetailScreen extends GetView<AgencyController> {
                 const SizedBox(height: 10),
                 CustomText(
                   tilteFlex: tilteFlex,
-                  dataFlex: 2,
+                  dataFlex: dataFlex,
                   maxFontSize: 18,
                   title: 'country'.tr,
                   data: homeController.langCode.value == "en"
-                      ? controller.agencyData.value!.agency.country.englishName
-                      : controller.agencyData.value!.agency.country.khmerName,
+                      ? controller
+                              .agencyData.value!.agency.country.englishName ??
+                          ""
+                      : controller.agencyData.value!.agency.country.khmerName ??
+                          "",
                   homeController: homeController,
                   dataStyle: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -601,64 +631,70 @@ class AgencyDetailScreen extends GetView<AgencyController> {
                 ),
                 CustomText(
                   tilteFlex: tilteFlex,
-                  dataFlex: 2,
+                  dataFlex: dataFlex,
                   maxFontSize: 18,
                   title: 'agencykhmer'.tr,
-                  data: controller.agency!.khmerName,
+                  data: controller.agency?.khmerName ?? "",
                   homeController: homeController,
                   dataStyle: AppTextStyle.bold16(fontFamily: "Battambang"),
                 ),
                 CustomText(
                   tilteFlex: tilteFlex,
-                  dataFlex: 2,
+                  dataFlex: dataFlex,
                   maxFontSize: 18,
                   title: 'agentcylatin'.tr,
-                  data: controller.agency!.latinName,
+                  data: controller.agency?.latinName ?? "",
                   homeController: homeController,
                   dataStyle: AppTextStyle.bold18(),
                 ),
                 CustomText(
                   tilteFlex: tilteFlex,
-                  dataFlex: 2,
+                  dataFlex: dataFlex,
                   maxFontSize: 18,
                   title: 'abreviate'.tr,
-                  data: controller.agency!.nameAbbreviate,
+                  data: controller.agency?.nameAbbreviate ?? "",
                   homeController: homeController,
                   dataStyle: AppTextStyle.bold18(),
                 ),
                 CustomText(
                   tilteFlex: tilteFlex,
-                  dataFlex: 2,
+                  dataFlex: dataFlex,
                   maxFontSize: 18,
                   maxLine: 2,
                   title: 'agencyemail'.tr,
-                  data: controller.agency!.agencyEmail,
+                  data: controller.agency?.agencyEmail ?? "",
                   homeController: homeController,
                   dataStyle:
                       AppTextStyle.bold18(fontFamily: "SourceSansPro-Regular"),
                 ),
                 CustomText(
                   tilteFlex: tilteFlex,
-                  dataFlex: 2,
+                  dataFlex: dataFlex,
                   maxFontSize: 18,
-                  title: 'Campany TIN',
+                  title: 'companytin'.tr,
                   data: controller.agency?.companyTin ?? "",
+                  dataStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: homeController.langCode.value == "en" ? 18 : 16,
+                      fontFamily: homeController.langCode.value == "en"
+                          ? "SourceSansPro-Regular"
+                          : "Battambang"),
                   homeController: homeController,
                 ),
                 CustomText(
                   tilteFlex: tilteFlex,
-                  dataFlex: 2,
+                  dataFlex: dataFlex,
                   maxFontSize: 18,
                   title: 'countrycode'.tr,
-                  data: controller.agency!.countryCode,
+                  data: controller.agency?.countryCode ?? "",
                   homeController: homeController,
                 ),
                 CustomText(
                   tilteFlex: tilteFlex,
-                  dataFlex: 2,
+                  dataFlex: dataFlex,
                   maxFontSize: 18,
                   title: "phonenumber".tr,
-                  data: controller.agency!.agencyPhoneNumber,
+                  data: controller.agency?.agencyPhoneNumber ?? "",
                   homeController: homeController,
                 ),
               ].withSpaceBetween(height: 16),
@@ -669,7 +705,7 @@ class AgencyDetailScreen extends GetView<AgencyController> {
     );
   }
 
-  _buildAddressWidget({BoxConstraints? constraints}) {
+  _buildAddressWidget({BoxConstraints? constraints, double? height}) {
     return CustomCard(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -685,12 +721,12 @@ class AgencyDetailScreen extends GetView<AgencyController> {
               right: 10,
             ),
             width: constraints?.maxWidth ?? 550,
-            height: 520,
+            height: height ?? 520,
             child: Column(
               children: [
                 const SizedBox(height: 10),
                 CustomText(
-                  maxLine: 2,
+                  maxLine: 3,
                   tilteFlex: tilteFlex,
                   dataFlex: 2,
                   maxFontSize: 18,
@@ -784,191 +820,178 @@ class AgencyDetailScreen extends GetView<AgencyController> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
         border: Border.all(color: Colors.grey[300]!),
       ),
       child: child,
     );
   }
 
-  _buildImage(
-      {required BuildContext context,
-      required bool isImage,
-      required String documentPath}) {
-    return isImage
-        ? InkWell(
-            onTap: () {
-              // controller.fetchImageBytes(documentPath);
-              dialogShowImage(context, documentPath);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                // image: DecorationImage(image: NetworkImage(documentPath)),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade400,
-                    blurRadius: 3,
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              width: 150,
-              height: 180,
-              // child: Image.network(
-              //   documentPath,
-              //   headers: const <String, String>{
-              //     "Content-Type": "text/html",
-              //     "Access-Control-Allow-Origin": "*",
-              //     "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
-              //   },
-              //   errorBuilder: ((context, error, stackTrace) {
-              //     return Container(
-              //       width: 150,
-              //       height: 180,
-              //       padding: const EdgeInsets.all(8.0),
-              //       decoration: const BoxDecoration(
-              //         image: DecorationImage(
-              //             image: AssetImage('assets/images/noimage.jpg')),
-              //       ),
-              //     );
-              //   }),
-              // ),
-              child: CachedNetworkImage(
-                imageUrl: documentPath,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(
-                  value: downloadProgress.progress,
-                ),
-                imageBuilder: (context, imageProvider) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(image: imageProvider),
-                    ),
-                  );
-                },
-                errorWidget: (context, url, error) => Container(
-                  width: 150,
-                  height: 180,
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/noimage.jpg')),
-                  ),
-                ),
-              ),
-            ),
-          )
-        : InkWell(
-            onTap: () async {
-              controller.launchPdf(documentPath);
-              // dialogShowImage(context, documentPath, fileType: "pdf");
-            },
-            child: Column(
-              children: [
-                Container(
-                  height: 153,
-                  width: 140,
-                  decoration: BoxDecoration(
-                    image: const DecorationImage(
-                        image: AssetImage('assets/images/pdf_logo.jpg')),
-                    border: Border.all(color: Colors.grey[300]!),
-                  ),
-                  // child: PdfViewer.openFutureFile(() async {
-                  //   return documentPath;
-                  // }, loadingBannerBuilder: (context) {
-                  //   return const Center(
-                  //     child: CircularProgressIndicator(),
-                  //   );
-                  // }, onError: (error) {
-                  //   print(error);
-                  // }),
-                ),
-                Text("filetype".tr,
-                    style: TextStyle(
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Bold"
-                          : "Battambang-Bold",
-                      fontSize: homeController.langCode.value == "en" ? 14 : 12,
-                    )),
-                Text("clickfile".tr,
-                    style: TextStyle(
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Bold"
-                          : "Battambang-Bold",
-                      fontSize: homeController.langCode.value == "en" ? 14 : 12,
-                    )),
-              ].withSpaceBetween(height: 5),
-            ),
-          );
-  }
+  // _buildImage(
+  //     {required BuildContext context,
+  //     required bool isImage,
+  //     required String documentPath}) {
+  //   return isImage
+  //       ? InkWell(
+  //           onTap: () {
+  //             // controller.fetchImageBytes(documentPath);
+  //             dialogShowImage(context, documentPath);
+  //           },
+  //           child: Container(
+  //             padding: const EdgeInsets.all(5),
+  //             decoration: BoxDecoration(
+  //               color: Colors.white,
+  //               boxShadow: [
+  //                 BoxShadow(
+  //                   color: Colors.grey.shade400,
+  //                   blurRadius: 3,
+  //                 ),
+  //               ],
+  //             ),
+  //             alignment: Alignment.center,
+  //             width: 150,
+  //             height: 180,
+  //             child: CachedNetworkImage(
+  //               imageUrl: documentPath,
+  //               progressIndicatorBuilder: (context, url, downloadProgress) =>
+  //                   CircularProgressIndicator(
+  //                 value: downloadProgress.progress,
+  //               ),
+  //               imageBuilder: (context, imageProvider) {
+  //                 return Container(
+  //                   decoration: BoxDecoration(
+  //                     image: DecorationImage(image: imageProvider),
+  //                   ),
+  //                 );
+  //               },
+  //               errorWidget: (context, url, error) => Container(
+  //                 width: 150,
+  //                 height: 180,
+  //                 padding: const EdgeInsets.all(8.0),
+  //                 decoration: const BoxDecoration(
+  //                   image: DecorationImage(
+  //                       image: AssetImage('assets/images/noimage.jpg')),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         )
+  //       : InkWell(
+  //           onTap: () async {
+  //             controller.launchPdf(documentPath);
+  //             // dialogShowImage(context, documentPath, fileType: "pdf");
+  //           },
+  //           child: Column(
+  //             children: [
+  //               Container(
+  //                 height: 120,
+  //                 width: 120,
+  //                 decoration: BoxDecoration(
+  //                   image: const DecorationImage(
+  //                       image: AssetImage('assets/images/pdf_logo.jpg')),
+  //                   border: Border.all(color: Colors.grey[300]!),
+  //                 ),
+  //               ),
+  //               Text("filetype".tr,
+  //                   style: TextStyle(
+  //                     fontWeight: FontWeight.bold,
+  //                     fontFamily: homeController.langCode.value == "en"
+  //                         ? "SourceSansPro-Bold"
+  //                         : "Battambang-Bold",
+  //                     fontSize: homeController.langCode.value == "en" ? 14 : 12,
+  //                   )),
+  //               Text("clickfile".tr,
+  //                   style: TextStyle(
+  //                     fontWeight: FontWeight.bold,
+  //                     fontFamily: homeController.langCode.value == "en"
+  //                         ? "SourceSansPro-Regular"
+  //                         : "Battambang",
+  //                     fontSize: homeController.langCode.value == "en" ? 14 : 12,
+  //                   )),
+  //             ].withSpaceBetween(height: 5),
+  //           ),
+  //         );
+  // }
 
-  _buildAttachmentWidget(BuildContext context) {
-    return CustomCard(
-      child: Column(
-        children: [
-          CustomHeader(
-            headerWidth: 1110,
-            title: "attachment".tr,
-            homeController: homeController,
-          ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            width: 1110,
-            height: 300,
-            child: ListView(
-              children: List.generate(
-                controller.attachment.length,
-                (index) {
-                  var attachment = controller.attachment[index];
-                  var extension = controller
-                      .splitUrl(controller.attachment[index].documentPath);
-                  bool isImage = controller.checkExtenstion(extension);
-                  return customAttachment(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            customAttachmentText(
-                              title: "documenttype".tr,
-                              data: attachment.documentType,
-                            ),
-                            customAttachmentText(
-                                title: "ducumentnumber".tr,
-                                data: attachment.documentNumber),
-                          ].withSpaceBetween(height: 16),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            customAttachmentText(
-                              title: "ducumentissuse".tr,
-                              data: attachment.documentIssuedAt,
-                            ),
-                            customAttachmentText(
-                              title: "documentexpired".tr,
-                              data: attachment.documentExpiredAt,
-                            ),
-                          ].withSpaceBetween(height: 16),
-                        ),
-                        _buildImage(
-                            context: context,
-                            isImage: isImage,
-                            documentPath: attachment.documentPath),
-                      ],
-                    ),
-                  );
-                },
-              ).withSpaceBetween(height: 10),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // _buildAttachmentWidget(BuildContext context) {
+  //   return CustomCard(
+  //     child: Column(
+  //       children: [
+  //         CustomHeader(
+  //           headerWidth: 1110,
+  //           title: "attachment".tr,
+  //           homeController: homeController,
+  //         ),
+  //         Container(
+  //           padding: const EdgeInsets.all(16),
+  //           width: 1110,
+  //           height: 300,
+  //           child: controller.attachment.isEmpty
+  //               ? Center(
+  //                   child: Text(
+  //                     "noData".tr,
+  //                     style: TextStyle(
+  //                         fontWeight: FontWeight.bold,
+  //                         fontSize:
+  //                             homeController.langCode.value == "kh" ? 20 : 18,
+  //                         fontFamily: homeController.langCode.value == "kh"
+  //                             ? "Battambang"
+  //                             : "SourceSansPro-Regular"),
+  //                   ),
+  //                 )
+  //               : ListView(
+  //                   children: List.generate(
+  //                     controller.attachment.length,
+  //                     (index) {
+  //                       var attachment = controller.attachment[index];
+  //                       var extension = controller.splitUrl(
+  //                           controller.attachment[index].documentPath);
+  //                       bool isImage = controller.checkExtenstion(extension);
+  //                       return customAttachment(
+  //                         child: Row(
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                           children: [
+  //                             Column(
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 customAttachmentText(
+  //                                   title: "documenttype".tr,
+  //                                   data: attachment.documentType,
+  //                                 ),
+  //                                 customAttachmentText(
+  //                                     title: "ducumentnumber".tr,
+  //                                     data: attachment.documentNumber),
+  //                               ].withSpaceBetween(height: 16),
+  //                             ),
+  //                             Column(
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 customAttachmentText(
+  //                                   title: "ducumentissuse".tr,
+  //                                   data: attachment.documentIssuedAt,
+  //                                 ),
+  //                                 customAttachmentText(
+  //                                   title: "documentexpired".tr,
+  //                                   data: attachment.documentExpiredAt,
+  //                                 ),
+  //                               ].withSpaceBetween(height: 16),
+  //                             ),
+  //                             _buildImage(
+  //                                 context: context,
+  //                                 isImage: isImage,
+  //                                 documentPath: attachment.documentPath),
+  //                           ],
+  //                         ),
+  //                       );
+  //                     },
+  //                   ).withSpaceBetween(height: 10),
+  //                 ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Column customAttachmentText({
     required String title,
@@ -1080,6 +1103,7 @@ class AgencyDetailScreen extends GetView<AgencyController> {
                   tilteFlex: tilteFlex,
                   dataFlex: 2,
                   maxFontSize: 18,
+                  maxLine: 3,
                   title: 'address'.tr,
                   data: controller.agencyData.value?.contact.address ?? "",
                   homeController: homeController),
@@ -1258,45 +1282,45 @@ class AgencyDetailScreen extends GetView<AgencyController> {
     );
   }
 
-  _buildQuotaWidget({BoxConstraints? constraints}) {
-    return CustomCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CustomHeader(
-            headerWidth: constraints?.maxWidth ?? 1110,
-            title: "quota".tr,
-            homeController: homeController,
-          ),
-          Container(
-            padding: const EdgeInsets.only(
-              left: 10,
-              top: 10,
-              right: 10,
-            ),
-            width: constraints?.maxWidth ?? 1110,
-            height: 150,
-            child: Column(
-              children: [
-                CustomText(
-                    title: "total".tr,
-                    data: controller.quota?.total ?? "0",
-                    homeController: homeController),
-                CustomText(
-                    title: "male".tr,
-                    data: controller.quota?.male ?? "0",
-                    homeController: homeController),
-                CustomText(
-                    title: "female".tr,
-                    data: controller.quota?.female ?? '0',
-                    homeController: homeController),
-              ].withSpaceBetween(height: 16),
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  // _buildQuotaWidget({BoxConstraints? constraints}) {
+  //   return CustomCard(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //       children: [
+  //         CustomHeader(
+  //           headerWidth: constraints?.maxWidth ?? 1110,
+  //           title: "quota".tr,
+  //           homeController: homeController,
+  //         ),
+  //         Container(
+  //           padding: const EdgeInsets.only(
+  //             left: 10,
+  //             top: 10,
+  //             right: 10,
+  //           ),
+  //           width: constraints?.maxWidth ?? 1110,
+  //           height: 150,
+  //           child: Column(
+  //             children: [
+  //               CustomText(
+  //                   title: "total".tr,
+  //                   data: controller.quota?.total ?? "0",
+  //                   homeController: homeController),
+  //               CustomText(
+  //                   title: "male".tr,
+  //                   data: controller.quota?.male ?? "0",
+  //                   homeController: homeController),
+  //               CustomText(
+  //                   title: "female".tr,
+  //                   data: controller.quota?.female ?? '0',
+  //                   homeController: homeController),
+  //             ].withSpaceBetween(height: 16),
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   _buildAppbar() {
     return AppBar(

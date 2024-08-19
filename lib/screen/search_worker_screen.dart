@@ -1,4 +1,3 @@
-import 'package:cloudflare_turnstile/cloudflare_turnstile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +6,6 @@ import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
 import 'package:tracking_web/widget/dialog_widget.dart';
-import '../config/constant/string_constant.dart';
 import '../widget/popup_menu_widget.dart';
 import '../widget/textfield_widget.dart';
 
@@ -301,58 +299,59 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                   )
                 ],
               ),
-              // InkWell(
-              //   onTap: () {
-              //     submit(context);
-              //   },
-              //   child: Container(
-              //     alignment: Alignment.center,
-              //     height: 45,
-              //     decoration: BoxDecoration(
-              //         color: Colors.blue,
-              //         borderRadius: BorderRadius.circular(10)),
-              //     child: Text("track".tr,
-              //         style: TextStyle(
-              //             color: Colors.white,
-              //             fontSize: 14,
-              //             fontFamily: homeController.langCode.value == "en"
-              //                 ? "SourceSansPro-Regular"
-              //                 : "Battambang")),
-              //   ),
-              // ),
-              Obx(
-                () => workerController.cloudFlare.value
-                    ? InkWell(
-                        onTap: () {
-                          submit(context);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 45,
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Text("track".tr,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontFamily:
-                                      homeController.langCode.value == "en"
-                                          ? "SourceSansPro-Regular"
-                                          : "Battambang")),
-                        ),
-                      )
-                    : CloudFlareTurnstile(
-                        options: TurnstileOptions(
-                          theme: TurnstileTheme.light,
-                          retryAutomatically: false,
-                        ),
-                        siteKey: siteKey,
-                        onTokenRecived: (token) async {
-                          await workerController.verifyCloudFlare(token);
-                        },
-                      ),
-              )
+
+              InkWell(
+                onTap: () {
+                  submit(context);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 45,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text("track".tr,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: homeController.langCode.value == "en"
+                              ? "SourceSansPro-Regular"
+                              : "Battambang")),
+                ),
+              ),
+              // Obx(
+              //   () => workerController.cloudFlare.value
+              //       ? InkWell(
+              //           onTap: () {
+              //             submit(context);
+              //           },
+              //           child: Container(
+              //             alignment: Alignment.center,
+              //             height: 45,
+              //             decoration: BoxDecoration(
+              //                 color: Colors.blue,
+              //                 borderRadius: BorderRadius.circular(10)),
+              //             child: Text("track".tr,
+              //                 style: TextStyle(
+              //                     color: Colors.white,
+              //                     fontSize: 14,
+              //                     fontFamily:
+              //                         homeController.langCode.value == "en"
+              //                             ? "SourceSansPro-Regular"
+              //                             : "Battambang")),
+              //           ),
+              //         )
+              //       : CloudFlareTurnstile(
+              //           options: TurnstileOptions(
+              //             theme: TurnstileTheme.light,
+              //             retryAutomatically: false,
+              //           ),
+              //           siteKey: siteKey,
+              //           onTokenRecived: (token) async {
+              //             await workerController.verifyCloudFlare(token);
+              //           },
+              //         ),
+              // )
             ].withSpaceBetween(height: 16),
           ),
         ),

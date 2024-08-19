@@ -49,6 +49,8 @@ dependencies:
   pdf_render: ^1.4.10
   flutter_cache_manager: ^3.3.2
   url_launcher: ^6.3.0
+  html: ^0.15.4
+  web: ^0.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

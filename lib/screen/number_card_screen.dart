@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import '../config/constant/string_constant.dart';
+import 'package:tracking_web/config/constant/string_constant.dart';
 import '../config/theme/app_theme.dart';
 import '../controller/home_controller.dart';
 import '../controller/new_worker_controller.dart';
@@ -386,6 +386,25 @@ class _NumberCardScreenState extends State<NumberCardScreen> {
             // const SizedBox(
             //   height: 20,
             // ),
+            // InkWell(
+            //   onTap: () async {
+            //     submit(context);
+            //   },
+            //   child: Container(
+            //     alignment: Alignment.center,
+            //     height: 45,
+            //     decoration: BoxDecoration(
+            //         color: Colors.blue,
+            //         borderRadius: BorderRadius.circular(10)),
+            //     child: Text("track".tr,
+            //         style: TextStyle(
+            //             color: Colors.white,
+            //             fontSize: 14,
+            //             fontFamily: homeController.langCode.value == "en"
+            //                 ? "SourceSansPro-Regular"
+            //                 : "Battambang")),
+            //   ),
+            // )
             Obx(
               () => workerController.cloudFlare.value
                   ? InkWell(

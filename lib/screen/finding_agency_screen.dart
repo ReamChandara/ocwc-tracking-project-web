@@ -32,7 +32,7 @@ class _FindingAgencyState extends State<FindingAgency> {
     if (validation()) {
     } else {
       DialogWidget.laodingDailog(context, homeController.langCode.value);
-      agencyController.getAgencyDetail(context, nameController.text,
+      agencyController.findingAgency(context, nameController.text,
           langCode: homeController.langCode.value);
     }
   }
@@ -253,59 +253,6 @@ class _FindingAgencyState extends State<FindingAgency> {
                 },
                 hintText: "agentcyhint".tr,
               ),
-              // TextFieldWidget(
-              //   controller: dateController,
-              //   hintText: "date".tr,
-              //   errorStyle: TextStyle(
-              //       fontSize: 14,
-              //       fontFamily: homeController.langCode.value == "en"
-              //           ? "SourceSansPro-Regular"
-              //           : "Battambang"),
-              //   hintStyle: TextStyle(
-              //       fontSize: 14,
-              //       fontFamily: homeController.langCode.value == "en"
-              //           ? "SourceSansPro-Regular"
-              //           : "Battambang"),
-              //   focusNode: _focusNode2,
-              //   onTap: () {
-              //     _scrollToFocusedNode(_focusNode2);
-              //   },
-              //   prefixIcon: Padding(
-              //     padding: const EdgeInsets.all(10),
-              //     child: Image.asset(
-              //       width: 10,
-              //       "assets/icons/calendar.png",
-              //       color: Colors.blueGrey,
-              //     ),
-              //   ),
-              //   suffixIcon: IconButton(
-              //       onPressed: () async {
-              //         setDate();
-              //       },
-              //       icon: const Icon(
-              //         Icons.date_range,
-              //         color: Colors.blueGrey,
-              //       )),
-              //   validator: (val) {
-              //     if (val == null || val.isEmpty) {
-              //       return "dateWarning".tr;
-              //     } else if (!validateDate(val)) {
-              //       return "dateMatch".tr;
-              //     } else {
-              //       return null;
-              //     }
-              //   },
-              //   onFieldSubmitted: (val) {
-              //     submit(context);
-              //   },
-              //   inputFormatters: [
-              //     MaskTextInputFormatter(
-              //       mask: '##/##/####',
-              //       filter: {"#": RegExp(r'[0-9]')},
-              //       type: MaskAutoCompletionType.lazy,
-              //     )
-              //   ],
-              // ),
               Obx(
                 () => agencyController.cloudFlare.value
                     ? InkWell(

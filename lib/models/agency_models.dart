@@ -5,14 +5,26 @@ AgencyModels parseFromJson(String json) {
 }
 
 class AgencyModels {
-  AgencyData agencydata;
-
+  List<AgencyData> agencydata;
+  AgencyData? agencyDetail;
   AgencyModels({
     required this.agencydata,
+    this.agencyDetail,
   });
 
   factory AgencyModels.fromJson(Map<String, dynamic> json) {
-    return AgencyModels(agencydata: AgencyData.fromJson(json["data"]));
+    return AgencyModels(
+      agencydata: List<AgencyData>.from(
+        json['data'].map((e) => AgencyData.fromJson(e)),
+      ),
+    );
+  }
+
+  factory AgencyModels.fromJsonNew(Map<String, dynamic> json) {
+    return AgencyModels(
+      agencydata: [],
+      agencyDetail: AgencyData.fromJson(json["data"]),
+    );
   }
 }
 
@@ -94,13 +106,13 @@ class Address {
 
 class Agency {
   Country country;
-  String khmerName;
-  String latinName;
-  String nameAbbreviate;
-  String agencyEmail;
+  dynamic khmerName;
+  dynamic latinName;
+  dynamic nameAbbreviate;
+  dynamic agencyEmail;
   dynamic companyTin;
-  String countryCode;
-  String agencyPhoneNumber;
+  dynamic countryCode;
+  dynamic agencyPhoneNumber;
 
   Agency({
     required this.country,
@@ -128,11 +140,11 @@ class Agency {
 }
 
 class Attachment {
-  String documentType;
-  String documentNumber;
-  String documentIssuedAt;
-  String documentExpiredAt;
-  String documentPath;
+  dynamic documentType;
+  dynamic documentNumber;
+  dynamic documentIssuedAt;
+  dynamic documentExpiredAt;
+  dynamic documentPath;
 
   Attachment({
     required this.documentType,
@@ -184,9 +196,9 @@ class Contact {
 
 class Proka {
   Country country;
-  String prokasNumber;
-  String prokasIssuedAt;
-  String prokasExpiredAt;
+  dynamic prokasNumber;
+  dynamic prokasIssuedAt;
+  dynamic prokasExpiredAt;
 
   Proka({
     required this.country,
@@ -220,8 +232,8 @@ class Position {
 }
 
 class Country {
-  final String khmerName;
-  final String englishName;
+  final dynamic khmerName;
+  final dynamic englishName;
 
   Country({required this.khmerName, required this.englishName});
 

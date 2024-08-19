@@ -13,10 +13,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../config/routes/app_route.dart';
 import '../widget/dialog_widget.dart';
 
-
 class AgencyController extends GetxController {
   final PdfViewerController pdfcontroller = PdfViewerController();
   Rx<AgencyData?> agencyData = Rx<AgencyData?>(null);
+  RxList<AgencyData> agencyList = <AgencyData>[].obs;
   Agency? agency;
   Address? address;
   List<Attachment> attachment = [];
@@ -25,6 +25,8 @@ class AgencyController extends GetxController {
   Quota? quota;
 
   RxBool loading = RxBool(false);
+
+  RxBool loadingList = RxBool(false);
 
   RxBool cloudFlare = false.obs;
 
@@ -41,9 +43,6 @@ class AgencyController extends GetxController {
     } catch (e) {
       debugPrint(e.toString());
     }
-    // if (!await launchUrl(url)) {
-    //   throw Exception('Could not launch $url');
-    // }
   }
 
   final dio = Dio();
@@ -99,7 +98,7 @@ class AgencyController extends GetxController {
     }
   }
 
-  Future<void> getAgencyDetail(
+  Future<void> findingAgency(
     BuildContext context,
     String agencyName, {
     String langCode = "en",
@@ -121,19 +120,71 @@ class AgencyController extends GetxController {
         AgencyModels agencyModels = AgencyModels.fromJson(
           jsonDecode(response.body),
         );
-        agencyData.value = agencyModels.agencydata;
-        agency = agencyData.value?.agency;
-        address = agencyData.value?.address;
-        attachment = agencyData.value!.attachment;
-        contact = agencyData.value?.contact;
-        prokas = agencyData.value!.prokas;
-        quota = agencyData.value?.quota;
-        Get.toNamed(
-          Routes.agencyDetail,
-          parameters: {"name": agencyName},
-        );
+
+        if (agencyModels.agencydata.length == 1) {
+          agencyData.value = agencyModels.agencydata.firstWhere(
+            (element) => element.agency.country.englishName
+                .toLowerCase()
+                .contains("Cambodia".toLowerCase()),
+          );
+          initAgencyDetail(agencyData.value!.hashId);
+          Get.toNamed(
+            Routes.agencyDetail,
+            parameters: {"id": agencyData.value!.hashId},
+          );
+        } else {
+          agencyList.value = agencyModels.agencydata;
+          Get.toNamed(Routes.listAgency, parameters: {'name': agencyName});
+        }
       }
       if (response.statusCode == 404) {
+        Get.back();
+        if (context.mounted) {
+          DialogWidget.showDialog(context,
+              jsonDecode(response.body)["errors"]["message"], langCode);
+        }
+      }
+    } catch (e) {
+      print(e);
+      if (context.mounted) {
+        DialogWidget.showDialog(context, "notfoundAgent".tr, langCode);
+      }
+    }
+  }
+
+  void getAgencyDetails(
+    BuildContext context,
+    String hashId, [
+    String langCode = "en",
+  ]) async {
+    String apiUrl = baseUrl + agencyDetails;
+    try {
+      var uri = Uri.parse(apiUrl);
+      var body = {
+        "hash_id": hashId,
+      };
+      var response = await http.post(
+        uri,
+        headers: headers(langCode),
+        body: jsonEncode(body),
+      );
+      if (response.statusCode == 200) {
+        Get.back();
+        AgencyModels agencyModels = AgencyModels.fromJsonNew(
+          jsonDecode(response.body),
+        );
+        agencyData.value = agencyModels.agencyDetail;
+        agency = agencyData.value!.agency;
+        address = agencyData.value!.address;
+        attachment = agencyData.value!.attachment;
+        contact = agencyData.value!.contact;
+        prokas = agencyData.value!.prokas;
+        quota = agencyData.value!.quota;
+        Get.toNamed(
+          Routes.agencyDetail,
+          parameters: {"id": agencyModels.agencyDetail!.hashId},
+        );
+      } else if (response.statusCode == 404) {
         Get.back();
         if (context.mounted) {
           DialogWidget.showDialog(context,
@@ -145,13 +196,14 @@ class AgencyController extends GetxController {
     }
   }
 
-  void initAgencyData(String param) async {
+  RxBool notFound = false.obs;
+  void initAgencyDetail(String param) async {
     loading.value = true;
-    String apiUrl = baseUrl + searchAgency;
+    String apiUrl = baseUrl + agencyDetails;
     try {
       var uri = Uri.parse(apiUrl);
       var body = {
-        "name": param,
+        "hash_id": param,
       };
       var response = await http.post(
         uri,
@@ -160,10 +212,12 @@ class AgencyController extends GetxController {
       );
       print(response.statusCode);
       if (response.statusCode == 200) {
-        AgencyModels agencyModels = AgencyModels.fromJson(
+        // print(jsonDecode(response.body));
+        AgencyModels agencyModels = AgencyModels.fromJsonNew(
           jsonDecode(response.body),
         );
-        agencyData.value = agencyModels.agencydata;
+        print(agencyModels.agencyDetail!.hashId);
+        agencyData.value = agencyModels.agencyDetail;
         agency = agencyData.value!.agency;
         address = agencyData.value!.address;
         attachment = agencyData.value!.attachment;
@@ -171,16 +225,51 @@ class AgencyController extends GetxController {
         prokas = agencyData.value!.prokas;
         quota = agencyData.value!.quota;
         loading.value = false;
+      } else {
+        loading.value = false;
+        notFound.value = true;
       }
     } catch (e) {
       print(e);
     }
   }
 
+  void initAgencyList(String params, {String langCode = "en"}) async {
+    String apiUrl = baseUrl + searchAgency;
+    var uri = Uri.parse(apiUrl);
+    var body = {
+      "name": params,
+    };
+    loadingList.value = true;
+    try {
+      var response = await http.post(
+        uri,
+        headers: headers(langCode),
+        body: jsonEncode(body),
+      );
+      print("status code : ${response.statusCode}");
+      if (response.statusCode == 200) {
+        AgencyModels agencyModels = AgencyModels.fromJson(
+          jsonDecode(response.body),
+        );
+        agencyList.value = agencyModels.agencydata;
+        loadingList.value = false;
+      }
+    } catch (e) {
+      if (e is Exception) {
+        print(e);
+      }
+    }
+  }
+
   void initData() {
+    if (Get.parameters['id'] == null) {
+    } else {
+      initAgencyDetail(Get.parameters['id']!);
+    }
     if (Get.parameters['name'] == null) {
     } else {
-      initAgencyData(Get.parameters['name']!);
+      initAgencyList(Get.parameters['name']!);
     }
   }
 

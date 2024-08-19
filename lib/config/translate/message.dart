@@ -65,6 +65,7 @@ class Message extends Translations {
         "agentcylatin": "Agency Latin Name",
         "agencyinfo": "Agency Profile",
         "abreviate": "Name Abreviate",
+        "companytin": "Company TIN",
         "agencyemail": "Agency Email",
         "countrycode": "Country Code",
         "phonenumber": "Phone Number",
@@ -94,7 +95,8 @@ class Message extends Translations {
         "male": "Male",
         "female": "Female",
         "filetype": "Attacment is Pdf File",
-        "clickfile": "Click On pdf Image to see ducument"
+        "clickfile": "Click On pdf Image to see ducument",
+        "notfoundAgent": "Agency not found.",
       },
       "km_KH": {
         "title": "ស្វែងរកព័ត៌មាន OCWC",
@@ -158,6 +160,7 @@ class Message extends Translations {
         "agencyinfo": "ព័ត៌មានភ្នាក់ងារ",
         "abreviate": "ឈ្មោះអក្សរកាត់",
         "agencyemail": "អុីមែលភ្នាក់ងារ",
+        "companytin": "លេខអត្តសញ្ញាណកម្មសារពើពន្ធ",
         "countrycode": "លេខកូដប្រទេស",
         "phonenumber": "លេខទូរសព្ទ",
         "contact": "ទំនាក់ទំនង",
@@ -174,7 +177,7 @@ class Message extends Translations {
         "attachment": "ឯកសាភ្ចាប់",
         'winesses': "សាក្សី",
         "quota": "កូតា",
-        "prokas": "ប្រូកាស",
+        "prokas": "ប្រកាស",
         "prokasnumber": "ប្រកាសលេខ",
         "prokasissuse": "ប្រកាសនៅថ្ងែ",
         "prokasexpire": "ផុតកំណត់នៅថ្ងៃ",
@@ -187,6 +190,7 @@ class Message extends Translations {
         "female": "ស្រី",
         "filetype": "ឯកាសាភ្ចាប់ជាប្រភេទ Pdf ",
         "clickfile": "ចុចលើរូបភាពដើម្បីបង្ហាញឯកាសា",
+        "notfoundAgent": "មិនមានភ្នាក់ងារឯកជនក្នុងប្រព័ន្ធទេ",
       }
     };
   }

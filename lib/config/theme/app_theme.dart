@@ -250,7 +250,9 @@ class AppTextStyle {
     );
   }
 
-  static TextStyle bold12({Color? color, }) {
+  static TextStyle bold12({
+    Color? color,
+  }) {
     return TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,
@@ -325,6 +327,7 @@ class AppTextStyle {
     return TextStyle(
       fontSize: 24,
       color: color ?? AppColors.white,
+      fontFamily: fontFamily,
     );
   }
 
