@@ -1,3 +1,4 @@
+import 'package:cloudflare_turnstile/cloudflare_turnstile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +7,8 @@ import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
 import 'package:tracking_web/widget/dialog_widget.dart';
+import '../config/constant/string_constant.dart';
+import '../config/routes/app_route.dart';
 import '../widget/popup_menu_widget.dart';
 import '../widget/textfield_widget.dart';
 
@@ -87,61 +90,64 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
       resizeToAvoidBottomInset: false,
       body: LayoutBuilder(builder: (context, boxConstraints) {
         return Container(
-            width: boxConstraints.maxWidth,
-            height: boxConstraints.maxHeight,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage("assets/images/background.jpg"),
-              ),
+          width: boxConstraints.maxWidth,
+          height: boxConstraints.maxHeight,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage("assets/images/background.jpg"),
             ),
-            child: GestureDetector(
-              onTap: () {
-                _focusNode1.unfocus();
-                _focusNode2.unfocus();
-              },
-              child: ListView(
-                controller: _scrollController,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            )),
-                        const PopupMenuWidget(),
-                      ],
-                    ),
+          ),
+          child: GestureDetector(
+            onTap: () {
+              _focusNode1.unfocus();
+              _focusNode2.unfocus();
+            },
+            child: ListView(
+              controller: _scrollController,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            RouteView.findOcwcmember.go(
+                              backRoutes: RouteView.findOcwcmember.name,
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          )),
+                      const PopupMenuWidget(),
+                    ],
                   ),
-                  () {
-                    if (boxConstraints.maxWidth > 850) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: boxConstraints.maxHeight * 0.20,
-                          ),
-                          buildWebUI(context),
-                        ],
-                      );
-                    } else {
-                      return _buildPhoneUI(context);
-                    }
-                  }(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                    ),
-                  )
-                ],
-              ),
-            ));
+                ),
+                () {
+                  if (boxConstraints.maxWidth > 850) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: boxConstraints.maxHeight * 0.20,
+                        ),
+                        buildWebUI(context),
+                      ],
+                    );
+                  } else {
+                    return _buildPhoneUI(context);
+                  }
+                }(),
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
       }),
     );
   }
@@ -195,17 +201,17 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                "title".tr,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w300,
-                    fontFamily: homeController.langCode.value == "en"
-                        ? "SourceSansPro-Regular"
-                        : "Battambang"),
-              ),
+              // Text(
+              //   "title".tr,
+              //   textAlign: TextAlign.center,
+              //   style: TextStyle(
+              //       fontSize: 22,
+              //       color: Colors.white,
+              //       fontWeight: FontWeight.w300,
+              //       fontFamily: homeController.langCode.value == "en"
+              //           ? "SourceSansPro-Regular"
+              //           : "Battambang"),
+              // ),
               Text(
                 "subTitle".tr,
                 textAlign: TextAlign.center,
@@ -300,58 +306,58 @@ class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
                 ],
               ),
 
-              InkWell(
-                onTap: () {
-                  submit(context);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 45,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Text("track".tr,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: homeController.langCode.value == "en"
-                              ? "SourceSansPro-Regular"
-                              : "Battambang")),
-                ),
-              ),
-              // Obx(
-              //   () => workerController.cloudFlare.value
-              //       ? InkWell(
-              //           onTap: () {
-              //             submit(context);
-              //           },
-              //           child: Container(
-              //             alignment: Alignment.center,
-              //             height: 45,
-              //             decoration: BoxDecoration(
-              //                 color: Colors.blue,
-              //                 borderRadius: BorderRadius.circular(10)),
-              //             child: Text("track".tr,
-              //                 style: TextStyle(
-              //                     color: Colors.white,
-              //                     fontSize: 14,
-              //                     fontFamily:
-              //                         homeController.langCode.value == "en"
-              //                             ? "SourceSansPro-Regular"
-              //                             : "Battambang")),
-              //           ),
-              //         )
-              //       : CloudFlareTurnstile(
-              //           options: TurnstileOptions(
-              //             theme: TurnstileTheme.light,
-              //             retryAutomatically: false,
-              //           ),
-              //           siteKey: siteKey,
-              //           onTokenRecived: (token) async {
-              //             await workerController.verifyCloudFlare(token);
-              //           },
-              //         ),
-              // )
+              // InkWell(
+              //   onTap: () {
+              //     submit(context);
+              //   },
+              //   child: Container(
+              //     alignment: Alignment.center,
+              //     height: 45,
+              //     decoration: BoxDecoration(
+              //         color: Colors.blue,
+              //         borderRadius: BorderRadius.circular(10)),
+              //     child: Text("track".tr,
+              //         style: TextStyle(
+              //             color: Colors.white,
+              //             fontSize: 14,
+              //             fontFamily: homeController.langCode.value == "en"
+              //                 ? "SourceSansPro-Regular"
+              //                 : "Battambang")),
+              //   ),
+              // ),
+              Obx(
+                () => workerController.cloudFlare.value
+                    ? InkWell(
+                        onTap: () {
+                          submit(context);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text("track".tr,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily:
+                                      homeController.langCode.value == "en"
+                                          ? "SourceSansPro-Regular"
+                                          : "Battambang")),
+                        ),
+                      )
+                    : CloudFlareTurnstile(
+                        options: TurnstileOptions(
+                          theme: TurnstileTheme.light,
+                          retryAutomatically: false,
+                        ),
+                        siteKey: siteKey,
+                        onTokenRecived: (token) async {
+                          await workerController.verifyCloudFlare(token);
+                        },
+                      ),
+              )
             ].withSpaceBetween(height: 16),
           ),
         ),

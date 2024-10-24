@@ -5,15 +5,13 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tracking_web/binding/home_binding.dart';
 import 'package:tracking_web/config/routes/app_route.dart';
-import 'package:tracking_web/screen/home_screen.dart';
 import 'package:tracking_web/screen/unknow_route_screen.dart';
-import 'package:url_strategy/url_strategy.dart';
 import 'config/translate/message.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setPathUrlStrategy();
+  // setPathUrlStrategy();
   await GetStorage.init();
   runApp(MyApp(locale: locale()));
 }
@@ -50,10 +48,6 @@ class MyApp extends StatelessWidget {
         Locale("en", "US"),
         Locale("km", "KH"),
       ],
-      unknownRoute: GetPage(
-        name: Routes.uknowRoute,
-        page: () => const UnknowRouteScreen(),
-      ),
       onGenerateRoute: (settings) {
         return MaterialPageRoute(
           builder: (context) => const UnknowRouteScreen(),
@@ -70,10 +64,8 @@ class MyApp extends StatelessWidget {
         fontFamily: "SourceSansPro-Regular",
         useMaterial3: false,
       ),
-      // initialRoute: Routes.uknowRoute,
-      home: HomeScreen(),
-      getPages: AppPages.pages,
-      // routerDelegate: AppRouterDelegate(),
+      initialRoute: "/${RouteView.home.name}",
+      getPages: AppRouting.route,
     );
   }
 }

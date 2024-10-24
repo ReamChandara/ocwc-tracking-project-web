@@ -177,7 +177,8 @@ class NewWorkerController extends GetxController {
         workerData = WorkerData.fromJson(
           jsonDecode(response.body)["data"],
         );
-        Get.toNamed(Routes.detail, parameters: {"id": workerData!.hashcode});
+        // Get.toNamed(Routes.detail, parameters: {"id": workerData!.hashcode});
+        RouteView.detail.go(parameters: {"id": workerData!.hashcode});
         loading = false;
         update();
       } else if (response.statusCode == 400) {
@@ -224,7 +225,8 @@ class NewWorkerController extends GetxController {
         Get.back();
         workerModel = parseFromJson(response.body);
         workerData = workerModel!.workerDatas[0];
-        Get.toNamed(Routes.detail, parameters: {"id": workerData!.hashcode});
+        // Get.toNamed(Routes.detail, parameters: {"id": workerData!.hashcode});
+        RouteView.detail.go(parameters: {"id": workerData!.hashcode});
         loading = false;
         update();
       } else if (response.statusCode == 404) {

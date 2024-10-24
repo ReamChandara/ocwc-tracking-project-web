@@ -140,15 +140,17 @@ class ScannerController extends GetxController {
       qrValid.value = 'validQR'.tr;
     } else {
       _subscription.cancel();
+      stopScan();
       List<String> hashCodes = qrData.split("=");
       print("have data : ${hashCodes[1]}");
-      var data =
-          await Get.toNamed(Routes.detail, parameters: {"id": hashCodes[1]});
-      print(data);
-      if (data == null) {
-      } else {
-        startScanning();
-      }
+      // var data = await Get.toNamed("/${RouteView.detail.name}",
+      //     parameters: {"id": hashCodes[1]});
+      await RouteView.detail.go(parameters: {"id": hashCodes[1]});
+      // print(data);
+      // if (data == null) {
+      // } else {
+      //   startScanning();
+      // }
     }
   }
 
@@ -170,8 +172,8 @@ class ScannerController extends GetxController {
 
   @override
   void onClose() async {
-    print("close");
-    stopScan();
+    // print("close");
+    // stopScan();
     super.onClose();
   }
 }

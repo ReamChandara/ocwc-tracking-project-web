@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:tracking_web/config/helper/function.dart';
 
+import '../config/routes/app_route.dart';
 import '../controller/scanner_controller.dart';
 import '../widget/popup_menu_widget.dart';
 
@@ -202,7 +203,9 @@ class ScanWorkerScreen extends GetView<ScannerController> {
         children: [
           IconButton(
               onPressed: () {
-                Get.back();
+                RouteView.findOcwcmember.go(
+                  backRoutes: RouteView.findOcwcmember.name,
+                );
               },
               icon: const Icon(
                 Icons.arrow_back,

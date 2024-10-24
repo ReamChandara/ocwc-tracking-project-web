@@ -11,6 +11,8 @@ import 'package:tracking_web/widget/custom_text.dart';
 import 'package:tracking_web/widget/dialog_widget.dart';
 import 'package:tracking_web/widget/popup_menu_widget.dart';
 import '../config/constant/string_constant.dart';
+import '../config/routes/app_route.dart';
+import '../config/theme/app_theme.dart';
 import 'button_show_card.dart';
 import 'custom_header.dart';
 
@@ -343,21 +345,45 @@ class WebNewScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(
                                 left: 10, right: 10, top: 10),
                             child: ListTile(
-                                title: Text(
-                                  homeController.langCode.value == "en"
-                                      ? track.title.enTitle
-                                      : track.title.khTilte,
-                                  style: TextStyle(
-                                      fontFamily:
-                                          homeController.langCode.value == "en"
-                                              ? "SourceSansPro-Regular"
-                                              : "Battambang"),
+                                title: Row(
+                                  children: [
+                                    Image.asset(
+                                      iconImage[index * 2],
+                                      color: Colors.blueAccent.shade100,
+                                      width: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      homeController.langCode.value == "en"
+                                          ? track.title.enTitle
+                                          : track.title.khTilte,
+                                      style: TextStyle(
+                                          fontFamily:
+                                              homeController.langCode.value ==
+                                                      "en"
+                                                  ? "SourceSansPro-Regular"
+                                                  : "Battambang"),
+                                    ),
+                                  ],
                                 ),
-                                leading: Image.asset(
-                                  iconImage[index * 2],
-                                  color: Colors.blueAccent.shade100,
-                                  width: 20,
-                                ),
+                                leading: Container(
+                                    width: 30,
+                                    height: 30,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: textColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      "${(index * 2 + 1)}",
+                                      style: AppTextStyle.bold16(
+                                          color: Colors.white),
+                                    )),
+                                //     Image.asset(
+                                //   iconImage[index * 2],
+                                //   color: Colors.blueAccent.shade100,
+                                //   width: 20,
+                                // ),
                                 trailing: track.attachment == null ||
                                         track.attachment!.isEmpty
                                     ? null
@@ -393,25 +419,42 @@ class WebNewScreen extends StatelessWidget {
                           child: index * 2 + 1 <
                                   controller.workerData!.tricking.length
                               ? ListTile(
-                                  title: Text(
-                                    homeController.langCode.value == "en"
-                                        ? track2.title.enTitle
-                                        : track2.title.khTilte,
-                                    style: TextStyle(
-                                        fontFamily:
-                                            homeController.langCode.value ==
-                                                    "en"
-                                                ? "SourceSansPro-Regular"
-                                                : "Battambang"),
+                                  title: Row(
+                                    children: [
+                                      Image.asset(
+                                        iconImage[index * 2 + 1],
+                                        color: Colors.blueAccent.shade100,
+                                        width: 20,
+                                      ),
+                                      Text(
+                                        homeController.langCode.value == "en"
+                                            ? track2.title.enTitle
+                                            : track2.title.khTilte,
+                                        style: TextStyle(
+                                            fontFamily:
+                                                homeController.langCode.value ==
+                                                        "en"
+                                                    ? "SourceSansPro-Regular"
+                                                    : "Battambang"),
+                                      ),
+                                    ].withSpaceBetween(width: 10),
                                   ),
                                   // title: index * 2 + 1 < items.length
                                   // ? Text(items[index * 2 + 1])
                                   // : Text("hello")),
-                                  leading: Image.asset(
-                                    iconImage[index * 2 + 1],
-                                    color: Colors.blueAccent.shade100,
-                                    width: 20,
-                                  ),
+                                  leading: Container(
+                                      width: 30,
+                                      height: 30,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: textColor2,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Text(
+                                        "${(index * 2 + 1) + 1}",
+                                        style: AppTextStyle.bold16(
+                                            color: Colors.white),
+                                      )),
                                   trailing: track2.attachment == null ||
                                           track.attachment!.isEmpty
                                       ? null
@@ -728,25 +771,44 @@ class WebNewScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               left: 10, right: 10, top: 10),
                           child: ListTile(
-                              title: Text(
-                                homeController.langCode.value == "en"
-                                    ? track.title.enTitle
-                                    : track.title.khTilte,
-                                style: TextStyle(
-                                    fontSize:
-                                        homeController.langCode.value == "en"
-                                            ? 18
-                                            : 16,
-                                    fontFamily:
-                                        homeController.langCode.value == "en"
-                                            ? "SourceSansPro-Regular"
-                                            : "Battambang"),
+                              title: Row(
+                                children: [
+                                  Image.asset(
+                                    iconImage[index],
+                                    color: Colors.blueAccent.shade100,
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    homeController.langCode.value == "en"
+                                        ? track.title.enTitle
+                                        : track.title.khTilte,
+                                    style: TextStyle(
+                                        fontSize:
+                                            homeController.langCode.value ==
+                                                    "en"
+                                                ? 18
+                                                : 16,
+                                        fontFamily:
+                                            homeController.langCode.value ==
+                                                    "en"
+                                                ? "SourceSansPro-Regular"
+                                                : "Battambang"),
+                                  ),
+                                ].withSpaceBetween(width: 10),
                               ),
-                              leading: Image.asset(
-                                iconImage[index],
-                                color: Colors.blueAccent.shade100,
-                                width: 20,
-                              ),
+                              leading: Container(
+                                  width: 30,
+                                  height: 30,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: textColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    "${(index + 1)}",
+                                    style: AppTextStyle.bold16(
+                                        color: Colors.white),
+                                  )),
                               trailing: track.attachment == null ||
                                       track.attachment!.isEmpty
                                   ? null
@@ -823,7 +885,10 @@ class WebNewScreen extends StatelessWidget {
     return AppBar(
       leading: IconButton(
         onPressed: () {
-          Get.back(result: true);
+          // Get.back(result: true);
+          RouteView.scanWorker.go(
+            backRoutes: RouteView.searchWorker.name,
+          );
         },
         icon: const Icon(Icons.arrow_back),
       ),

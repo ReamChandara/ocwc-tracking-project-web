@@ -71,7 +71,7 @@ class WorkerController extends GetxController {
       changValue.value = true;
     }
   }
-  
+
   RxString initValue = "kh".obs;
   void changeLanguage(String value) {
     if (value == "kh") {
@@ -245,7 +245,8 @@ class WorkerController extends GetxController {
       falseIndex = workerData!.tricking.indexWhere(
         (element) => element.check == false,
       );
-      Get.toNamed(Routes.detail);
+      // Get.toNamed(Routes.detail);
+      RouteView.detail.go();
     }
   }
 
@@ -373,7 +374,7 @@ class WorkerController extends GetxController {
             jsonDecode(response.body)["data"],
           );
           loading = false;
-          Get.toNamed(Routes.detail);
+          RouteView.detail.go();
         }
       }
     } else {
@@ -403,14 +404,16 @@ class WorkerController extends GetxController {
         await saveWorkerData();
         workerModel = parseFromJson(response.body);
         if (workerModel!.workerDatas.length > 1) {
-          Get.toNamed(Routes.listWorker);
+          // Get.toNamed(Routes.listWorker);
+          RouteView.listWorker.go();
         } else {
           await saveIndex(0);
           workerData = workerModel!.workerDatas[0];
           falseIndex = workerModel!.workerDatas[0].tricking
               .indexWhere((element) => element.check == false);
           loading = false;
-          Get.toNamed(Routes.detail, parameters: {"id" : workerData!.hashcode});
+          // Get.toNamed(Routes.detail, parameters: {"id" : workerData!.hashcode});
+          RouteView.detail.go(parameters: {"id": workerData!.hashcode});
         }
         loading = false;
         update();

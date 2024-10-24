@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tracking_web/config/helper/function.dart';
+import 'package:tracking_web/config/routes/app_route.dart';
 import 'package:tracking_web/controller/home_controller.dart';
-import '../config/routes/app_route.dart';
 import '../widget/popup_menu_widget.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -18,7 +18,6 @@ class HomeScreen extends GetView<HomeController> {
       body: LayoutBuilder(
         builder: (context, boxConstraints) {
           return Container(
-            // alignment: Alignment.center,
             width: boxConstraints.maxWidth,
             height: boxConstraints.maxHeight,
             decoration: BoxDecoration(
@@ -92,7 +91,8 @@ class HomeScreen extends GetView<HomeController> {
           // ),
           InkWell(
             onTap: () {
-              Get.toNamed(Routes.findworker);
+              // Get.toNamed(Routes.findworker);
+              RouteView.findOcwcmember.go();
             },
             child: Container(
               height: 50,
@@ -116,7 +116,8 @@ class HomeScreen extends GetView<HomeController> {
           ),
           InkWell(
             onTap: () {
-              Get.toNamed(Routes.findagentcy);
+              // Get.toNamed("${Routes.home}${Routes.findagency}");
+              RouteView.findagency.go();
             },
             child: Container(
               height: 50,
@@ -189,7 +190,8 @@ class HomeScreen extends GetView<HomeController> {
               children: [
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.numberCard);
+                    // Get.toNamed(Routes.numberCard);
+                    RouteView.numberCard.go();
                   },
                   child: Container(
                     height: 50,
@@ -214,7 +216,8 @@ class HomeScreen extends GetView<HomeController> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.searchwoker);
+                    // Get.toNamed(Routes.searchwoker);
+                    RouteView.searchWorker.go();
                   },
                   child: Container(
                     height: 50,
@@ -239,7 +242,8 @@ class HomeScreen extends GetView<HomeController> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.scanWorker);
+                    // Get.toNamed(Routes.scanWorker);
+                    RouteView.scanWorker.go();
                   },
                   child: Container(
                     height: 50,

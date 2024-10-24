@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -59,10 +61,15 @@ class PopupMenuWidget extends GetView<HomeController> {
                     width: 30,
                   ),
             onSelected: (value) {
-              if (value == "kh") {
-                controller.changeLang("kh");
-              } else if (value == "en") {
-                controller.changeLang("en");
+              try {
+                print("hello");
+                if (value == "kh") {
+                  controller.changeLang("kh");
+                } else if (value == "en") {
+                  controller.changeLang("en");
+                }
+              } catch (e) {
+                print(e);
               }
             },
             itemBuilder: (BuildContext context) => [

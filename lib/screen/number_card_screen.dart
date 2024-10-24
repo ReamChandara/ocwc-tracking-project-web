@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/config/constant/string_constant.dart';
+import '../config/routes/app_route.dart';
 import '../config/theme/app_theme.dart';
 import '../controller/home_controller.dart';
 import '../controller/new_worker_controller.dart';
@@ -72,7 +73,9 @@ class _NumberCardScreenState extends State<NumberCardScreen> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              Get.back();
+                              RouteView.findOcwcmember.go(
+                                backRoutes: RouteView.findOcwcmember.name,
+                              );
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -227,17 +230,17 @@ class _NumberCardScreenState extends State<NumberCardScreen> {
             const SizedBox(
               height: 20,
             ),
-            Text(
-              "title".tr,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w300,
-                  fontFamily: homeController.langCode.value == "en"
-                      ? "SourceSansPro-Regular"
-                      : "Battambang"),
-            ),
+            // Text(
+            //   "title".tr,
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(
+            //       fontSize: 22,
+            //       color: Colors.white,
+            //       fontWeight: FontWeight.w300,
+            //       fontFamily: homeController.langCode.value == "en"
+            //           ? "SourceSansPro-Regular"
+            //           : "Battambang"),
+            // ),
             const SizedBox(
               height: 10,
             ),

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/config/responsive/main_resposive.dart';
+import 'package:tracking_web/config/routes/app_route.dart';
 import 'package:tracking_web/config/theme/app_theme.dart';
 import 'package:tracking_web/controller/agency_controller.dart';
 import 'package:tracking_web/controller/home_controller.dart';
@@ -26,31 +28,36 @@ class AgencyDetailScreen extends GetView<AgencyController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppbar(),
-      body: Obx(
-        () => controller.loading.value
-            ? const Center(child: CircularProgressIndicator())
-            : controller.notFound.value
-                ? Center(
-                    child: Image.asset("assets/images/no-results.png"),
-                  )
-                : MainResposive(
-                    large: LayoutBuilder(builder: ((context, constraints) {
-                      return _buildMidiumScreen(context);
-                      // if (constraints.maxWidth > 1730) {
-                      //   return _buildLargeScreen(context);
-                      // } else {
-                      //   return _buildMidiumScreen(context);
-                      // }
-                    })),
-                    medium: LayoutBuilder(builder: ((context, constraints) {
-                      if (constraints.maxWidth > 1210) {
-                        return _buildMidiumScreen(context);
-                      } else {
-                        return _buildSmallWidget(constraints, context);
-                      }
-                    })),
-                  ),
-      ),
+      body: Obx(() => controller.loading.value
+              ? const Center(child: CircularProgressIndicator())
+              : controller.notFound.value
+                  ? Center(
+                      child: Image.asset("assets/images/no-results.png"),
+                    )
+                  : LayoutBuilder(builder: (context, constrained) {
+                      return MainResposive(
+                        large: _buildMidiumScreen(constrained, context),
+                        small: _buildSmallWidget(constrained, context),
+                      );
+                    })
+          // MainResposive(
+          //     large: LayoutBuilder(builder: ((context, constraints) {
+          //       return _buildMidiumScreen(constraints, context);
+          //       // if (constraints.maxWidth > 1730) {
+          //       //   return _buildLargeScreen(context);
+          //       // } else {
+          //       //   return _buildMidiumScreen(context);
+          //       // }
+          //     })),
+          //     medium: LayoutBuilder(builder: ((context, constraints) {
+          //       if (constraints.maxWidth > 1210) {
+          //         return _buildMidiumScreen(constraints, context);
+          //       } else {
+          //         return _buildSmallWidget(constraints, context);
+          //       }
+          //     })),
+          //   ),
+          ),
     );
   }
 
@@ -269,27 +276,43 @@ class AgencyDetailScreen extends GetView<AgencyController> {
   //   );
   // }
 
-  _buildMidiumScreen(BuildContext context) {
+  _buildMidiumScreen(BoxConstraints constraints, BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildAgencyWidget(),
-              const SizedBox(width: 10),
-              _buildContact(),
+              _buildAgencyWidget(
+                width: constraints.maxWidth / 2,
+                height: 150,
+                padding: const EdgeInsets.only(left: 30, right: 5, bottom: 5),
+              ),
+              _buildContact(
+                width: constraints.maxWidth / 2 - 70,
+                height: 150,
+                padding: const EdgeInsets.only(left: 5, right: 30, bottom: 5),
+              ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildAddressWidget(),
-              const SizedBox(width: 10),
-              _buildPokasWidget(height: 520),
-            ],
-          ),
+          _buildPokasWidget(
+              width: constraints.maxWidth,
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              height: 520),
+          const SizedBox(width: 10),
+          _buildAddressWidget(
+              width: constraints.maxWidth,
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              height: 100),
+          const SizedBox(width: 10),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     _buildAddressWidget(height: 200),
+          //     const SizedBox(width: 10),
+          //     _buildPokasWidget(height: 520),
+          //   ],
+          // ),
           // _buildQuotaWidget(),
           // _buildAttachmentWidget(context),
           const SizedBox(height: 10),
@@ -300,19 +323,24 @@ class AgencyDetailScreen extends GetView<AgencyController> {
 
   _buildSmallWidget(BoxConstraints constraints, BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            _buildAgencyWidget(constraints: constraints),
-            _buildContact(constraints: constraints, hasHeight: false),
-            _buildAddressWidget(constraints: constraints, height: null),
-            _buildProkasSmallWidget(constraints: constraints),
-            // _buildQuotaWidget(constraints: constraints),
-            // _buildAttachmentSmall(constraints, context),
-            const SizedBox(height: 10)
-          ],
-        ),
+      child: Column(
+        children: [
+          _buildAgencyWidget(
+              width: constraints.maxWidth,
+              padding: const EdgeInsets.symmetric(horizontal: 10)),
+          _buildContact(
+              width: constraints.maxWidth,
+              padding: const EdgeInsets.symmetric(horizontal: 10)),
+          _buildPokasWidget(
+            width: constraints.maxWidth,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+          ),
+          _buildAddressWidget(
+            width: constraints.maxWidth,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+          ),
+          const SizedBox(height: 10)
+        ],
       ),
     );
   }
@@ -589,229 +617,298 @@ class AgencyDetailScreen extends GetView<AgencyController> {
   //   );
   // }
 
-  _buildAgencyWidget({BoxConstraints? constraints}) {
-    return CustomCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CustomHeader(
-            headerWidth: constraints?.maxWidth ?? 550,
-            title: "agencyinfo".tr,
-            homeController: homeController,
-          ),
-          Container(
-            padding: const EdgeInsets.only(
-              left: 10,
-              top: 10,
-              right: 10,
+  _buildAgencyWidget({
+    required double width,
+    required EdgeInsetsGeometry padding,
+    double? height,
+  }) {
+    String showCountryCode = controller.agency?.countryCode == null
+        ? ""
+        : "(${controller.agency?.countryCode})";
+    String showOtherContryCode =
+        controller.agency?.agencyCountryCodeOther == null
+            ? ""
+            : "(${controller.agency?.agencyCountryCodeOther})";
+    return Padding(
+      padding: padding,
+      child: CustomCard(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CustomHeader(
+              headerWidth: width,
+              title: "agencyinfo".tr,
+              homeController: homeController,
             ),
-            width: constraints?.maxWidth ?? 550,
-            height: 450,
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: dataFlex,
-                  maxFontSize: 18,
-                  title: 'country'.tr,
-                  data: homeController.langCode.value == "en"
-                      ? controller
-                              .agencyData.value!.agency.country.englishName ??
-                          ""
-                      : controller.agencyData.value!.agency.country.khmerName ??
-                          "",
-                  homeController: homeController,
-                  dataStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: homeController.langCode.value == "en" ? 18 : 16,
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Regular"
-                          : "Battambang"),
+            Container(
+              padding: const EdgeInsets.only(
+                left: 10,
+                top: 10,
+                right: 10,
+              ),
+              width: width,
+              height: height,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // CustomText(
+                    //   tilteFlex: tilteFlex,
+                    //   dataFlex: dataFlex,
+                    //   maxFontSize: 18,
+                    //   title: 'country'.tr,
+                    //   data: homeController.langCode.value == "en"
+                    //       ? controller
+                    //               .agencyData.value!.agency.country.englishName ??
+                    //           ""
+                    //       : controller.agencyData.value!.agency.country.khmerName ??
+                    //           "",
+                    //   homeController: homeController,
+                    //   dataStyle: TextStyle(
+                    //       fontWeight: FontWeight.bold,
+                    //       fontSize: homeController.langCode.value == "en" ? 18 : 16,
+                    //       fontFamily: homeController.langCode.value == "en"
+                    //           ? "SourceSansPro-Regular"
+                    //           : "Battambang"),
+                    // ),
+                    CustomText(
+                      tilteFlex: tilteFlex,
+                      dataFlex: dataFlex,
+                      maxLine: 2,
+                      title: 'agencyName'.tr,
+                      data: controller.agency?.khmerName ?? "",
+                      homeController: homeController,
+                      dataStyle: AppTextStyle.bold14(fontFamily: "Battambang"),
+                      data1: controller.agency?.khmerName ?? "",
+                      data2: controller.agency?.latinName ?? "",
+                      multidata: true,
+                    ),
+                    // CustomText(
+                    //   tilteFlex: tilteFlex,
+                    //   dataFlex: dataFlex,
+                    //   maxFontSize: 18,
+                    //   title: 'agentcylatin'.tr,
+                    //   data: controller.agency?.latinName ?? "",
+                    //   homeController: homeController,
+                    //   dataStyle: AppTextStyle.bold18(),
+                    // ),
+                    // CustomText(
+                    //   tilteFlex: tilteFlex,
+                    //   dataFlex: dataFlex,
+                    //   maxFontSize: 18,
+                    //   title: 'abreviate'.tr,
+                    //   data: controller.agency?.nameAbbreviate ?? "",
+                    //   homeController: homeController,
+                    //   dataStyle: AppTextStyle.bold18(),
+                    // ),
+                    // CustomText(
+                    //   tilteFlex: tilteFlex,
+                    //   dataFlex: dataFlex,
+                    //   maxFontSize: 18,
+                    //   maxLine: 2,
+                    //   title: 'agencyemail'.tr,
+                    //   data: controller.agency?.agencyEmail ?? "",
+                    //   homeController: homeController,
+                    //   dataStyle:
+                    //       AppTextStyle.bold18(fontFamily: "SourceSansPro-Regular"),
+                    // ),
+                    // CustomText(
+                    //   tilteFlex: tilteFlex,
+                    //   dataFlex: dataFlex,
+                    //   maxFontSize: 18,
+                    //   title: 'companytin'.tr,
+                    //   data: controller.agency?.companyTin ?? "",
+                    //   dataStyle: TextStyle(
+                    //       fontWeight: FontWeight.bold,
+                    //       fontSize: homeController.langCode.value == "en" ? 18 : 16,
+                    //       fontFamily: homeController.langCode.value == "en"
+                    //           ? "SourceSansPro-Regular"
+                    //           : "Battambang"),
+                    //   homeController: homeController,
+                    // ),
+                    // CustomText(
+                    //   tilteFlex: tilteFlex,
+                    //   dataFlex: dataFlex,
+                    //   maxFontSize: 18,
+                    //   title: 'countrycode'.tr,
+                    //   data: controller.agency?.countryCode ?? "",
+                    //   homeController: homeController,
+                    // ),
+                    CustomText(
+                      tilteFlex: tilteFlex,
+                      dataFlex: dataFlex,
+                      maxLine: 2,
+                      title: 'phonenumber'.tr,
+                      data: controller.agency?.agencyPhoneNumber == null
+                          ? "N/A"
+                          : "(${controller.agency?.countryCode ?? ""}) ${controller.agency?.agencyPhoneNumber ?? ""}",
+                      homeController: homeController,
+                      dataStyle: AppTextStyle.bold14(fontFamily: "Battambang"),
+                      data1:
+                          "$showCountryCode ${controller.agency?.agencyPhoneNumber ?? ""}",
+                      data2:
+                          "$showOtherContryCode ${controller.agency?.agencyPhoneNumberOther ?? ""}",
+                      multidata: true,
+                    ),
+                    // CustomText(
+                    //   tilteFlex: tilteFlex,
+                    //   dataFlex: dataFlex,
+                    //   title: "phonenumber".tr,
+                    //   data:
+                    //       "(${controller.agency?.countryCode ?? ""}) ${controller.agency?.agencyPhoneNumber ?? ""}",
+                    //   dataStyle: AppTextStyle.bold14(fontFamily: "Battambang"),
+                    //   homeController: homeController,
+                    // ),
+                    const SizedBox(
+                      height: 10,
+                    )
+                  ].withSpaceBetween(height: 16),
                 ),
-                CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: dataFlex,
-                  maxFontSize: 18,
-                  title: 'agencykhmer'.tr,
-                  data: controller.agency?.khmerName ?? "",
-                  homeController: homeController,
-                  dataStyle: AppTextStyle.bold16(fontFamily: "Battambang"),
-                ),
-                CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: dataFlex,
-                  maxFontSize: 18,
-                  title: 'agentcylatin'.tr,
-                  data: controller.agency?.latinName ?? "",
-                  homeController: homeController,
-                  dataStyle: AppTextStyle.bold18(),
-                ),
-                CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: dataFlex,
-                  maxFontSize: 18,
-                  title: 'abreviate'.tr,
-                  data: controller.agency?.nameAbbreviate ?? "",
-                  homeController: homeController,
-                  dataStyle: AppTextStyle.bold18(),
-                ),
-                CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: dataFlex,
-                  maxFontSize: 18,
-                  maxLine: 2,
-                  title: 'agencyemail'.tr,
-                  data: controller.agency?.agencyEmail ?? "",
-                  homeController: homeController,
-                  dataStyle:
-                      AppTextStyle.bold18(fontFamily: "SourceSansPro-Regular"),
-                ),
-                CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: dataFlex,
-                  maxFontSize: 18,
-                  title: 'companytin'.tr,
-                  data: controller.agency?.companyTin ?? "",
-                  dataStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: homeController.langCode.value == "en" ? 18 : 16,
-                      fontFamily: homeController.langCode.value == "en"
-                          ? "SourceSansPro-Regular"
-                          : "Battambang"),
-                  homeController: homeController,
-                ),
-                CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: dataFlex,
-                  maxFontSize: 18,
-                  title: 'countrycode'.tr,
-                  data: controller.agency?.countryCode ?? "",
-                  homeController: homeController,
-                ),
-                CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: dataFlex,
-                  maxFontSize: 18,
-                  title: "phonenumber".tr,
-                  data: controller.agency?.agencyPhoneNumber ?? "",
-                  homeController: homeController,
-                ),
-              ].withSpaceBetween(height: 16),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  _buildAddressWidget({BoxConstraints? constraints, double? height}) {
-    return CustomCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CustomHeader(
-              headerWidth: constraints?.maxWidth ?? 550,
-              title: "address".tr,
-              homeController: homeController),
-          Container(
-            padding: const EdgeInsets.only(
-              left: 10,
-              top: 10,
-              right: 10,
+  _buildAddressWidget(
+      {required double width,
+      required EdgeInsetsGeometry padding,
+      double? height}) {
+    return Padding(
+      padding: padding,
+      child: CustomCard(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CustomHeader(
+                headerWidth: width,
+                title: "companyaddress".tr,
+                homeController: homeController),
+            Container(
+              padding: const EdgeInsets.only(
+                left: 10,
+                top: 10,
+                right: 10,
+              ),
+              alignment: Alignment.topCenter,
+              width: width,
+              height: height,
+              child: Column(
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    controller.agencyData.value?.address.fullAddress ?? "",
+                    style: AppTextStyle.bold14(fontFamily: "Battambang"),
+                  ),
+                  Text(
+                    textAlign: TextAlign.center,
+                    controller.agencyData.value?.address.fullAddressEn ?? "",
+                    style: AppTextStyle.bold14(fontFamily: "Battambang"),
+                  ),
+                ].withSpaceBetween(height: 5),
+              ),
+              // child: Column(
+              //   children: [
+              //     const SizedBox(height: 10),
+              //     CustomText(
+              //       maxLine: 5,
+              //       tilteFlex: tilteFlex,
+              //       dataFlex: 3,
+              //       maxFontSize: 18,
+              //       title: 'address'.tr,
+              //       data: controller.agencyData.value?.address.fullAddress ?? "",
+              //       homeController: homeController,
+              //       dataStyle: AppTextStyle.bold16(fontFamily: "Battambang"),
+              //     ),
+              //     CustomText(
+              //       maxLine: 3,
+              //       tilteFlex: tilteFlex,
+              //       dataFlex: 2,
+              //       maxFontSize: 18,
+              //       title: 'address1'.tr,
+              //       data: controller.agencyData.value?.address.line1 ?? "",
+              //       homeController: homeController,
+              //       dataStyle: AppTextStyle.bold16(fontFamily: "Battambang"),
+              //     ),
+              //     CustomText(
+              //         maxLine: 2,
+              //         tilteFlex: tilteFlex,
+              //         dataFlex: 2,
+              //         maxFontSize: 18,
+              //         title: 'address2'.tr,
+              //         data: controller.agencyData.value?.address.line2 ?? "",
+              //         homeController: homeController),
+              //     CustomText(
+              //         maxLine: 2,
+              //         tilteFlex: tilteFlex,
+              //         dataFlex: 2,
+              //         maxFontSize: 18,
+              //         title: 'addresslatin'.tr,
+              //         data: controller.agencyData.value?.address.inLatin ?? "",
+              //         homeController: homeController),
+              //     CustomText(
+              //         maxLine: 2,
+              //         tilteFlex: tilteFlex,
+              //         dataFlex: 2,
+              //         maxFontSize: 18,
+              //         title: 'postalcode'.tr,
+              //         data: controller.agencyData.value?.address.postalCode ?? "",
+              //         homeController: homeController),
+              //     CustomRichText(
+              //         maxLine: 2,
+              //         tilteFlex: tilteFlex,
+              //         dataFlex: 3,
+              //         maxFontSize: 18,
+              //         title: 'province'.tr,
+              //         data: controller.agencyData.value?.address.province == null
+              //             ? []
+              //             : controller.splitString(
+              //                 controller.agencyData.value?.address.province,
+              //               ),
+              //         homeController: homeController),
+              //     CustomRichText(
+              //         maxLine: 2,
+              //         tilteFlex: tilteFlex,
+              //         dataFlex: 3,
+              //         maxFontSize: 18,
+              //         title: 'district'.tr,
+              //         data: controller.agencyData.value?.address.district == null
+              //             ? []
+              //             : controller.splitString(
+              //                 controller.agencyData.value?.address.district,
+              //               ),
+              //         homeController: homeController),
+              //     CustomRichText(
+              //         maxLine: 2,
+              //         tilteFlex: tilteFlex,
+              //         dataFlex: 3,
+              //         maxFontSize: 18,
+              //         title: 'commune'.tr,
+              //         data: controller.agencyData.value?.address.commune == null
+              //             ? []
+              //             : controller.splitString(
+              //                 controller.agencyData.value?.address.commune,
+              //               ),
+              //         homeController: homeController),
+              //     CustomRichText(
+              //         maxLine: 2,
+              //         tilteFlex: tilteFlex,
+              //         dataFlex: 3,
+              //         maxFontSize: 18,
+              //         title: 'village'.tr,
+              //         data: controller.agencyData.value?.address.village == null
+              //             ? []
+              //             : controller.splitString(
+              //                 controller.agencyData.value?.address.village,
+              //               ),
+              //         homeController: homeController),
+              //     const SizedBox(height: 15),
+              //   ].withSpaceBetween(height: 16),
+              // ),
             ),
-            width: constraints?.maxWidth ?? 550,
-            height: height ?? 520,
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                CustomText(
-                  maxLine: 3,
-                  tilteFlex: tilteFlex,
-                  dataFlex: 2,
-                  maxFontSize: 18,
-                  title: 'address1'.tr,
-                  data: controller.agencyData.value?.address.line1 ?? "",
-                  homeController: homeController,
-                  dataStyle: AppTextStyle.bold16(fontFamily: "Battambang"),
-                ),
-                CustomText(
-                    maxLine: 2,
-                    tilteFlex: tilteFlex,
-                    dataFlex: 2,
-                    maxFontSize: 18,
-                    title: 'address2'.tr,
-                    data: controller.agencyData.value?.address.line2 ?? "",
-                    homeController: homeController),
-                CustomText(
-                    maxLine: 2,
-                    tilteFlex: tilteFlex,
-                    dataFlex: 2,
-                    maxFontSize: 18,
-                    title: 'addresslatin'.tr,
-                    data: controller.agencyData.value?.address.inLatin ?? "",
-                    homeController: homeController),
-                CustomText(
-                    maxLine: 2,
-                    tilteFlex: tilteFlex,
-                    dataFlex: 2,
-                    maxFontSize: 18,
-                    title: 'postalcode'.tr,
-                    data: controller.agencyData.value?.address.postalCode ?? "",
-                    homeController: homeController),
-                CustomRichText(
-                    maxLine: 2,
-                    tilteFlex: tilteFlex,
-                    dataFlex: 2,
-                    maxFontSize: 18,
-                    title: 'province'.tr,
-                    data: controller.agencyData.value?.address.province == null
-                        ? []
-                        : controller.splitString(
-                            controller.agencyData.value?.address.province,
-                          ),
-                    homeController: homeController),
-                CustomRichText(
-                    maxLine: 2,
-                    tilteFlex: tilteFlex,
-                    dataFlex: 2,
-                    maxFontSize: 18,
-                    title: 'district'.tr,
-                    data: controller.agencyData.value?.address.district == null
-                        ? []
-                        : controller.splitString(
-                            controller.agencyData.value?.address.district,
-                          ),
-                    homeController: homeController),
-                CustomRichText(
-                    maxLine: 2,
-                    tilteFlex: tilteFlex,
-                    dataFlex: 2,
-                    maxFontSize: 18,
-                    title: 'commune'.tr,
-                    data: controller.agencyData.value?.address.commune == null
-                        ? []
-                        : controller.splitString(
-                            controller.agencyData.value?.address.commune,
-                          ),
-                    homeController: homeController),
-                CustomRichText(
-                    maxLine: 2,
-                    tilteFlex: tilteFlex,
-                    dataFlex: 2,
-                    maxFontSize: 18,
-                    title: 'village'.tr,
-                    data: controller.agencyData.value?.address.village == null
-                        ? []
-                        : controller.splitString(
-                            controller.agencyData.value?.address.village,
-                          ),
-                    homeController: homeController),
-                const SizedBox(height: 15),
-              ].withSpaceBetween(height: 16),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1015,18 +1112,6 @@ class AgencyDetailScreen extends GetView<AgencyController> {
         ),
         Container(
           height: 40,
-          // width: 350,
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(10),
-          //   color: Colors.white,
-          //   boxShadow: [
-          //     BoxShadow(
-          //       color: Colors.grey.shade400,
-          //       blurRadius: 3,
-          //     ),
-          //   ],
-          // ),
-          // padding: const EdgeInsets.only(left: 10),
           alignment: Alignment.centerLeft,
           child: Text(
             data,
@@ -1042,245 +1127,344 @@ class AgencyDetailScreen extends GetView<AgencyController> {
     );
   }
 
-  _buildContact({BoxConstraints? constraints, bool hasHeight = true}) {
-    return CustomCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CustomHeader(
-            headerWidth: constraints?.maxWidth ?? 550,
-            title: "contact".tr,
-            homeController: homeController,
-          ),
-          Container(
-            padding: const EdgeInsets.only(
-              left: 10,
-              top: 10,
-              right: 10,
+  _buildContact(
+      {required double width,
+      required EdgeInsetsGeometry padding,
+      double? height}) {
+    return Padding(
+      padding: padding,
+      child: CustomCard(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CustomHeader(
+              headerWidth: width,
+              title: "contact".tr,
+              homeController: homeController,
             ),
-            width: constraints?.maxWidth ?? 550,
-            height: hasHeight ? 450 : null,
-            child: Column(
-                children: [
-              const SizedBox(
-                height: 10,
+            Container(
+              padding: const EdgeInsets.only(
+                left: 10,
+                top: 10,
+                right: 10,
               ),
-              CustomText(
-                tilteFlex: tilteFlex,
-                dataFlex: 2,
-                maxFontSize: 18,
-                title: 'khmername'.tr,
-                data: controller.agencyData.value?.contact.khmerName ?? "",
-                homeController: homeController,
-                dataStyle: AppTextStyle.bold16(fontFamily: "Battambang"),
-              ),
-              CustomText(
+              width: width,
+              height: height,
+              child: Column(
+                  children: [
+                CustomText(
                   tilteFlex: tilteFlex,
                   dataFlex: 2,
-                  maxFontSize: 18,
-                  title: 'latinname'.tr,
-                  data: controller.agencyData.value?.contact.latinName ?? "",
-                  homeController: homeController),
-              CustomText(
-                tilteFlex: tilteFlex,
-                dataFlex: 2,
-                maxFontSize: 18,
-                title: 'position'.tr,
-                data: homeController.langCode.value == "en"
-                    ? controller.agencyData.value?.contact.position.enName ?? ""
-                    : controller.agencyData.value?.contact.position.khName ??
-                        "",
-                homeController: homeController,
-              ),
-              CustomText(
+                  title: 'khmername'.tr,
+                  data: controller.agencyData.value?.contact.khmerName ?? "N/A",
+                  homeController: homeController,
+                  dataStyle: AppTextStyle.bold14(fontFamily: "Battambang"),
+                  multidata: true,
+                  data1:
+                      controller.agencyData.value?.contact.khmerName ?? "N/A",
+                  data2: controller.agencyData.value?.contact.latinName ?? "",
+                ),
+                // CustomText(
+                //     tilteFlex: tilteFlex,
+                //     dataFlex: 2,
+                //     maxFontSize: 18,
+                //     title: 'latinname'.tr,
+                //     data: controller.agencyData.value?.contact.latinName ?? "",
+                //     homeController: homeController),
+                // CustomText(
+                //   tilteFlex: tilteFlex,
+                //   dataFlex: 2,
+                //   maxFontSize: 18,
+                //   title: 'position'.tr,
+                //   data: homeController.langCode.value == "en"
+                //       ? controller.agencyData.value?.contact.position.enName ?? ""
+                //       : controller.agencyData.value?.contact.position.khName ??
+                //           "",
+                //   homeController: homeController,
+                // ),
+                CustomText(
                   tilteFlex: tilteFlex,
                   dataFlex: 2,
-                  maxFontSize: 18,
+                  dataStyle: AppTextStyle.bold14(fontFamily: "Battambang"),
                   title: 'phonenumber'.tr,
-                  data: controller.agencyData.value?.contact.phoneNumber ?? "",
-                  homeController: homeController),
-              CustomText(
-                  tilteFlex: tilteFlex,
-                  dataFlex: 2,
-                  maxFontSize: 18,
-                  maxLine: 3,
-                  title: 'address'.tr,
-                  data: controller.agencyData.value?.contact.address ?? "",
-                  homeController: homeController),
-              CustomText(
-                tilteFlex: tilteFlex,
-                dataFlex: 2,
-                maxFontSize: 18,
-                title: 'winesses'.tr,
-                data: controller.agencyData.value?.contact.witnesses ?? "",
-                homeController: homeController,
-                dataStyle: AppTextStyle.bold16(fontFamily: "Battambang"),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ].withSpaceBetween(height: 16)),
-          )
-        ],
+                  data: controller.agencyData.value?.contact.phoneNumber == null
+                      ? "N/A"
+                      : "(${controller.agencyData.value?.contact.phoneCode ?? ""}) ${controller.agencyData.value?.contact.phoneNumber ?? ""}",
+                  homeController: homeController,
+                ),
+                // CustomText(
+                //     tilteFlex: tilteFlex,
+                //     dataFlex: 2,
+                //     maxFontSize: 18,
+                //     maxLine: 3,
+                //     title: 'address'.tr,
+                //     data: controller.agencyData.value?.contact.address ?? "",
+                //     homeController: homeController),
+                // CustomText(
+                //   tilteFlex: tilteFlex,
+                //   dataFlex: 2,
+                //   maxFontSize: 18,
+                //   title: 'winesses'.tr,
+                //   data: controller.agencyData.value?.contact.witnesses ?? "",
+                //   homeController: homeController,
+                //   dataStyle: AppTextStyle.bold16(fontFamily: "Battambang"),
+                // ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ].withSpaceBetween(height: 16)),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  _buildPokasWidget({BoxConstraints? constraints, double? height}) {
-    return CustomCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CustomHeader(
-            headerWidth: constraints?.maxWidth ?? 550,
-            title: "prokas".tr,
-            homeController: homeController,
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: constraints?.maxWidth ?? 550,
-            height: height ?? 450,
-            child: controller.prokas.isEmpty
-                ? Center(
-                    child: Text(
-                      "noData".tr,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize:
-                              homeController.langCode.value == "kh" ? 20 : 18,
-                          fontFamily: homeController.langCode.value == "kh"
-                              ? "Battambang"
-                              : "SourceSansPro-Regular"),
-                    ),
-                  )
-                : ListView(
-                    children: List.generate(
-                      controller.prokas.length,
-                      (index) {
-                        var proka = controller.prokas[index];
-                        return Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey[200]!)),
-                          child: Column(
-                            children: [
-                              CustomText(
-                                  title: "country".tr,
-                                  data: homeController.langCode.value == "en"
-                                      ? proka.country.englishName
-                                      : proka.country.khmerName,
-                                  homeController: homeController),
-                              CustomText(
-                                title: "prokasnumber".tr,
-                                data: proka.prokasNumber,
-                                homeController: homeController,
-                                dataStyle: AppTextStyle.bold16(
-                                  fontFamily: "Battambang",
+  _buildPokasWidget(
+      {required double width,
+      required EdgeInsetsGeometry padding,
+      double? height}) {
+    return Padding(
+      padding: padding,
+      child: CustomCard(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CustomHeader(
+              headerWidth: width,
+              title:
+                  "${"prokas".tr}  ${controller.prokas.isEmpty ? "" : controller.prokas.first.prokasNumber ?? ""}",
+              homeController: homeController,
+            ),
+            Container(
+                padding: const EdgeInsets.all(10),
+                width: width,
+                height: 200,
+                child: controller.prokas.isEmpty
+                    ? Center(
+                        child: Text(
+                          "noData".tr,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: homeController.langCode.value == "kh"
+                                  ? 18
+                                  : 16,
+                              fontFamily: homeController.langCode.value == "kh"
+                                  ? "Battambang"
+                                  : "SourceSansPro-Regular"),
+                        ),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                          top: 10,
+                          right: 10,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  flex: tilteFlex,
+                                  child: Container(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    alignment: Alignment.centerLeft,
+                                    child: AutoSizeText(
+                                      "country".tr,
+                                      minFontSize: 14,
+                                      maxLines: 1,
+                                      maxFontSize: 16,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize:
+                                              homeController.langCode.value ==
+                                                      "en"
+                                                  ? 16
+                                                  : 14,
+                                          fontFamily: "Battambang"),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              CustomText(
-                                title: "prokasissuse".tr,
-                                data: proka.prokasIssuedAt,
-                                homeController: homeController,
-                                dataStyle: AppTextStyle.bold18(),
-                              ),
-                              CustomText(
-                                title: "prokasexpire".tr,
-                                data: proka.prokasExpiredAt,
-                                homeController: homeController,
-                                dataStyle: AppTextStyle.bold18(),
-                              ),
-                            ].withSpaceBetween(height: 10),
-                          ),
-                        );
-                      },
-                    ).withSpaceBetween(height: 10),
-                  ),
-          )
-        ],
+                                Container(
+                                  width: 20,
+                                  padding: const EdgeInsets.only(right: 8),
+                                  alignment: Alignment.centerRight,
+                                  child: const Text(":"),
+                                ),
+                                Flexible(
+                                  flex: dataFlex,
+                                  child: Container(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      alignment: Alignment.centerLeft,
+                                      child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: List.generate(
+                                            controller.prokas.length,
+                                            (index) => AutoSizeText(
+                                              "${controller.prokas[index].country.khmerName} ${index < controller.prokas.length - 1 ? ',' : ''}",
+                                              minFontSize: 14,
+                                              maxLines: 1,
+                                              maxFontSize: 16,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: homeController
+                                                              .langCode.value ==
+                                                          "en"
+                                                      ? 16
+                                                      : 14,
+                                                  fontFamily: "Battambang"),
+                                            ),
+                                          ).withSpaceBetween(width: 5))),
+                                )
+                              ],
+                            ),
+                            CustomText(
+                              title: "prokasissuse".tr,
+                              data: controller.prokas.first.prokasIssuedAt,
+                              homeController: homeController,
+                              dataStyle: AppTextStyle.bold18(),
+                            ),
+                            CustomText(
+                              title: "prokasexpire".tr,
+                              data: controller.prokas.first.prokasExpiredAt,
+                              homeController: homeController,
+                              dataStyle: AppTextStyle.bold18(),
+                            ),
+                          ].withSpaceBetween(height: 10),
+                        ),
+                      )
+                // ListView(
+                //     children: List.generate(
+                //       controller.prokas.length,
+                //       (index) {
+                //         var proka = controller.prokas[index];
+                //         return Container(
+                //           padding: const EdgeInsets.all(10),
+                //           decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(5),
+                //               color: Colors.white,
+                //               border: Border.all(color: Colors.grey[200]!)),
+                //           child: Column(
+                //             children: [
+                //               CustomText(
+                //                   title: "country".tr,
+                //                   data: homeController.langCode.value == "en"
+                //                       ? proka.country.englishName
+                //                       : proka.country.khmerName,
+                //                   homeController: homeController),
+                //               // CustomText(
+                //               //   title: "prokasnumber".tr,
+                //               //   data: proka.prokasNumber,
+                //               //   homeController: homeController,
+                //               //   dataStyle: AppTextStyle.bold16(
+                //               //     fontFamily: "Battambang",
+                //               //   ),
+                //               // ),
+                //               CustomText(
+                //                 title: "prokasissuse".tr,
+                //                 data: proka.prokasIssuedAt,
+                //                 homeController: homeController,
+                //                 dataStyle: AppTextStyle.bold18(),
+                //               ),
+                //               CustomText(
+                //                 title: "prokasexpire".tr,
+                //                 data: proka.prokasExpiredAt,
+                //                 homeController: homeController,
+                //                 dataStyle: AppTextStyle.bold18(),
+                //               ),
+                //             ].withSpaceBetween(height: 10),
+                //           ),
+                //         );
+                //       },
+                //     ).withSpaceBetween(height: 10),
+                //   ),
+                )
+          ],
+        ),
       ),
     );
   }
 
-  _buildProkasSmallWidget({BoxConstraints? constraints}) {
-    return CustomCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CustomHeader(
-            headerWidth: constraints?.maxWidth ?? 550,
-            title: "prokas".tr,
-            homeController: homeController,
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: constraints?.maxWidth ?? 550,
-            child: controller.prokas.isEmpty
-                ? Center(
-                    child: Text(
-                      "noData".tr,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize:
-                              homeController.langCode.value == "kh" ? 18 : 16,
-                          fontFamily: homeController.langCode.value == "kh"
-                              ? "Battambang"
-                              : "SourceSansPro-Regular"),
-                    ),
-                  )
-                : Column(
-                    children: List.generate(
-                      controller.prokas.length,
-                      (index) {
-                        var proka = controller.prokas[index];
-                        return Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey[200]!)),
-                          child: Column(
-                            children: [
-                              CustomText(
-                                title: "country".tr,
-                                data: homeController.langCode.value == "en"
-                                    ? proka.country.englishName
-                                    : proka.country.khmerName,
-                                homeController: homeController,
-                              ),
-                              CustomText(
-                                title: "prokasnumber".tr,
-                                data: proka.prokasNumber,
-                                homeController: homeController,
-                                dataStyle: AppTextStyle.bold16(
-                                  fontFamily: "Battambang",
-                                ),
-                              ),
-                              CustomText(
-                                title: "prokasissuse".tr,
-                                data: proka.prokasIssuedAt,
-                                homeController: homeController,
-                                dataStyle: AppTextStyle.bold18(),
-                              ),
-                              CustomText(
-                                title: "prokasexpire".tr,
-                                data: proka.prokasExpiredAt,
-                                homeController: homeController,
-                                dataStyle: AppTextStyle.bold18(),
-                              ),
-                            ].withSpaceBetween(height: 10),
-                          ),
-                        );
-                      },
-                    ).withSpaceBetween(height: 16),
-                  ),
-          )
-        ],
-      ),
-    );
-  }
+  // _buildProkasSmallWidget({BoxConstraints? constraints}) {
+  //   return CustomCard(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //       children: [
+  //         CustomHeader(
+  //           headerWidth: constraints?.maxWidth ?? 550,
+  //           title:
+  //               "${"prokas".tr}  ${controller.prokas.isEmpty ? "" : controller.prokas.first.prokasNumber ?? ""}",
+  //           homeController: homeController,
+  //         ),
+  //         Container(
+  //           padding: const EdgeInsets.all(10),
+  //           width: constraints?.maxWidth ?? 550,
+  //           child: controller.prokas.isEmpty
+  //               ? Center(
+  //                   child: Text(
+  //                     "noData".tr,
+  //                     style: TextStyle(
+  //                         fontWeight: FontWeight.bold,
+  //                         fontSize:
+  //                             homeController.langCode.value == "kh" ? 18 : 16,
+  //                         fontFamily: homeController.langCode.value == "kh"
+  //                             ? "Battambang"
+  //                             : "SourceSansPro-Regular"),
+  //                   ),
+  //                 )
+  //               : Column(
+  //                   children: List.generate(
+  //                     controller.prokas.length,
+  //                     (index) {
+  //                       var proka = controller.prokas[index];
+  //                       return Container(
+  //                         padding: const EdgeInsets.all(10),
+  //                         decoration: BoxDecoration(
+  //                             borderRadius: BorderRadius.circular(5),
+  //                             color: Colors.white,
+  //                             border: Border.all(color: Colors.grey[200]!)),
+  //                         child: Column(
+  //                           children: [
+  //                             CustomText(
+  //                               title: "country".tr,
+  //                               data: homeController.langCode.value == "en"
+  //                                   ? proka.country.englishName
+  //                                   : proka.country.khmerName,
+  //                               homeController: homeController,
+  //                             ),
+  //                             // CustomText(
+  //                             //   title: "prokasnumber".tr,
+  //                             //   data: proka.prokasNumber,
+  //                             //   homeController: homeController,
+  //                             //   dataStyle: AppTextStyle.bold16(
+  //                             //     fontFamily: "Battambang",
+  //                             //   ),
+  //                             // ),
+  //                             CustomText(
+  //                               title: "prokasissuse".tr,
+  //                               data: proka.prokasIssuedAt,
+  //                               homeController: homeController,
+  //                               dataStyle: AppTextStyle.bold18(),
+  //                             ),
+  //                             CustomText(
+  //                               title: "prokasexpire".tr,
+  //                               data: proka.prokasExpiredAt,
+  //                               homeController: homeController,
+  //                               dataStyle: AppTextStyle.bold18(),
+  //                             ),
+  //                           ].withSpaceBetween(height: 10),
+  //                         ),
+  //                       );
+  //                     },
+  //                   ).withSpaceBetween(height: 16),
+  //                 ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   // _buildQuotaWidget({BoxConstraints? constraints}) {
   //   return CustomCard(
@@ -1326,14 +1510,25 @@ class AgencyDetailScreen extends GetView<AgencyController> {
     return AppBar(
       leading: IconButton(
         onPressed: () {
-          Get.back(result: true);
+          print(controller.agencyList.length);
+          if (controller.agencyList.isEmpty) {
+            RouteView.findagency.go(
+              backRoutes: RouteView.findagency.name,
+            );
+          } else {
+            // RouteView.listAgency.go(
+            //   backRoutes: RouteView.listAgency.name,
+            //   parameters: {"name": controller.readAgency()},
+            // );
+            Get.back();
+          }
         },
         icon: const Icon(Icons.arrow_back),
       ),
       backgroundColor: const Color.fromARGB(255, 71, 122, 211),
       centerTitle: true,
       title: Text(
-        "appbarTitle".tr,
+        "agencytitle".tr,
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,

@@ -64,7 +64,8 @@ class AgencyData {
         json['prokas'].map((e) => Proka.fromJson(e)),
       ),
       attachment: List<Attachment>.from(
-          json['attachment'].map((e) => Attachment.fromJson(e))),
+        json['attachment'].map((e) => Attachment.fromJson(e)),
+      ),
     );
   }
 }
@@ -78,7 +79,8 @@ class Address {
   dynamic district;
   dynamic commune;
   dynamic village;
-
+  dynamic fullAddress;
+  dynamic fullAddressEn;
   Address({
     this.line1,
     this.line2,
@@ -88,6 +90,8 @@ class Address {
     required this.district,
     required this.commune,
     required this.village,
+    required this.fullAddress,
+    required this.fullAddressEn,
   });
 
   factory Address.fromJson(Map<String, dynamic> json) {
@@ -100,12 +104,15 @@ class Address {
       district: json['district'],
       commune: json['commune'],
       village: json['village'],
+      fullAddress: json['full_address'],
+      fullAddressEn: json['full_address_en'],
     );
   }
 }
 
 class Agency {
   Country country;
+  List<SendingCountry> sendingCountry;
   dynamic khmerName;
   dynamic latinName;
   dynamic nameAbbreviate;
@@ -113,6 +120,8 @@ class Agency {
   dynamic companyTin;
   dynamic countryCode;
   dynamic agencyPhoneNumber;
+  dynamic agencyCountryCodeOther;
+  dynamic agencyPhoneNumberOther;
 
   Agency({
     required this.country,
@@ -123,6 +132,9 @@ class Agency {
     required this.companyTin,
     required this.countryCode,
     required this.agencyPhoneNumber,
+    required this.sendingCountry,
+    required this.agencyCountryCodeOther,
+    required this.agencyPhoneNumberOther,
   });
 
   factory Agency.fromJson(Map<String, dynamic> json) {
@@ -135,6 +147,11 @@ class Agency {
       companyTin: json['company_tin'],
       countryCode: json['country_code'],
       agencyPhoneNumber: json['agency_phone_number'],
+      sendingCountry: List<SendingCountry>.from(
+        json["sending_country"].map((e) => SendingCountry.fromJson(e)),
+      ),
+      agencyCountryCodeOther: json['country_code_other'],
+      agencyPhoneNumberOther: json['agency_phone_number_other'],
     );
   }
 }
@@ -169,6 +186,7 @@ class Contact {
   dynamic khmerName;
   dynamic latinName;
   Position position;
+  dynamic phoneCode;
   dynamic phoneNumber;
   dynamic address;
   dynamic witnesses;
@@ -177,6 +195,7 @@ class Contact {
     required this.khmerName,
     required this.latinName,
     required this.position,
+    required this.phoneCode,
     required this.phoneNumber,
     required this.address,
     required this.witnesses,
@@ -187,6 +206,7 @@ class Contact {
       khmerName: json['khmer_name'],
       latinName: json['latin_name'],
       position: Position.fromJson(json['position']),
+      phoneCode: json['phone_code'],
       phoneNumber: json['phone_number'],
       address: json['address'],
       witnesses: json['witnesses'],
@@ -258,6 +278,23 @@ class Quota {
       total: json['total'],
       male: json['male'],
       female: json['female'],
+    );
+  }
+}
+
+class SendingCountry {
+  final String khmerName;
+  final String enName;
+
+  SendingCountry({
+    required this.khmerName,
+    required this.enName,
+  });
+
+  factory SendingCountry.fromJson(Map<String, dynamic> json) {
+    return SendingCountry(
+      khmerName: json['kh'],
+      enName: json['en'],
     );
   }
 }

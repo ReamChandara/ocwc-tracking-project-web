@@ -5,11 +5,13 @@ class CustomHeader extends StatelessWidget {
   final String title;
   final double? headerWidth;
   final String? fontFamily;
+  final double? height;
   const CustomHeader({
     super.key,
     this.headerWidth,
     required this.title,
     required this.homeController,
+    this.height,
     this.fontFamily,
   });
 
@@ -19,20 +21,20 @@ class CustomHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: headerWidth ?? 400,
+      padding: const EdgeInsets.all(5),
       alignment: Alignment.center,
-      height: 55,
+      height: height,
       decoration: BoxDecoration(
         color: Colors.grey[100],
       ),
       child: Text(
         title,
+        textAlign: TextAlign.center,
         style: TextStyle(
             color: Colors.black,
-            fontSize: 18,
+            fontSize: homeController.langCode.value == "en" ? 18 : 16,
             fontWeight: FontWeight.bold,
-            fontFamily: homeController.langCode.value == "en"
-                ? "SourceSansPro-Regular"
-                : "Battambang"),
+            fontFamily: "Battambang"),
       ),
     );
   }

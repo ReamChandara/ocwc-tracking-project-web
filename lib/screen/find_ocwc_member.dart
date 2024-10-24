@@ -17,7 +17,9 @@ class FindOCWCMember extends GetView<HomeController> {
         children: [
           IconButton(
               onPressed: () {
-                Get.back();
+                RouteView.home.go(
+                  backRoutes: RouteView.home.name,
+                );
               },
               icon: const Icon(
                 Icons.arrow_back,
@@ -115,7 +117,8 @@ class FindOCWCMember extends GetView<HomeController> {
               children: [
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.numberCard);
+                    // Get.toNamed(Routes.numberCard);
+                    RouteView.numberCard.go();
                   },
                   child: Container(
                     height: 50,
@@ -140,7 +143,8 @@ class FindOCWCMember extends GetView<HomeController> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.searchwoker);
+                    // Get.toNamed(Routes.searchwoker);
+                    RouteView.searchWorker.go();
                   },
                   child: Container(
                     height: 50,
@@ -165,7 +169,8 @@ class FindOCWCMember extends GetView<HomeController> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.scanWorker);
+                    // Get.toNamed(Routes.scanWorker);
+                    RouteView.scanWorker.go();
                   },
                   child: Container(
                     height: 50,

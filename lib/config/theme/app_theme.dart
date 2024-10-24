@@ -76,7 +76,8 @@ class AppColors {
   AppColors._();
 
   static const background = Color(0xFFF5F5F5);
-  static var blur = const Color(0xFFC9CCD0);
+  static var blur = Colors.grey[300];
+  // const Color(0xFFC9CCD0);
   static var redColor = Colors.red.shade900;
   static const white = Colors.white;
   static const grey = Color.fromARGB(255, 237, 237, 237);
@@ -171,11 +172,13 @@ class AppTextStyle {
     );
   }
 
-  static TextStyle regular22({Color? color}) {
+  static TextStyle regular22(
+      {Color? color, String fontFamily = "SourceSansPro-Regular"}) {
     return TextStyle(
       fontWeight: FontWeight.normal,
       fontSize: 22,
       color: color ?? AppColors.white,
+      fontFamily: fontFamily,
     );
   }
 
@@ -261,9 +264,7 @@ class AppTextStyle {
   }
 
   static TextStyle bold16(
-      {Color? color,
-      double? height,
-      String fontFamily = "SourceSansPro-Regular"}) {
+      {Color? color, double? height, String fontFamily = "Battambang-Bold"}) {
     return TextStyle(
       height: height,
       fontWeight: FontWeight.bold,
