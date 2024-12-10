@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 
-import '../config/routes/app_route.dart';
-import '../widget/popup_menu_widget.dart';
+import '../../config/routes/app_route.dart';
+import '../../widget/popup_menu_widget.dart';
 
 class FindOCWCMember extends GetView<HomeController> {
   const FindOCWCMember({super.key});

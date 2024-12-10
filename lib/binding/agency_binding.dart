@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:tracking_web/controller/agency_controller.dart';
+import 'package:tracking_web/controller/agency/agency_controller.dart';
 
 class AgencyBinding extends Bindings {
   @override

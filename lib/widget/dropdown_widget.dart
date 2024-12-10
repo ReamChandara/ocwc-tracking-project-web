@@ -41,14 +41,11 @@ class DropdownWidget<T> extends StatelessWidget {
       itemAsString: itemAsString,
       asyncItems: asyncItems,
       dropdownDecoratorProps: DropDownDecoratorProps(
-        textAlign: TextAlign.center,
         baseStyle: AppTextStyle.regular14(color: Colors.black),
         dropdownSearchDecoration: InputDecoration(
           contentPadding: const EdgeInsets.only(top: 10, left: 10),
           border: const OutlineInputBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
-          ),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
           hintText: hintText,
           hintStyle: AppTextStyle.regular14(
             color: Colors.blueGrey,
@@ -61,12 +58,14 @@ class DropdownWidget<T> extends StatelessWidget {
       items: items,
       validator: validator,
       popupProps: PopupPropsMultiSelection.menu(
-        menuProps: const MenuProps(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)),
-        ),
+        menuProps:
+            const MenuProps(borderRadius: BorderRadius.all(Radius.circular(10))
+                // borderRadius: BorderRadius.only(
+                //   topLeft: Radius.circular(10),
+                //   bottomLeft: Radius.circular(10),
+                //   bottomRight: Radius.circular(10),
+                // ),
+                ),
         constraints: BoxConstraints(maxHeight: maxHeight ?? 300),
         fit: FlexFit.tight,
         showSearchBox: false,

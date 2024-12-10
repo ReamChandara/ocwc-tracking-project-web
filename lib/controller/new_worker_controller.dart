@@ -187,6 +187,21 @@ class NewWorkerController extends GetxController {
           DialogWidget.showDialog(context,
               jsonDecode(response.body)["errors"]["message"], langCode);
         }
+      } else if (response.statusCode == 422) {
+        Get.back();
+        if (context.mounted) {
+          var jsonData = jsonDecode(response.body);
+          // print(jsonData);
+          // var extrachjson = jsonData['data'];
+          // print(extrachjson);
+          DialogWidget.showWarningDialog(
+            context: context,
+            title: jsonData['message'],
+            des: "cardnumvalidation".tr,
+            langCode: langCode,
+            buttomTitle: "close".tr,
+          );
+        }
       } else if (response.statusCode == 429) {
         Get.back();
         if (context.mounted) {

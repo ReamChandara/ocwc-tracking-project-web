@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:tracking_web/config/theme/app_theme.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/controller/new_worker_controller.dart';
-import '../widget/web_screen_widget.dart';
+import '../../widget/web_screen_widget.dart';
 
 class WorkerDetail extends StatefulWidget {
   const WorkerDetail({super.key});

@@ -1,27 +1,28 @@
 import 'package:cloudflare_turnstile/cloudflare_turnstile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tracking_web/config/constant/string_constant.dart';
+import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:tracking_web/config/helper/function.dart';
-import 'package:tracking_web/config/theme/app_theme.dart';
 import 'package:tracking_web/controller/home_controller.dart';
+import 'package:tracking_web/controller/new_worker_controller.dart';
 import 'package:tracking_web/widget/dialog_widget.dart';
-import '../config/routes/app_route.dart';
-import '../controller/agency_controller.dart';
-import '../widget/popup_menu_widget.dart';
-import '../widget/textfield_widget.dart';
+import '../../config/constant/string_constant.dart';
+import '../../config/routes/app_route.dart';
+import '../../widget/popup_menu_widget.dart';
+import '../../widget/textfield_widget.dart';
 
-class FindingAgency extends StatefulWidget {
-  const FindingAgency({super.key});
+class SearchWorkerScreen extends StatefulWidget {
+  const SearchWorkerScreen({super.key});
 
   @override
-  State<FindingAgency> createState() => _FindingAgencyState();
+  State<SearchWorkerScreen> createState() => _SearchWorkerScreenState();
 }
 
-class _FindingAgencyState extends State<FindingAgency> {
+class _SearchWorkerScreenState extends State<SearchWorkerScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late HomeController homeController;
-  final AgencyController agencyController = Get.put(AgencyController());
+  late NewWorkerController workerController = Get.put(NewWorkerController());
   TextEditingController nameController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
@@ -29,12 +30,25 @@ class _FindingAgencyState extends State<FindingAgency> {
   late Future<DateTime?> selectedDate;
 
   void submit(BuildContext context) {
+    String name = nameController.text.trim();
+    String date = dateController.text.replaceAll("/", "-");
     if (validation()) {
     } else {
       DialogWidget.laodingDailog(context, homeController.langCode.value);
-      agencyController.findingAgency(context, nameController.text,
+      workerController.searchWoker(context, name, date,
           langCode: homeController.langCode.value);
     }
+  }
+
+  setDate() async {
+    DialogWidget.showDialogPicker(
+      context,
+      homeController.langCode.value == "en"
+          ? "SourceSansPro-Regular"
+          : "Battambang",
+    ).then((value) {
+      dateController.text = DateFormat("dd/MM/yyyy").format(value);
+    });
   }
 
   bool validateDate(String text) {
@@ -54,6 +68,15 @@ class _FindingAgencyState extends State<FindingAgency> {
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final ScrollController _scrollController = ScrollController();
+  // void _scrollToFocusedNode(FocusNode focusNode) {
+  //   if (focusNode.hasFocus) {
+  //     _scrollController.animateTo(
+  //       focusNode.offset.dy,
+  //       duration: const Duration(milliseconds: 300),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
 
   @override
   void initState() {
@@ -90,7 +113,9 @@ class _FindingAgencyState extends State<FindingAgency> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            RouteView.home.go(backRoutes: RouteView.home.name);
+                            RouteView.findOcwcmember.go(
+                              backRoutes: RouteView.findOcwcmember.name,
+                            );
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -176,8 +201,19 @@ class _FindingAgencyState extends State<FindingAgency> {
               const SizedBox(
                 height: 10,
               ),
+              // Text(
+              //   "title".tr,
+              //   textAlign: TextAlign.center,
+              //   style: TextStyle(
+              //       fontSize: 22,
+              //       color: Colors.white,
+              //       fontWeight: FontWeight.w300,
+              //       fontFamily: homeController.langCode.value == "en"
+              //           ? "SourceSansPro-Regular"
+              //           : "Battambang"),
+              // ),
               Text(
-                "agentcytitle".tr,
+                "subTitle".tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.white,
@@ -189,11 +225,9 @@ class _FindingAgencyState extends State<FindingAgency> {
               TextFieldWidget(
                 controller: nameController,
                 onFieldSubmitted: (val) {
-                  if (agencyController.cloudFlare.value) {
-                    submit(context);
-                  }
+                  submit(context);
                 },
-                onTap: () {},
+                focusNode: _focusNode1,
                 prefixIcon: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Image.asset(
@@ -219,10 +253,61 @@ class _FindingAgencyState extends State<FindingAgency> {
                     return null;
                   }
                 },
-                hintText: "agentcyhint".tr,
+                hintText: "latin".tr,
               ),
+              TextFieldWidget(
+                controller: dateController,
+                hintText: "date".tr,
+                errorStyle: TextStyle(
+                    fontSize: 14,
+                    fontFamily: homeController.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                hintStyle: TextStyle(
+                    fontSize: 14,
+                    fontFamily: homeController.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+                focusNode: _focusNode2,
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Image.asset(
+                    width: 10,
+                    "assets/icons/calendar.png",
+                    color: Colors.blueGrey,
+                  ),
+                ),
+                suffixIcon: IconButton(
+                    onPressed: () async {
+                      setDate();
+                    },
+                    icon: const Icon(
+                      Icons.date_range,
+                      color: Colors.blueGrey,
+                    )),
+                validator: (val) {
+                  if (val == null || val.isEmpty) {
+                    return "dateWarning".tr;
+                  } else if (!validateDate(val)) {
+                    return "dateMatch".tr;
+                  } else {
+                    return null;
+                  }
+                },
+                onFieldSubmitted: (val) {
+                  submit(context);
+                },
+                inputFormatters: [
+                  MaskTextInputFormatter(
+                    mask: '##/##/####',
+                    filter: {"#": RegExp(r'[0-9]')},
+                    type: MaskAutoCompletionType.lazy,
+                  )
+                ],
+              ),
+
               // InkWell(
-              //   onTap: () async {
+              //   onTap: () {
               //     submit(context);
               //   },
               //   child: Container(
@@ -239,60 +324,28 @@ class _FindingAgencyState extends State<FindingAgency> {
               //                 ? "SourceSansPro-Regular"
               //                 : "Battambang")),
               //   ),
-              // )
+              // ),
               Obx(
-                () => agencyController.cloudFlare.value
-                    ? Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              submit(context);
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Text("track".tr,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily:
-                                          homeController.langCode.value == "en"
-                                              ? "SourceSansPro-Regular"
-                                              : "Battambang")),
-                            ),
-                          ),
-                          Text("or".tr,
-                              style: AppTextStyle.regular16(
+                () => workerController.cloudFlare.value
+                    ? InkWell(
+                        onTap: () {
+                          submit(context);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text("track".tr,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
                                   fontFamily:
                                       homeController.langCode.value == "en"
                                           ? "SourceSansPro-Regular"
-                                          : "Battambang",
-                                  color: Colors.white)),
-                          InkWell(
-                            onTap: () {
-                              agencyController.findingAgency(context, "");
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Text("agencylist".tr,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontFamily:
-                                        homeController.langCode.value == "en"
-                                            ? "SourceSansPro-Regular"
-                                            : "Battambang",
-                                  )),
-                            ),
-                          )
-                        ].withSpaceBetween(height: 10),
+                                          : "Battambang")),
+                        ),
                       )
                     : CloudFlareTurnstile(
                         options: TurnstileOptions(
@@ -301,7 +354,7 @@ class _FindingAgencyState extends State<FindingAgency> {
                         ),
                         siteKey: siteKey,
                         onTokenRecived: (token) async {
-                          await agencyController.verifyCloudFlare(token);
+                          await workerController.verifyCloudFlare(token);
                         },
                       ),
               )

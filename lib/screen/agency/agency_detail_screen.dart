@@ -10,18 +10,19 @@ import 'package:pdf_render/pdf_render_widgets.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/config/responsive/main_resposive.dart';
-import 'package:tracking_web/config/routes/app_route.dart';
 import 'package:tracking_web/config/theme/app_theme.dart';
-import 'package:tracking_web/controller/agency_controller.dart';
+import 'package:tracking_web/controller/agency/agency_controller.dart';
 import 'package:tracking_web/controller/home_controller.dart';
 import 'package:tracking_web/widget/custom_card.dart';
 import 'package:tracking_web/widget/custom_header.dart';
 import 'package:tracking_web/widget/popup_menu_widget.dart';
-import '../widget/custom_text.dart';
+import '../../controller/agency/agency_detail_controller.dart';
+import '../../widget/custom_text.dart';
 
-class AgencyDetailScreen extends GetView<AgencyController> {
+class AgencyDetailScreen extends StatelessWidget {
   AgencyDetailScreen({super.key});
   final HomeController homeController = Get.put(HomeController());
+  final AgencyDetailController controller = Get.put(AgencyDetailController());
   final int tilteFlex = 2;
   final int dataFlex = 2;
   @override
@@ -1510,18 +1511,19 @@ class AgencyDetailScreen extends GetView<AgencyController> {
     return AppBar(
       leading: IconButton(
         onPressed: () {
-          print(controller.agencyList.length);
-          if (controller.agencyList.isEmpty) {
-            RouteView.findagency.go(
-              backRoutes: RouteView.findagency.name,
-            );
-          } else {
-            // RouteView.listAgency.go(
-            //   backRoutes: RouteView.listAgency.name,
-            //   parameters: {"name": controller.readAgency()},
-            // );
-            Get.back();
-          }
+          Get.back();
+          // print(controller.agencyList.length);
+          // if (controller.agencyList.isEmpty) {
+          //   RouteView.findagency.go(
+          //     backRoutes: RouteView.findagency.name,
+          //   );
+          // } else {
+          //   // RouteView.listAgency.go(
+          //   //   backRoutes: RouteView.listAgency.name,
+          //   //   parameters: {"name": controller.readAgency()},
+          //   // );
+
+          // }
         },
         icon: const Icon(Icons.arrow_back),
       ),

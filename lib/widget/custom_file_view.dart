@@ -4,7 +4,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tracking_web/config/helper/function.dart';
-import 'package:tracking_web/controller/agency_controller.dart';
+import 'package:tracking_web/controller/agency/agency_controller.dart';
 import 'dart:ui_web' as ui;
 import 'package:web/web.dart';
 

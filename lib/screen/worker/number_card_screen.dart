@@ -1,16 +1,15 @@
 import 'package:cloudflare_turnstile/cloudflare_turnstile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:tracking_web/config/constant/string_constant.dart';
-import '../config/routes/app_route.dart';
-import '../config/theme/app_theme.dart';
-import '../controller/home_controller.dart';
-import '../controller/new_worker_controller.dart';
-import '../widget/dialog_widget.dart';
-import '../widget/popup_menu_widget.dart';
-import '../widget/textfield_widget.dart';
+import '../../config/routes/app_route.dart';
+import '../../config/theme/app_theme.dart';
+import '../../controller/home_controller.dart';
+import '../../controller/new_worker_controller.dart';
+import '../../widget/dialog_widget.dart';
+import '../../widget/popup_menu_widget.dart';
+import '../../widget/textfield_widget.dart';
 
 class NumberCardScreen extends StatefulWidget {
   const NumberCardScreen({super.key});
@@ -272,7 +271,7 @@ class _NumberCardScreenState extends State<NumberCardScreen> {
                   submit(context);
                 }
               },
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -289,7 +288,7 @@ class _NumberCardScreenState extends State<NumberCardScreen> {
               validator: (val) {
                 if (val == null || val.isEmpty) {
                   return "cardnumbervalidate".tr;
-                } else if (val.length != 6) {
+                } else if (val.length != 11) {
                   return "cardnumberlengthvalidate".tr;
                 } else {
                   return null;

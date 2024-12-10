@@ -139,6 +139,56 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ),
           ),
+          // InkWell(
+          //   onTap: () {
+          //     // Get.toNamed("${Routes.home}${Routes.findagency}");
+          //     RouteView.printAgencyCard.go();
+          //   },
+          //   child: Container(
+          //     height: 50,
+          //     width: 400,
+          //     decoration: BoxDecoration(
+          //       color: Colors.blue,
+          //       borderRadius: BorderRadius.circular(10),
+          //     ),
+          //     alignment: Alignment.center,
+          //     child: Text(
+          //       "បោះពុម្ភបណ្ណភ្នាក់ងារ".tr,
+          //       style: TextStyle(
+          //           fontSize: 18,
+          //           color: Colors.white,
+          //           fontWeight: FontWeight.w300,
+          //           fontFamily: controller.langCode.value == "en"
+          //               ? "SourceSansPro-Regular"
+          //               : "Battambang"),
+          //     ),
+          //   ),
+          // ),
+          InkWell(
+            onTap: () {
+              // Get.toNamed("${Routes.home}${Routes.findagency}");
+              RouteView.recruiter.go();
+            },
+            child: Container(
+              height: 50,
+              width: 400,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                "findrecruiter".tr,
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: controller.langCode.value == "en"
+                        ? "SourceSansPro-Regular"
+                        : "Battambang"),
+              ),
+            ),
+          ),
         ].withSpaceBetween(height: 20),
       ),
     );

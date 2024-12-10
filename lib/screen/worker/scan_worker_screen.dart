@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:tracking_web/config/helper/function.dart';
 
-import '../config/routes/app_route.dart';
-import '../controller/scanner_controller.dart';
-import '../widget/popup_menu_widget.dart';
+import '../../config/routes/app_route.dart';
+import '../../controller/scanner_controller.dart';
+import '../../widget/popup_menu_widget.dart';
 
 class ScanWorkerScreen extends GetView<ScannerController> {
   const ScanWorkerScreen({super.key});
@@ -93,13 +93,9 @@ class ScanWorkerScreen extends GetView<ScannerController> {
                           fontSize: 18,
                           color: Colors.white),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     const BuildQRWidget(),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     Obx(
                       () => controller.qrValid.value.isEmpty
                           ? const SizedBox()
@@ -111,9 +107,7 @@ class ScanWorkerScreen extends GetView<ScannerController> {
                                   fontSize: 14),
                             ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -400,9 +394,10 @@ class BuildQRWidget extends StatelessWidget {
               )
             : Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(
-                  image: MemoryImage(controller.file!.bytes!),
-                )),
+                  image: DecorationImage(
+                    image: MemoryImage(controller.file!.bytes!),
+                  ),
+                ),
               ),
       );
     });

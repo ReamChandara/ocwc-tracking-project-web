@@ -51,6 +51,7 @@ dependencies:
   url_launcher: ^6.3.0
   html: ^0.15.4
   web: ^0.5.1
+  flutter_widget_from_html: ^0.15.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -16,6 +16,7 @@ class TextFieldWidget extends StatelessWidget {
   final TextStyle? labelStyle;
   final InputBorder? border;
   final FocusNode? focusNode;
+  final bool autoFocus;
   final void Function()? onTap;
   const TextFieldWidget({
     super.key,
@@ -33,11 +34,13 @@ class TextFieldWidget extends StatelessWidget {
     this.border,
     this.focusNode,
     this.onTap,
+    this.autoFocus = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: autoFocus,
       controller: controller,
       style: AppTextStyle.regular16(
         fontFamily: "SourceSansPro-Regular",

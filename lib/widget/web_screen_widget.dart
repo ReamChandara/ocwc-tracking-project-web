@@ -886,8 +886,8 @@ class WebNewScreen extends StatelessWidget {
       leading: IconButton(
         onPressed: () {
           // Get.back(result: true);
-          RouteView.scanWorker.go(
-            backRoutes: RouteView.searchWorker.name,
+          RouteView.detail.go(
+            backRoutes: RouteView.findOcwcmember.name,
           );
         },
         icon: const Icon(Icons.arrow_back),

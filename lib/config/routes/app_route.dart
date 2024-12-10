@@ -1,18 +1,24 @@
 import 'package:get/get.dart';
 import 'package:tracking_web/binding/agency_binding.dart';
 import 'package:tracking_web/binding/home_binding.dart';
-import 'package:tracking_web/screen/agency_list_screen.dart';
-import 'package:tracking_web/screen/finding_agency_screen.dart';
+import 'package:tracking_web/screen/recruiter/recruiter_list.dart';
+import 'package:tracking_web/screen/agency/agency_list_screen.dart';
+import 'package:tracking_web/screen/recruiter/recruiter_detail.dart';
+import 'package:tracking_web/screen/recruiter/find_recruiter_screen.dart';
+import 'package:tracking_web/screen/agency/finding_agency_screen.dart';
 import 'package:tracking_web/screen/home_screen.dart';
-import 'package:tracking_web/screen/list_worker_screen.dart';
+import 'package:tracking_web/screen/worker/list_worker_screen.dart';
+import 'package:tracking_web/screen/recruiter/scan_recruiter_card_screen.dart';
 import '../../binding/scanner_binding.dart';
 import '../../binding/worker_binding.dart';
-import '../../screen/agency_detail_screen.dart';
-import '../../screen/detial_worker_screen.dart';
-import '../../screen/find_ocwc_member.dart';
-import '../../screen/number_card_screen.dart';
-import '../../screen/scan_worker_screen.dart';
-import '../../screen/search_worker_screen.dart';
+import '../../screen/agency/agency_detail_screen.dart';
+import '../../screen/worker/detial_worker_screen.dart';
+import '../../screen/worker/find_ocwc_member.dart';
+import '../../screen/worker/number_card_screen.dart';
+import '../../screen/recruiter/print_agency_card_screen.dart';
+import '../../screen/recruiter/recruiter_screen.dart';
+import '../../screen/worker/scan_worker_screen.dart';
+import '../../screen/worker/search_worker_screen.dart';
 
 // class Routes {
 //   static const home = "/home";
@@ -100,6 +106,12 @@ enum RouteView {
   numberCard,
   agencyDetail,
   listAgency,
+  printAgencyCard,
+  recruiter,
+  findRecruiter,
+  scanRecruiterCard,
+  recruiterList,
+  recruiterDetail,
 }
 
 extension ActionRouteView on RouteView {
@@ -189,7 +201,7 @@ class AppRouting {
       case RouteView.agencyDetail:
         return GetPage(
           name: "/${e.name}",
-          binding: AgencyBinding(),
+          // binding: AgencyBinding(),
           page: () => AgencyDetailScreen(),
         );
       case RouteView.numberCard:
@@ -203,7 +215,38 @@ class AppRouting {
           name: "/${e.name}",
           page: () => AgencyListScreen(),
         );
-
+      case RouteView.printAgencyCard:
+        return GetPage(
+          name: "/${e.name}",
+          page: () => const PrintAgencyCardScreen(),
+        );
+      case RouteView.recruiter:
+        return GetPage(
+          name: "/${e.name}",
+          page: () => const RecruiterScreen(),
+        );
+      case RouteView.findRecruiter:
+        return GetPage(
+          name: "/${e.name}",
+          page: () => const FindRecruiterScreen(),
+        );
+      case RouteView.scanRecruiterCard:
+        return GetPage(
+          name: "/${e.name}",
+          binding: ScannerBinding(),
+          page: () => const ScanRecruiterCardScreen(),
+        );
+      case RouteView.recruiterList:
+        return GetPage(
+          name: "/${e.name}",
+          page: () => RecruiterList(),
+        );
+      case RouteView.recruiterDetail:
+        return GetPage(
+          name: "/${e.name}",
+          page: () => RecruiterDetail(),
+        );
+      // case RouteView.editingPhoto:
       ////////////////////////////////
     }
   }).toList();

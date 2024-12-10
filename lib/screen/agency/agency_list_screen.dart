@@ -4,12 +4,14 @@ import 'package:get/get.dart';
 import 'package:tracking_web/config/helper/function.dart';
 import 'package:tracking_web/config/responsive/main_resposive.dart';
 import 'package:tracking_web/config/theme/app_theme.dart';
-import 'package:tracking_web/controller/agency_controller.dart';
+import 'package:tracking_web/controller/agency/agency_controller.dart';
+import 'package:tracking_web/widget/pagination_widget.dart';
 import 'package:tracking_web/widget/textfield_widget.dart';
-import '../config/routes/app_route.dart';
-import '../controller/home_controller.dart';
-import '../widget/dialog_widget.dart';
-import '../widget/popup_menu_widget.dart';
+import '../../config/routes/app_route.dart';
+import '../../controller/home_controller.dart';
+import '../../widget/dialog_widget.dart';
+import '../../widget/dropdown_widget.dart';
+import '../../widget/popup_menu_widget.dart';
 
 class AgencyListScreen extends GetView<AgencyController> {
   AgencyListScreen({super.key});
@@ -551,7 +553,7 @@ class AgencyListScreen extends GetView<AgencyController> {
     0: const FixedColumnWidth(120),
     1: const FixedColumnWidth(350),
     2: const FixedColumnWidth(350),
-    3: const FixedColumnWidth(350),
+    3: const FixedColumnWidth(250),
   };
   final Map<int, TableColumnWidth>? fixColumnWidths = {
     0: const FixedColumnWidth(120),
@@ -710,7 +712,8 @@ class AgencyListScreen extends GetView<AgencyController> {
           ),
           child: SizedBox(
             child: TextFieldWidget(
-              hintText: "បញ្ចូនឈ្មោះទីភ្នាក់ងារជ្រើសរើសឯកជន",
+              autoFocus: true,
+              hintText: "searchagency".tr,
               hintStyle: AppTextStyle.regular14(),
               suffixIcon: const Icon(Icons.search),
               onFieldSubmitted: (value) {
@@ -755,106 +758,118 @@ class AgencyListScreen extends GetView<AgencyController> {
                             ? const Center(
                                 child: CircularProgressIndicator(),
                               )
-                            : Column(
-                                children: List.generate(
-                                    controller.agencyList.length, (index) {
-                                  var agencyData = controller.agencyList[index];
-                                  return InkWell(
-                                    hoverColor: Colors.grey[200],
-                                    onTap: () {
-                                      DialogWidget.laodingDailog(
-                                        context,
-                                        homeController.langCode.value,
-                                      );
-                                      controller.getAgencyDetails(
-                                        context,
-                                        controller.agencyList[index].hashId,
-                                        homeController.langCode.value,
-                                      );
-                                    },
-                                    child: Table(
-                                      border: TableBorder.all(
-                                        color: Colors.grey[300]!,
-                                        width: 0.8,
-                                      ),
-                                      columnWidths: columnWidths,
-                                      children: [
-                                        TableRow(children: [
-                                          _customTableCellData(
-                                            homeController.langCode.value ==
-                                                    "kh"
-                                                ? agencyData.agency.country
-                                                        .khmerName ??
-                                                    ""
-                                                : agencyData.agency.country
-                                                        .englishName ??
+                            : controller.agencyList.isEmpty
+                                ? Container(
+                                    padding: const EdgeInsets.only(top: 80),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "មិនមានទិន្នន័យ",
+                                      style: AppTextStyle.regular16(),
+                                    ),
+                                  )
+                                : Column(
+                                    children: List.generate(
+                                        controller.agencyList.length, (index) {
+                                      var agencyData =
+                                          controller.agencyList[index];
+                                      return InkWell(
+                                        hoverColor: Colors.grey[200],
+                                        onTap: () {
+                                          DialogWidget.laodingDailog(
+                                            context,
+                                            homeController.langCode.value,
+                                          );
+                                          controller.getAgencyDetails(
+                                            context,
+                                            controller.agencyList[index].hashId,
+                                            homeController.langCode.value,
+                                          );
+                                        },
+                                        child: Table(
+                                          border: TableBorder.all(
+                                            color: Colors.grey[300]!,
+                                            width: 0.8,
+                                          ),
+                                          columnWidths: columnWidths,
+                                          children: [
+                                            TableRow(children: [
+                                              _customTableCellData(
+                                                homeController.langCode.value ==
+                                                        "kh"
+                                                    ? agencyData.agency.country
+                                                            .khmerName ??
+                                                        ""
+                                                    : agencyData.agency.country
+                                                            .englishName ??
+                                                        "",
+                                              ),
+                                              _customTableCellData(
+                                                agencyData.agency.khmerName ??
                                                     "",
-                                          ),
-                                          _customTableCellData(
-                                            agencyData.agency.khmerName ?? "",
-                                          ),
-                                          _customTableCellData(
-                                            agencyData.agency.latinName ?? "",
-                                          ),
-                                          _customTableCellData(
-                                            alignment: Alignment.center,
-                                            agencyData.agency.nameAbbreviate ??
-                                                "",
-                                          ),
-                                          // TableCell(
-                                          //   child: Container(
-                                          //     height: tableRowHeight,
-                                          //     alignment: Alignment.center,
-                                          //     child: Text(
-                                          //       Get.locale == const Locale('en', 'US')
-                                          //           ? agencyData
-                                          //               .agency.country.englishName
-                                          //           : agencyData
-                                          //               .agency.country.khmerName,
-                                          //       style: AppTextStyle.regular16(
-                                          //           color: Colors.black),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          // TableCell(
-                                          //   child: Container(
-                                          //     height: tableRowHeight,
-                                          //     alignment: Alignment.center,
-                                          //     child: Text(
-                                          //       agencyData.agency.khmerName,
-                                          //       style: AppTextStyle.regular16(
-                                          //           color: Colors.black),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          // TableCell(
-                                          //   child: Container(
-                                          //     height: tableRowHeight,
-                                          //     alignment: Alignment.center,
-                                          //     child: Text(
-                                          //       agencyData.agency.latinName,
-                                          //       style: AppTextStyle.regular16(
-                                          //           color: Colors.black),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          // TableCell(
-                                          //   child: Container(
-                                          //     height: tableRowHeight,
-                                          //     alignment: Alignment.center,
-                                          //     child: Text(
-                                          //       agencyData.agency.nameAbbreviate,
-                                          //       style: AppTextStyle.regular16(
-                                          //           color: Colors.black),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          TableCell(
-                                            child: Container(
-                                                height: tableRowHeight,
+                                              ),
+                                              _customTableCellData(
+                                                agencyData.agency.latinName ??
+                                                    "",
+                                              ),
+                                              _customTableCellData(
                                                 alignment: Alignment.center,
-                                                child:
-                                                    agencyData
+                                                agencyData.agency
+                                                        .nameAbbreviate ??
+                                                    "",
+                                              ),
+                                              // TableCell(
+                                              //   child: Container(
+                                              //     height: tableRowHeight,
+                                              //     alignment: Alignment.center,
+                                              //     child: Text(
+                                              //       Get.locale == const Locale('en', 'US')
+                                              //           ? agencyData
+                                              //               .agency.country.englishName
+                                              //           : agencyData
+                                              //               .agency.country.khmerName,
+                                              //       style: AppTextStyle.regular16(
+                                              //           color: Colors.black),
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              // TableCell(
+                                              //   child: Container(
+                                              //     height: tableRowHeight,
+                                              //     alignment: Alignment.center,
+                                              //     child: Text(
+                                              //       agencyData.agency.khmerName,
+                                              //       style: AppTextStyle.regular16(
+                                              //           color: Colors.black),
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              // TableCell(
+                                              //   child: Container(
+                                              //     height: tableRowHeight,
+                                              //     alignment: Alignment.center,
+                                              //     child: Text(
+                                              //       agencyData.agency.latinName,
+                                              //       style: AppTextStyle.regular16(
+                                              //           color: Colors.black),
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              // TableCell(
+                                              //   child: Container(
+                                              //     height: tableRowHeight,
+                                              //     alignment: Alignment.center,
+                                              //     child: Text(
+                                              //       agencyData.agency.nameAbbreviate,
+                                              //       style: AppTextStyle.regular16(
+                                              //           color: Colors.black),
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              TableCell(
+                                                child: Container(
+                                                    height: tableRowHeight,
+                                                    alignment: Alignment.center,
+                                                    child: agencyData
                                                             .agency
                                                             .sendingCountry
                                                             .isEmpty
@@ -882,13 +897,13 @@ class AgencyListScreen extends GetView<AgencyController> {
                                                                   width: 5),
                                                             ),
                                                           )),
-                                          ),
-                                        ]),
-                                      ],
-                                    ),
+                                              ),
+                                            ]),
+                                          ],
+                                        ),
+                                      );
+                                    }),
                                   );
-                                }),
-                              );
                       },
                     ),
                   ),
@@ -897,164 +912,76 @@ class AgencyListScreen extends GetView<AgencyController> {
             ],
           ),
         ),
-        SizedBox(
-          height: 80,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 120,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey[300]!,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.arrow_back_ios,
-                            size: 16,
-                          ),
-                          Text(
-                            "Back",
-                            style: AppTextStyle.regular16(),
-                          ),
-                        ].withSpaceBetween(width: 10),
-                      ),
-                    ),
-                    Obx(() {
-                      return controller.loadingList.value
-                          ? const SizedBox()
-                          : Row(
-                              children: List.generate(
-                                controller.meta.value?.lastPage ?? 0,
-                                // controller.meta.value?.lastPage ?? 0,
-                                (index) => InkWell(
-                                  onTap: () async {
-                                    await controller.getListAgency(
-                                      page: (index + 1).toString(),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 50,
-                                    height: 40,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: (index + 1) ==
-                                              controller.meta.value!.currentPage
-                                          ? Colors.grey
-                                          : null,
-                                      border: Border.all(
-                                        color: Colors.grey[300]!,
-                                      ),
-                                    ),
-                                    child: Text((index + 1).toString()),
-                                  ),
-                                ),
-                              ).withSpaceBetween(width: 10),
+        Container(
+          alignment: Alignment.center,
+          height: 60,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Obx(() {
+                  return controller.loadingList.value
+                      ? const SizedBox()
+                      : Text(
+                          "${"start".tr} ${controller.meta.value?.from ?? ""} - ${"to".tr} ${controller.meta.value?.to ?? ""} / ${"total".tr} ${controller.meta.value?.total ?? ""}",
+                          style: AppTextStyle.bold16(fontFamily: "Battambang"),
+                        );
+                }),
+                Obx(() {
+                  return controller.loadingList.value
+                      ? const SizedBox()
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 150,
+                              child: Text(
+                                "agencyperpage".tr,
+                                style: AppTextStyle.bold14(),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 42,
+                              width: 150,
+                              child: DropdownWidget<int>(
+                                maxHeight: 200,
+                                selectedItem: controller.perpageSelected.value,
+                                items: const [3, 6, 10, 15],
+                                onChanged: (val) {
+                                  controller.onChange(val);
+                                  controller.getListAgency(
+                                    perpage: val.toString(),
+                                    page: controller.meta.value?.currentPage
+                                            .toString() ??
+                                        "0",
+                                  );
+                                },
+                              ),
+                            ),
+                          ].withSpaceBetween(width: 10),
+                        );
+                }),
+                Obx(() {
+                  return controller.loadingList.value
+                      ? const SizedBox()
+                      : PaginationWidget(
+                          totalPages: controller.meta.value?.lastPage ?? 0,
+                          currentPage: controller.meta.value?.currentPage ?? 0,
+                          visiblePagesCount: 6,
+                          onPageChanged: (val) {
+                         
+                            controller.getListAgency(
+                              page: val.toString(),
+                              perpage:
+                                  controller.perpageSelected.value.toString(),
                             );
-                    }),
-                    Obx(
-                      () => controller.loadingList.value
-                          ? const SizedBox()
-                          : controller.meta.value?.currentPage ==
-                                  controller.meta.value?.lastPage
-                              ? const SizedBox()
-                              : InkWell(
-                                  onTap: () async {
-                                    await controller.getListAgency(
-                                        page: ((controller.meta.value
-                                                        ?.currentPage ??
-                                                    0) +
-                                                1)
-                                            .toString());
-                                    controller.currentTotalPage();
-                                  },
-                                  child: Container(
-                                    width: 120,
-                                    height: 40,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.grey[300]!,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Next",
-                                          style: AppTextStyle.regular16(),
-                                        ),
-                                        const Icon(
-                                          Icons.chevron_right,
-                                        ),
-                                      ].withSpaceBetween(width: 10),
-                                    ),
-                                  ),
-                                ),
-                    ),
-                    Obx(
-                      () => controller.loadingList.value
-                          ? const SizedBox()
-                          : controller.meta.value?.currentPage ==
-                                  controller.meta.value?.lastPage
-                              ? const SizedBox()
-                              : InkWell(
-                                  onTap: () async {
-                                    await controller.getListAgency(
-                                        page:
-                                            (controller.meta.value?.lastPage ??
-                                                    0)
-                                                .toString());
-                                    controller.loadPageTolast();
-                                  },
-                                  child: Container(
-                                    width: 120,
-                                    height: 40,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.grey[300]!,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Last",
-                                          style: AppTextStyle.regular16(),
-                                        ),
-                                        const Icon(
-                                          Icons.chevron_right,
-                                        ),
-                                      ].withSpaceBetween(width: 10),
-                                    ),
-                                  ),
-                                ),
-                    )
-                  ].withSpaceBetween(width: 10),
-                ),
-              ),
-              Obx(() {
-                return controller.loadingList.value
-                    ? const SizedBox()
-                    : Text(
-                        "ចាប់ផ្តើម  ${controller.meta.value?.from ?? ""} - ដល់ ${controller.meta.value?.to ?? ""} / សរុប ${controller.meta.value?.total ?? ""}",
-                        style: AppTextStyle.bold16(fontFamily: "Battambang"),
-                      );
-              }),
-            ].withSpaceBetween(height: 10),
+                          },
+                        );
+                }),
+              ].withSpaceBetween(width: 50),
+            ),
           ),
         ),
       ].withSpaceBetween(height: 10),
@@ -1641,12 +1568,14 @@ class AgencyListScreen extends GetView<AgencyController> {
       centerTitle: true,
       title: Text(
         "agencytitle".tr,
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            fontFamily: homeController.langCode.value == "kh"
-                ? "Battambang"
-                : "SourceSansPro-Regular"),
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+          fontFamily: "Battambang",
+          // homeController.langCode.value == "kh"
+          //     ? "Battambang"
+          //     : "SourceSansPro-Regular"
+        ),
       ),
       actions: const [
         Padding(
